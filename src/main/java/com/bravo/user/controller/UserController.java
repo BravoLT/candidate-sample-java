@@ -43,10 +43,33 @@ public class UserController {
     return userService.create(request);
   }
 
-  @GetMapping(value = "/retrieve/{id}")
+  @GetMapping(value = "/retrieveId/{id}")
   @ResponseBody
-  public UserReadDto retrieve(@PathVariable String id){
-    return userService.retrieve(id);
+  public UserReadDto retrieveById(@PathVariable String id){
+    return userService.retrieveById(id);
+  }
+  
+  /**
+   * Retrieves a paginated list of users whose first, middle, and last names match the specified name.
+   * The name to search may contain negation ("!") or wildcard ("*" or "%") characters
+   * 
+   * @param name Name to find - should contain first, middle, and last name without space
+   * @param page Page number to retrieve
+   * @param size Size of the page to retrieve
+   * @param response {@linkplain HttpServletResponse}
+   * @return List of {@linkplain UserReadDto}s with combined first, middle, and last names that match the search criteria
+   */
+  @GetMapping(value = "/retrieveName/{name}")
+  @ResponseBody
+  public List<UserReadDto> retrieveByName(
+	  final @PathVariable String name,
+	  final @RequestParam(required = false) Integer page,
+	  final @RequestParam(required = false) Integer size,
+	  final HttpServletResponse response) {
+	  
+	  userValidator.validateName(name);
+	  final PageRequest pageRequest = PageUtil.createPageRequest(page, size);
+	  return userService.retrieveByName(name, pageRequest, response);
   }
 
   @PostMapping(value = "/retrieve")

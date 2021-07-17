@@ -12,6 +12,8 @@ import com.bravo.user.utility.PageUtil;
 import com.bravo.user.utility.ValidatorUtil;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
+
 import javax.servlet.http.HttpServletResponse;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -39,12 +41,36 @@ public class UserService {
     return resourceMapper.convertUser(user);
   }
 
-  public UserReadDto retrieve(final String id){
+  public UserReadDto retrieveById(final String id){
     Optional<User> optional = userRepository.findById(id);
     User user = getUser(id, optional);
 
     LOGGER.info("found user '{}'", id);
     return resourceMapper.convertUser(user);
+  }
+  
+  /**
+   * Retrieves a paginated list of users whose combined first, middle, and last names matches the specified name.
+   * 
+   * @param name Name to find with format [firstName][middleName][lastName] and no space. May contain negation ("!") or
+   * wildcard ("*"/"%") characters.
+   * @param pageRequest {@linkplain PageRequest} containing pagination parameters
+   * @param response {@linkplain HttpServletResponse} in which to store page information
+   * @return List of {@linkplain UserReadDto}s whose combined names match the search name criteria
+   */
+  public List<UserReadDto> retrieveByName(
+	  final String name,
+	  final PageRequest pageRequest,
+	  final HttpServletResponse response) {
+	  
+	  final UserFilter filter = new UserFilter();
+	  filter.setFullNames(Set.of(name));
+	  final Page<User> userPage = userRepository.findAll(new UserSpecification(filter), pageRequest);
+	  final List<UserReadDto> users = resourceMapper.convertUsers(userPage.getContent());
+	  LOGGER.info("found {} user(s)", users.size());
+	  
+	  PageUtil.updatePageHeaders(response, userPage, pageRequest);
+	  return users;
   }
 
   public List<UserReadDto> retrieve(

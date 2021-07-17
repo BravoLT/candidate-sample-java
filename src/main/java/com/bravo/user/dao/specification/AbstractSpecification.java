@@ -86,9 +86,10 @@ public abstract class AbstractSpecification<T> implements Specification<T> {
         inClause.add(s.toLowerCase());
         continue;
       }
-      final String targetValue = (isNot ? s.substring(1) : s).toLowerCase();
+      String targetValue = (isNot ? s.substring(1) : s).toLowerCase();
       Predicate predicate;
       if(isLike){
+    	targetValue = targetValue.replace("*", "%"); // "like" queries must use "%"
         predicate = criteriaBuilder.like(targetPath, targetValue);
       } else {
         predicate = criteriaBuilder.equal(targetPath, targetValue);
