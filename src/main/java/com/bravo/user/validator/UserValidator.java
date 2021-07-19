@@ -11,6 +11,8 @@ import org.springframework.validation.Errors;
 
 @Component
 public class UserValidator extends CrudValidator {
+	
+  private static final Pattern NAME_VALIDATOR_PATTERN =  Pattern.compile("[^a-z*%!]", Pattern.CASE_INSENSITIVE);
 
   public void validateId(String id){
     if(ValidatorUtil.isInvalid(id)){
@@ -25,8 +27,7 @@ public class UserValidator extends CrudValidator {
    * @throws BadRequestException if the name is invalid
    */
   public void validateName(String name) {
-	  Pattern pattern = Pattern.compile("[^a-z*%!]", Pattern.CASE_INSENSITIVE);
-	  if (ValidatorUtil.isInvalid(name) || pattern.matcher(name).find()) {
+	  if (ValidatorUtil.isInvalid(name) || NAME_VALIDATOR_PATTERN.matcher(name).find()) {
 		  throw new BadRequestException("'name' is required and should not contain space, numbers, or special characters"
 		  		+ "other than '*', '%', and '!'");
 	  }

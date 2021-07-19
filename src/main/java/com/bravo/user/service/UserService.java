@@ -12,7 +12,6 @@ import com.bravo.user.utility.PageUtil;
 import com.bravo.user.utility.ValidatorUtil;
 import java.util.List;
 import java.util.Optional;
-import java.util.Set;
 
 import javax.servlet.http.HttpServletResponse;
 import org.slf4j.Logger;
@@ -41,7 +40,13 @@ public class UserService {
     return resourceMapper.convertUser(user);
   }
 
-  public UserReadDto retrieveById(final String id){
+  /**
+   * Retrieves a single user by ID
+   * 
+   * @param id ID to find
+   * @return {@linkplain UserReadDto} with matching ID, if it exists
+   */
+  public UserReadDto retrieve(final String id){
     Optional<User> optional = userRepository.findById(id);
     User user = getUser(id, optional);
 
@@ -50,29 +55,13 @@ public class UserService {
   }
   
   /**
-   * Retrieves a paginated list of users whose combined first, middle, and last names matches the specified name.
+   * Retrieves a paginated list of users using the criteria specified in the given filter.
    * 
-   * @param name Name to find with format [firstName][middleName][lastName] and no space. May contain negation ("!") or
-   * wildcard ("*"/"%") characters.
+   * @param filter {@linkplain UserFilter} Containing search criteria to filter on
    * @param pageRequest {@linkplain PageRequest} containing pagination parameters
    * @param response {@linkplain HttpServletResponse} in which to store page information
-   * @return List of {@linkplain UserReadDto}s whose combined names match the search name criteria
+   * @return List of {@linkplain UserReadDto}s that meet the filter criteria
    */
-  public List<UserReadDto> retrieveByName(
-	  final String name,
-	  final PageRequest pageRequest,
-	  final HttpServletResponse response) {
-	  
-	  final UserFilter filter = new UserFilter();
-	  filter.setFullNames(Set.of(name));
-	  final Page<User> userPage = userRepository.findAll(new UserSpecification(filter), pageRequest);
-	  final List<UserReadDto> users = resourceMapper.convertUsers(userPage.getContent());
-	  LOGGER.info("found {} user(s)", users.size());
-	  
-	  PageUtil.updatePageHeaders(response, userPage, pageRequest);
-	  return users;
-  }
-
   public List<UserReadDto> retrieve(
       final UserFilter filter,
       final PageRequest pageRequest,
