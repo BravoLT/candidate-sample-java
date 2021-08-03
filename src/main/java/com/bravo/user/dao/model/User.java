@@ -18,6 +18,26 @@ public class User {
   @Column(name = "id")
   private String id;
 
+  public void setFirstName(String firstName) {
+    this.firstName = firstName;
+  }
+
+  public void setMiddleName(String middleName) {
+    this.middleName = middleName;
+  }
+
+  public void setLastName(String lastName) {
+    this.lastName = lastName;
+  }
+
+  public void setPhoneNumber(Integer phoneNumber) {
+    this.phoneNumber = phoneNumber;
+  }
+
+  public void setUpdated(LocalDateTime updated) {
+    this.updated = updated;
+  }
+
   @Column(name = "first_name", nullable = false)
   private String firstName;
 
@@ -27,8 +47,36 @@ public class User {
   @Column(name = "last_name", nullable = false)
   private String lastName;
 
+  public String getId() {
+    return id;
+  }
+
+  public String getFirstName() {
+    return firstName;
+  }
+
+  public String getMiddleName() {
+    return middleName;
+  }
+
+  public String getLastName() {
+    return lastName;
+  }
+
+  public Integer getPhoneNumber() {
+    return phoneNumber;
+  }
+
+  public LocalDateTime getUpdated() {
+    return updated;
+  }
+
+  @Column(name = "phone_number", nullable = false)
+  private Integer phoneNumber;
+
   @Column(name = "updated", nullable = false)
   private LocalDateTime updated;
+
 
   public User(){
     super();
@@ -41,5 +89,6 @@ public class User {
     this.firstName = user.getFirstName();
     this.middleName = user.getMiddleName();
     this.lastName = user.getLastName();
+    this.phoneNumber = user.getPhoneNumber();
   }
 }

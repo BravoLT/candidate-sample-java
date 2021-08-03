@@ -41,9 +41,24 @@ public class ValidatorUtil {
     else if(value instanceof String){
       isValid = isStringValid((String)value);
     }
+    else if(value instanceof Integer) {
+      isValid = isIntegerValid((Integer)value);
+    }
     else {
       isValid = value != null;
     }
+    return isValid;
+  }
+
+  public static <T> boolean isInvalidLength(T value, T length){
+    return !isValidLength(value, length);
+  }
+
+  public static <T> boolean isValidLength(T value, T length){
+    boolean isValid = false;
+    if(value instanceof Integer){
+       isValid = isIntegerLengthValid((Integer) value, (Integer) length);
+      }
     return isValid;
   }
 
@@ -61,5 +76,17 @@ public class ValidatorUtil {
 
   private static boolean isStringValid(final String string){
     return string != null && !string.trim().isEmpty();
+  }
+
+  private static boolean isIntegerValid(final Integer integer) {
+    if(integer == null || integer == 0)
+      return false;
+    String onlyDigits = "\\d+";
+    String inString = integer.toString();
+    return inString.matches(onlyDigits);
+  }
+
+  private static boolean isIntegerLengthValid(final Integer integer, final Integer length) {
+    return String.valueOf(integer).length() == length;
   }
 }

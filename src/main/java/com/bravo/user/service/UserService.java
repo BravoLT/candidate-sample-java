@@ -75,6 +75,9 @@ public class UserService {
     if(ValidatorUtil.isValid(request.getLastName())){
       user.setFirstName(request.getLastName());
     }
+    if(ValidatorUtil.isValid(request.getPhoneNumber())){
+      user.setPhoneNumber(request.getPhoneNumber());
+    }
 
     final User updated = userRepository.save(user);
 

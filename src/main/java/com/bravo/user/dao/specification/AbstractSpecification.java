@@ -68,6 +68,17 @@ public abstract class AbstractSpecification<T> implements Specification<T> {
     predicates.add(path.in(values));
   }
 
+  protected <X, Y  extends Collection<X>> void applyInLengthFilter(
+          final Expression<X> path,
+          final Y values,
+          final Integer length
+  ){
+    if(ValidatorUtil.isInvalidLength(values, length)){
+      return;
+    }
+    predicates.add(path.in(values));
+  }
+
   protected  <X extends Collection<String>> void applyStringFilter(
       final Expression<String> path,
       final X values
@@ -103,4 +114,5 @@ public abstract class AbstractSpecification<T> implements Specification<T> {
       applyInFilter(targetPath, inClause);
     }
   }
+
 }

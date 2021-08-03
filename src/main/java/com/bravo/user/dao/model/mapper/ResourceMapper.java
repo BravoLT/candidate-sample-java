@@ -2,6 +2,8 @@ package com.bravo.user.dao.model.mapper;
 
 import com.bravo.user.dao.model.User;
 import com.bravo.user.model.dto.UserReadDto;
+
+import java.time.LocalDateTime;
 import java.util.Collection;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -31,6 +33,9 @@ public class ResourceMapper {
       name = String.format("%s %s", user.getFirstName(), user.getLastName());
     }
     dto.setName(name);
+    dto.setPhoneNumber(user.getPhoneNumber());
+    dto.setUpdated(LocalDateTime.now());
+
     return dto;
   }
 }
