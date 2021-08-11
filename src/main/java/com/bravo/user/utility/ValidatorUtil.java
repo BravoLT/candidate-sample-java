@@ -60,6 +60,6 @@ public class ValidatorUtil {
   }
 
   private static boolean isStringValid(final String string){
-    return string != null && !string.trim().isEmpty();
+    return string != null && !string.trim().isEmpty() && string.matches("[a-zA-Z!*% ]+");
   }
 }

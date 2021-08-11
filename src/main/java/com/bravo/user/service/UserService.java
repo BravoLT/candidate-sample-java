@@ -13,6 +13,7 @@ import com.bravo.user.utility.ValidatorUtil;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 import javax.servlet.http.HttpServletResponse;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -38,6 +39,24 @@ public class UserService {
 
     LOGGER.info("created user '{}'", user.getId());
     return resourceMapper.convertUser(user);
+  }
+
+  public List<UserReadDto> retrieveByName(
+          final String name,
+          final PageRequest pageRequest,
+          final HttpServletResponse httpResponse){
+    UserFilter filter = new UserFilter();
+    String[] names = name.split(" ");
+
+    filter.setFirstNames(Set.of(names[0]));
+    if(names.length == 2) {
+      filter.setLastNames(Set.of(names[1]));
+    } else if(names.length == 3) {
+      filter.setMiddleNames(Set.of(names[1]));
+      filter.setLastNames(Set.of(names[2]));
+    }
+
+    return retrieve(filter, pageRequest, httpResponse);
   }
 
   public UserReadDto retrieve(final String id){

@@ -35,6 +35,18 @@ public class UserController {
     this.userValidator = userValidator;
   }
 
+  @GetMapping(value = "/{name}")
+  @ResponseBody
+  public List<UserReadDto> retrieveUserByName(
+          @PathVariable String name,
+          final @RequestParam(required = false) Integer page,
+          final @RequestParam(required = false) Integer size,
+          final HttpServletResponse httpResponse){
+    final PageRequest pageRequest = PageUtil.createPageRequest(page, size);
+    userValidator.validateName(name);
+    return userService.retrieveByName(name, pageRequest, httpResponse);
+  }
+
   @PostMapping(value = "/create")
   @ResponseBody
   public UserReadDto create(final @RequestBody UserSaveDto request, final BindingResult errors)

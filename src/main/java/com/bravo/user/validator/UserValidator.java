@@ -10,6 +10,12 @@ import org.springframework.validation.Errors;
 @Component
 public class UserValidator extends CrudValidator {
 
+  public void validateName(String name){
+    if(ValidatorUtil.isInvalid(name)){
+      throw new BadRequestException("'name' is required");
+    }
+  }
+
   public void validateId(String id){
     if(ValidatorUtil.isInvalid(id)){
       throw new BadRequestException("'id' is required");
