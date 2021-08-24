@@ -1,6 +1,8 @@
 package com.bravo.user.dao.model.mapper;
 
+import com.bravo.user.dao.model.Address;
 import com.bravo.user.dao.model.User;
+import com.bravo.user.model.dto.AddressReadDto;
 import com.bravo.user.model.dto.UserReadDto;
 import java.util.Collection;
 import java.util.List;
@@ -20,6 +22,10 @@ public class ResourceMapper {
   public <T extends Collection<User>> List<UserReadDto> convertUsers(final T users){
     return users.stream().map(this::convertUser).collect(Collectors.toList());
   }
+  
+  public <T extends Collection<Address>> List<AddressReadDto> convertAddresses(final T addresses){
+	    return addresses.stream().map(this::convertAddress).collect(Collectors.toList());
+	  }
 
   public UserReadDto convertUser(final User user){
     final UserReadDto dto = mapperFacade.map(user, UserReadDto.class);
@@ -32,5 +38,12 @@ public class ResourceMapper {
     }
     dto.setName(name);
     return dto;
+  }
+  
+  public AddressReadDto convertAddress(final Address address){
+	  final AddressReadDto dto = mapperFacade.map(address, AddressReadDto.class);
+	  
+	  dto.setUserId(address.getUser().getId());
+	  return dto;
   }
 }

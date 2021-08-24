@@ -1,7 +1,9 @@
 package com.bravo.user.dao.model.mapper;
 
+import com.bravo.user.dao.model.Address;
 import com.bravo.user.dao.model.User;
 import com.bravo.user.MapperArgConverter;
+import com.bravo.user.model.dto.AddressReadDto;
 import com.bravo.user.model.dto.UserReadDto;
 import ma.glasnost.orika.impl.DefaultMapperFactory;
 import org.junit.jupiter.api.Assertions;
@@ -28,4 +30,11 @@ class ResourceMapperTest {
     Assertions.assertEquals(userReadDto, new ResourceMapper(
         new DefaultMapperFactory.Builder().build().getMapperFacade()).convertUser(user));
   }
+  
+  void converAddressTest(
+	      @ConvertWith(MapperArgConverter.class) Address address,
+	      @ConvertWith(MapperArgConverter.class) AddressReadDto addressReadDto) {
+	    Assertions.assertEquals(addressReadDto, new ResourceMapper(
+	        new DefaultMapperFactory.Builder().build().getMapperFacade()).convertAddress(address));
+	  }
 }

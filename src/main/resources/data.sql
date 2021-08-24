@@ -1,3 +1,4 @@
+drop table if exists address;
 drop table if exists user;
 
 create table user (
@@ -6,6 +7,17 @@ create table user (
     middle_name varchar(100) null,
     last_name varchar(100) not null,
     phone_number varchar(10) not null,
+    updated timestamp not null default current_timestamp()
+);
+
+create table address (
+    id varchar(60) primary key,
+	user_id varchar(60) not null,
+    address_line1 varchar(100) not null,
+    address_line2 varchar(100) null,
+    city varchar(100) not null,
+    state varchar(10) not null,
+	zip varchar(10) not null,
     updated timestamp not null default current_timestamp()
 );
 
@@ -611,3 +623,7 @@ insert into user (id, first_name, middle_name, last_name, phone_number) values
 ('fd6d21f6-f1c2-473d-8ed7-f3f9c7550cc9', 'Elian', 'Cherry', 'Gibson', '3226211765'),
 ('fd9e22ef-20f1-4e1b-9f9e-3139fd13fa85', 'Ashton', 'Carina', 'Foster', '4653236364');
 
+insert into address (id, user_id, address_line1, address_line2, city, state, zip) values
+('108a4215-0b1d-445e-b655-a964039cbb5a', '008a4215-0b1d-445e-b655-a964039cbb5a', '33rd St', 'Suite A', 'Nowhere', 'TX', '73333'),
+('208a4215-0b1d-445e-b655-a964039cbb5a', '008a4215-0b1d-445e-b655-a964039cbb5a', '32rd St', null, 'Nowhere2', 'OK', '72222'),
+('308a4215-0b1d-445e-b655-a964039cbb5a', 'fd9e22ef-20f1-4e1b-9f9e-3139fd13fa85', '32rd St', null, 'Nowhere3', 'OK', '71112');
