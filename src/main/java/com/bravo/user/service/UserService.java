@@ -26,6 +26,7 @@ import org.springframework.stereotype.Service;
 public class UserService {
 
   private static final Logger LOGGER = LoggerFactory.getLogger(UserService.class);
+
   private final UserRepository userRepository;
   private final ResourceMapper resourceMapper;
 
