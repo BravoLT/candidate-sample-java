@@ -3,20 +3,23 @@ package com.bravo.user.dao.model;
 import com.bravo.user.model.dto.UserSaveDto;
 import java.time.LocalDateTime;
 import java.util.UUID;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
-import lombok.Data;
+import javax.persistence.*;
+
+import lombok.*;
 
 @Entity
-@Data
+@Getter
+@Setter
+@AllArgsConstructor
 @Table(name = "user")
 public class User {
 
   @Id
   @Column(name = "id")
   private String id;
+
+  @OneToOne(mappedBy = "user")
+  private Auth auth;
 
   @Column(name = "first_name", nullable = false)
   private String firstName;

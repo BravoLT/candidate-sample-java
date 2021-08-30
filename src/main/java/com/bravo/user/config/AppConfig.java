@@ -14,8 +14,10 @@ import com.fasterxml.jackson.module.paramnames.ParameterNamesModule;
 import ma.glasnost.orika.MapperFacade;
 import ma.glasnost.orika.impl.DefaultMapperFactory;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.MessageSource;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.support.ReloadableResourceBundleMessageSource;
 import org.springframework.http.converter.json.Jackson2ObjectMapperBuilder;
 
 @Configuration
@@ -52,5 +54,20 @@ public class AppConfig {
   @Bean
   public MapperFacade mapperFacade(){
     return new DefaultMapperFactory.Builder().build().getMapperFacade();
+  }
+
+  /**
+   * Creates a message source classpath used to store resource bundle messages
+   *
+   * @return a resource message source
+   */
+  @Bean
+  public MessageSource messageSource() {
+    var messageSource = new ReloadableResourceBundleMessageSource();
+    messageSource.setBasenames("classpath:i18n/messages");
+    messageSource.setUseCodeAsDefaultMessage(true);
+    messageSource.setDefaultEncoding("UTF-8");
+    messageSource.setCacheSeconds(0);
+    return messageSource;
   }
 }

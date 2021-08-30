@@ -1,0 +1,312 @@
+{
+	"info": {
+		"_postman_id": "b89473ee-6f3f-4239-a8d6-9b90fd286391",
+		"name": "Candidate Sample",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "auth-validate-invalid-email",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"email\":\"Joyce-Roberts@gmail.comX\",\n\t\"password\":\"UserPassword\"\n}"
+				},
+				"url": {
+					"raw": "{{domain}}/auth/token",
+					"host": [
+						"{{domain}}"
+					],
+					"path": [
+						"auth",
+						"token"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "user-get-by-name",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"email\":\"Joyce-Roberts@gmail.comX\",\n\t\"password\":\"UserPassword\"\n}"
+				},
+				"url": {
+					"raw": "{{domain}}/user/retrieve?name=lucy",
+					"host": [
+						"{{domain}}"
+					],
+					"path": [
+						"user",
+						"retrieve"
+					],
+					"query": [
+						{
+							"key": "name",
+							"value": "lucy"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "auth-validate-invalid-password",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"email\":\"Joyce-Roberts@gmail.com\",\n\t\"password\":\"UserPasswordX\"\n}"
+				},
+				"url": {
+					"raw": "{{domain}}/auth/token",
+					"host": [
+						"{{domain}}"
+					],
+					"path": [
+						"auth",
+						"token"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "auth-validate-invalid-email-and-password",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"email\":\"Joyce-Roberts@gmail.comX\",\n\t\"password\":\"UserPasswordX\"\n}"
+				},
+				"url": {
+					"raw": "{{domain}}/auth/token",
+					"host": [
+						"{{domain}}"
+					],
+					"path": [
+						"auth",
+						"token"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "auth-validate-invalid-empty-email",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"email\":\"\",\n\t\"password\":\"UserPassword\"\n}"
+				},
+				"url": {
+					"raw": "{{domain}}/auth/token",
+					"host": [
+						"{{domain}}"
+					],
+					"path": [
+						"auth",
+						"token"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "auth-validate-invalid-empty-password",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"email\":\"Joyce-Roberts@gmail.com\",\n\t\"password\":\"\"\n}"
+				},
+				"url": {
+					"raw": "{{domain}}/auth/token",
+					"host": [
+						"{{domain}}"
+					],
+					"path": [
+						"auth",
+						"token"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "auth-validate-invalid-empty-email-and-password",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"email\":\"\",\n\t\"password\":\"\"\n}"
+				},
+				"url": {
+					"raw": "{{domain}}/auth/token",
+					"host": [
+						"{{domain}}"
+					],
+					"path": [
+						"auth",
+						"token"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "auth-validate-valid",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"email\":\"Frederick-Cole@gmail.com\",\n\t\"password\":\"FooBar!\"\n}"
+				},
+				"url": {
+					"raw": "{{domain}}/auth/token",
+					"host": [
+						"{{domain}}"
+					],
+					"path": [
+						"auth",
+						"token"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "auth-validate-valid-admin",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"email\":\"Joyce-Roberts@gmail.com\",\n\t\"password\":\"UserPassword\"\n}"
+				},
+				"url": {
+					"raw": "{{domain}}/auth/token",
+					"host": [
+						"{{domain}}"
+					],
+					"path": [
+						"auth",
+						"token"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "auth-validate-valid-case-insensitive",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"email\":\"cadie-hall@gmail.com\",\n\t\"password\":\"password\"\n}"
+				},
+				"url": {
+					"raw": "{{domain}}/auth/token",
+					"host": [
+						"{{domain}}"
+					],
+					"path": [
+						"auth",
+						"token"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "auth-validate-valid-admin-case-insensitive",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"email\":\"joyce-roberts@gmail.com\",\n\t\"password\":\"UserPassword\"\n}"
+				},
+				"url": {
+					"raw": "{{domain}}/auth/token",
+					"host": [
+						"{{domain}}"
+					],
+					"path": [
+						"auth",
+						"token"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}

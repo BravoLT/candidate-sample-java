@@ -1,0 +1,13 @@
+>
+"testId,null,John,C,Doe,0123456789,2021-07-12 12:00:00,loginId,John-Doe@gmail.com,ADMIN"
+${
+       "id":"testId",
+       "name":"John C Doe",
+       "firstName":"John",
+       "middleName":"C",
+       "lastName":"Doe",
+       "email":"John-Doe@gmail.com",
+       "phoneNumber":"0123456789",
+       "role":"ADMIN",
+       "updated":"2021-07-12 12:00:00"
+}
