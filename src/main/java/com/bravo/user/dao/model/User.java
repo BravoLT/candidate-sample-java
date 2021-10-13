@@ -3,10 +3,8 @@ package com.bravo.user.dao.model;
 import com.bravo.user.model.dto.UserSaveDto;
 import java.time.LocalDateTime;
 import java.util.UUID;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
+
 import lombok.Data;
 
 @Entity
@@ -32,6 +30,9 @@ public class User {
 
   @Column(name = "updated", nullable = false)
   private LocalDateTime updated;
+  @ManyToOne
+  @JoinColumn(name = "address_id", referencedColumnName = "id")
+  private Address address;
 
   public User(){
     super();

@@ -9,6 +9,21 @@ create table user (
     updated timestamp not null default current_timestamp()
 );
 
+create table address(
+    id varchar(60) primary key AUTOINCREMENT,
+    line1 varchar(25) not null,
+    line2 varchar(25) null,
+    city varchar(20) not null,
+    state varchar(10) not null,
+    zip varchar(5) not null,
+    updated timestamp not null default current_timestamp()
+
+);
+
+insert into address(id, line1, line2, city, state, zip, updated) values
+('96c77a5b-1956-4765-81b6-4bb2378e0997', '2000 Washington St', 'Cleveland', 'Ohio', '44117'),
+
+
 insert into user (id, first_name, middle_name, last_name, phone_number) values
 ('008a4215-0b1d-445e-b655-a964039cbb5a', 'Joyce', 'Lucas', 'Roberts', '6422107303'),
 ('00963d9b-f884-485e-9455-fcf30c6ac379', 'Cadie', 'Albert', 'Hall', '2072310564'),
