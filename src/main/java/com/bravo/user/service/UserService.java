@@ -1,13 +1,16 @@
 package com.bravo.user.service;
 
+import com.bravo.user.dao.converters.ColumnEncryptor;
 import com.bravo.user.dao.model.User;
 import com.bravo.user.dao.model.mapper.ResourceMapper;
 import com.bravo.user.dao.repository.UserRepository;
+import com.bravo.user.dao.specification.UserEmailFuzzySpecification;
 import com.bravo.user.dao.specification.UserNameFuzzySpecification;
 import com.bravo.user.dao.specification.UserSpecification;
 import com.bravo.user.exception.DataNotFoundException;
 import com.bravo.user.model.dto.UserReadDto;
 import com.bravo.user.model.dto.UserSaveDto;
+import com.bravo.user.model.filter.UserEmailFuzzyFilter;
 import com.bravo.user.model.filter.UserFilter;
 import com.bravo.user.model.filter.UserNameFuzzyFilter;
 import com.bravo.user.utility.PageUtil;
@@ -39,7 +42,9 @@ public class UserService {
     User user = userRepository.save(new User(request));
 
     LOGGER.info("created user '{}'", user.getId());
-    return resourceMapper.convertUser(user);
+    UserReadDto userReadDto = resourceMapper.convertUser(user);
+    userReadDto.setPassword("XXXXXX");
+    return userReadDto;
   }
 
   public UserReadDto retrieve(final String id){
@@ -47,7 +52,59 @@ public class UserService {
     User user = getUser(id, optional);
 
     LOGGER.info("found user '{}'", id);
-    return resourceMapper.convertUser(user);
+    UserReadDto userReadDto = resourceMapper.convertUser(user);
+    userReadDto.setPassword("XXXXXX");
+    return userReadDto;
+  }
+
+  public UserReadDto retrieveByEmailAndPassword(
+          final String email,
+          final String password
+  ){
+    final UserEmailFuzzySpecification specification = new UserEmailFuzzySpecification(UserEmailFuzzyFilter.builder()
+            .email(email)
+            .build());
+    final List<User> usersList = userRepository.findAll(specification);
+    final List<UserReadDto> users = resourceMapper.convertUsers(usersList);
+    if(users == null || users.isEmpty()) {
+      final String message = String.format("user '%s' doesn't exist", email);
+      LOGGER.warn(message);
+      throw new DataNotFoundException(message);
+    }
+    LOGGER.info("found {} user(s)", users.size());
+    Optional<UserReadDto> user = users.stream().filter(u -> u.getEmail().equals(email)).findAny();
+    if(user.isPresent()) {
+      UserReadDto userFound = user.get();
+      if(password != null && !password.isBlank()) {
+        try {
+          ColumnEncryptor encryptor = new ColumnEncryptor();
+          String encryptedPassword = encryptor.convertToDatabaseColumn(password);
+          if(encryptor.convertToDatabaseColumn(userFound.getPassword()).equals(encryptedPassword)){
+            final String message ="User is validated";
+            LOGGER.info(message);
+            userFound.setPassword("XXXXXX");
+            return userFound;
+          }else{
+            final String message ="Password did not match.";
+            LOGGER.warn(message);
+          }
+        }catch (Exception e) {
+          final String message ="Password matching exception.";
+          LOGGER.warn(message);
+          throw new DataNotFoundException(message);
+        }
+      }else {
+        final String message ="Password cannot be empty.";
+        LOGGER.warn(message);
+        throw new DataNotFoundException(message);
+      }
+    }else {
+      final String message = String.format("User '%s' not found.", email);
+      LOGGER.warn(message);
+      throw new DataNotFoundException(message);
+    }
+
+    return null;
   }
 
   public List <UserReadDto> retrieveByName(
@@ -63,6 +120,9 @@ public class UserService {
     LOGGER.info("found {} user(s)", users.size());
 
     PageUtil.updatePageHeaders(httpResponse, userPage, pageRequest);
+    for (UserReadDto user : users) {
+      user.setPassword("XXXXXX");
+    }
     return users;
   }
 
@@ -77,6 +137,9 @@ public class UserService {
     LOGGER.info("found {} user(s)", users.size());
 
     PageUtil.updatePageHeaders(httpResponse, userPage, pageRequest);
+    for (UserReadDto user : users) {
+      user.setPassword("XXXXXX");
+    }
     return users;
   }
 
@@ -102,7 +165,9 @@ public class UserService {
     final User updated = userRepository.save(user);
 
     LOGGER.info("updated user '{}'", updated.getId());
-    return resourceMapper.convertUser(updated);
+    UserReadDto userReadDto = resourceMapper.convertUser(updated);
+    userReadDto.setPassword("XXXXXX");
+    return userReadDto;
   }
 
   public boolean delete(final String id){

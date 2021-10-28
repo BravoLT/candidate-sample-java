@@ -1,9 +1,12 @@
 package com.bravo.user.validator;
 
 import com.bravo.user.exception.BadRequestException;
+import com.bravo.user.model.dto.UserLoginDto;
 import com.bravo.user.model.dto.UserSaveDto;
 import com.bravo.user.utility.ValidatorUtil;
 import java.util.Objects;
+
+import org.apache.commons.validator.routines.EmailValidator;
 import org.springframework.stereotype.Component;
 import org.springframework.validation.Errors;
 
@@ -25,6 +28,18 @@ public class UserValidator extends CrudValidator {
 
   }
 
+  public void validateEmail(String email){
+    if(!EmailValidator.getInstance()
+            .isValid(email)){
+      throw new BadRequestException("'email' is required");
+    }
+  }
+
+  public void validatePassword(String password){
+    if(ValidatorUtil.isInvalid(password)){
+      throw new BadRequestException("'Password' is required");
+    }
+  }
 
   @Override
   protected void validateCreate(Object o, Errors errors) {

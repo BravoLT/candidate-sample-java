@@ -3,6 +3,7 @@ package com.bravo.user.controller;
 import com.bravo.user.annotation.SwaggerController;
 import com.bravo.user.enumerator.Crud;
 import com.bravo.user.exception.BadRequestException;
+import com.bravo.user.model.dto.UserLoginDto;
 import com.bravo.user.model.dto.UserReadDto;
 import com.bravo.user.model.dto.UserSaveDto;
 import com.bravo.user.model.filter.UserFilter;
@@ -36,6 +37,20 @@ public class UserController {
   public UserController(UserService userService, UserValidator userValidator) {
     this.userService = userService;
     this.userValidator = userValidator;
+  }
+
+  @PostMapping(value = "/login")
+  @ResponseBody
+  public UserReadDto login(final @RequestBody UserLoginDto request) {
+    if(request.getEmail() != null) {
+      userValidator.validateEmail(request.getEmail());
+    }else if(request.getPassword() != null) {
+      userValidator.validatePassword(request.getPassword());
+    }
+    else {
+      throw new BadRequestException("'email' or 'password' is required!");
+    }
+    return userService.retrieveByEmailAndPassword(request.getEmail(), request.getPassword());
   }
 
   @PostMapping(value = "/create")
