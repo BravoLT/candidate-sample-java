@@ -1,3 +1,4 @@
+/* (C)2021 */
 package com.bravo.user.model.filter;
 
 import lombok.Builder;
@@ -7,5 +8,5 @@ import lombok.Data;
 @Builder
 public class UserEmailFuzzyFilter {
 
-  private String email;
+    private String email;
 }

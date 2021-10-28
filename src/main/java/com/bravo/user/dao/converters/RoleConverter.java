@@ -1,25 +1,15 @@
+/* (C)2021 */
 package com.bravo.user.dao.converters;
 
 import com.bravo.user.enumerator.Role;
-import org.springframework.stereotype.Component;
-
-import javax.crypto.BadPaddingException;
-import javax.crypto.Cipher;
-import javax.crypto.IllegalBlockSizeException;
-import javax.crypto.NoSuchPaddingException;
-import javax.crypto.spec.SecretKeySpec;
+import java.util.stream.Stream;
 import javax.persistence.AttributeConverter;
 import javax.persistence.Converter;
-import java.security.InvalidKeyException;
-import java.security.Key;
-import java.security.NoSuchAlgorithmException;
-import java.util.Base64;
-import java.util.stream.Stream;
+import org.springframework.stereotype.Component;
 
 @Component
 @Converter(autoApply = true)
 public class RoleConverter implements AttributeConverter<Role, String> {
-
 
     @Override
     public String convertToDatabaseColumn(Role role) {

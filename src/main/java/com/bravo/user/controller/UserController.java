@@ -1,3 +1,4 @@
+/* (C)2021 */
 package com.bravo.user.controller;
 
 import com.bravo.user.annotation.SwaggerController;
@@ -31,87 +32,82 @@ import org.springframework.web.bind.annotation.ResponseBody;
 @SwaggerController
 public class UserController {
 
-  private final UserService userService;
-  private final UserValidator userValidator;
+    private final UserService userService;
+    private final UserValidator userValidator;
 
-  public UserController(UserService userService, UserValidator userValidator) {
-    this.userService = userService;
-    this.userValidator = userValidator;
-  }
-
-  @PostMapping(value = "/login")
-  @ResponseBody
-  public UserReadDto login(final @RequestBody UserLoginDto request) {
-    if(request.getEmail() != null) {
-      userValidator.validateEmail(request.getEmail());
-    }else if(request.getPassword() != null) {
-      userValidator.validatePassword(request.getPassword());
+    public UserController(UserService userService, UserValidator userValidator) {
+        this.userService = userService;
+        this.userValidator = userValidator;
     }
-    else {
-      throw new BadRequestException("'email' or 'password' is required!");
+
+    @PostMapping(value = "/login")
+    @ResponseBody
+    public UserReadDto login(final @RequestBody UserLoginDto request) {
+        if (request.getEmail() != null) {
+            userValidator.validateEmail(request.getEmail());
+        } else if (request.getPassword() != null) {
+            userValidator.validatePassword(request.getPassword());
+        } else {
+            throw new BadRequestException("'email' or 'password' is required!");
+        }
+        return userService.retrieveByEmailAndPassword(request.getEmail(), request.getPassword());
     }
-    return userService.retrieveByEmailAndPassword(request.getEmail(), request.getPassword());
-  }
 
-  @PostMapping(value = "/create")
-  @ResponseBody
-  public UserReadDto create(final @RequestBody UserSaveDto request, final BindingResult errors)
-      throws BindException {
-    userValidator.validate(Crud.CREATE, request, errors);
-    return userService.create(request);
-  }
-
-  @GetMapping(value = "/retrieve")
-  @ResponseBody
-  public List<UserReadDto> retrieve(
-      final @RequestParam(required = false) String id,
-      final @RequestParam(required = false) String name,
-      final @RequestParam(required = false) Integer page,
-      final @RequestParam(required = false) Integer size,
-      final HttpServletResponse httpResponse
-  ) {
-    if(id != null){
-      userValidator.validateId(id);
-      return Collections.singletonList(userService.retrieve(id));
+    @PostMapping(value = "/create")
+    @ResponseBody
+    public UserReadDto create(final @RequestBody UserSaveDto request, final BindingResult errors)
+            throws BindException {
+        userValidator.validate(Crud.CREATE, request, errors);
+        return userService.create(request);
     }
-    else if(name != null){
-      userValidator.validateName(ValidatorUtil.removeControlCharacters(name));
-      final PageRequest pageRequest = PageUtil.createPageRequest(page, size);
-      return userService.retrieveByName(name, pageRequest, httpResponse);
+
+    @GetMapping(value = "/retrieve")
+    @ResponseBody
+    public List<UserReadDto> retrieve(
+            final @RequestParam(required = false) String id,
+            final @RequestParam(required = false) String name,
+            final @RequestParam(required = false) Integer page,
+            final @RequestParam(required = false) Integer size,
+            final HttpServletResponse httpResponse) {
+        if (id != null) {
+            userValidator.validateId(id);
+            return Collections.singletonList(userService.retrieve(id));
+        } else if (name != null) {
+            userValidator.validateName(ValidatorUtil.removeControlCharacters(name));
+            final PageRequest pageRequest = PageUtil.createPageRequest(page, size);
+            return userService.retrieveByName(name, pageRequest, httpResponse);
+        } else {
+            throw new BadRequestException("'id' or 'name' is required!");
+        }
     }
-    else {
-      throw new BadRequestException("'id' or 'name' is required!");
+
+    @PostMapping(value = "/retrieve")
+    @ResponseBody
+    public List<UserReadDto> retrieve(
+            final @RequestBody UserFilter filter,
+            final @RequestParam(required = false) Integer page,
+            final @RequestParam(required = false) Integer size,
+            final HttpServletResponse httpResponse) {
+        final PageRequest pageRequest = PageUtil.createPageRequest(page, size);
+        return userService.retrieve(filter, pageRequest, httpResponse);
     }
-  }
 
-  @PostMapping(value = "/retrieve")
-  @ResponseBody
-  public List<UserReadDto> retrieve(
-      final @RequestBody UserFilter filter,
-      final @RequestParam(required = false) Integer page,
-      final @RequestParam(required = false) Integer size,
-      final HttpServletResponse httpResponse
-  ) {
-    final PageRequest pageRequest = PageUtil.createPageRequest(page, size);
-    return userService.retrieve(filter, pageRequest, httpResponse);
-  }
+    @PatchMapping(value = "/update/{id}")
+    @ResponseBody
+    public UserReadDto update(
+            final @PathVariable String id,
+            final @RequestBody UserSaveDto request,
+            final BindingResult errors)
+            throws BindException {
+        userValidator.validateId(id);
+        userValidator.validate(Crud.UPDATE, request, errors);
+        return userService.update(id, request);
+    }
 
-  @PatchMapping(value = "/update/{id}")
-  @ResponseBody
-  public UserReadDto update(
-      final @PathVariable String id,
-      final @RequestBody UserSaveDto request,
-      final BindingResult errors
-  ) throws BindException {
-    userValidator.validateId(id);
-    userValidator.validate(Crud.UPDATE, request, errors);
-    return userService.update(id, request);
-  }
-
-  @DeleteMapping(value = "/delete/{id}")
-  @ResponseBody
-  public boolean delete(final @PathVariable String id) {
-    userValidator.validateId(id);
-    return userService.delete(id);
-  }
+    @DeleteMapping(value = "/delete/{id}")
+    @ResponseBody
+    public boolean delete(final @PathVariable String id) {
+        userValidator.validateId(id);
+        return userService.delete(id);
+    }
 }

@@ -1,4 +1,7 @@
+/* (C)2021 */
 package com.bravo.user.validator;
+
+import static org.junit.jupiter.api.Assertions.*;
 
 import com.bravo.user.MapperArgConverter;
 import com.bravo.user.enumerator.Crud;
@@ -10,43 +13,43 @@ import org.junit.jupiter.params.provider.CsvFileSource;
 import org.springframework.validation.BeanPropertyBindingResult;
 import org.springframework.validation.BindException;
 
-import static org.junit.jupiter.api.Assertions.*;
-
 class UserValidatorTest {
 
-  @ParameterizedTest
-  @CsvFileSource(
-      resources = ("/validateCreateTests.csv"),
-      delimiter = '$',
-      lineSeparator = ">"
+    @ParameterizedTest
+    @CsvFileSource(resources = ("/validateCreateTests.csv"), delimiter = '$', lineSeparator = ">")
+    void validateCreate(
+            @ConvertWith(MapperArgConverter.class) UserSaveDto userSaveDto, boolean isValid) {
+        Executable method =
+                () ->
+                        new UserValidator()
+                                .validate(
+                                        Crud.CREATE,
+                                        userSaveDto,
+                                        new BeanPropertyBindingResult(userSaveDto, "userSaveDto"));
 
-  )
-  void validateCreate(@ConvertWith(MapperArgConverter.class) UserSaveDto userSaveDto, boolean isValid) {
-    Executable method = () -> new UserValidator().validate(Crud.CREATE, userSaveDto,
-        new BeanPropertyBindingResult(userSaveDto, "userSaveDto"));
-
-    if (isValid) {
-      assertDoesNotThrow(method);
-    } else {
-      assertThrows(BindException.class, method);
+        if (isValid) {
+            assertDoesNotThrow(method);
+        } else {
+            assertThrows(BindException.class, method);
+        }
     }
-  }
 
-  @ParameterizedTest
-  @CsvFileSource(
-      resources = ("/validateUpdateTests.csv"),
-      delimiter = '$',
-      lineSeparator = ">"
+    @ParameterizedTest
+    @CsvFileSource(resources = ("/validateUpdateTests.csv"), delimiter = '$', lineSeparator = ">")
+    void validateUpdate(
+            @ConvertWith(MapperArgConverter.class) UserSaveDto userSaveDto, boolean isValid) {
+        Executable method =
+                () ->
+                        new UserValidator()
+                                .validate(
+                                        Crud.UPDATE,
+                                        userSaveDto,
+                                        new BeanPropertyBindingResult(userSaveDto, "userSaveDto"));
 
-  )
-  void validateUpdate(@ConvertWith(MapperArgConverter.class) UserSaveDto userSaveDto, boolean isValid) {
-    Executable method = () -> new UserValidator().validate(Crud.UPDATE, userSaveDto,
-        new BeanPropertyBindingResult(userSaveDto, "userSaveDto"));
-
-    if (isValid) {
-      assertDoesNotThrow(method);
-    } else {
-      assertThrows(BindException.class, method);
+        if (isValid) {
+            assertDoesNotThrow(method);
+        } else {
+            assertThrows(BindException.class, method);
+        }
     }
-  }
 }

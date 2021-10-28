@@ -1,17 +1,17 @@
+/* (C)2021 */
 package com.bravo.user.dao.converters;
 
-import org.springframework.stereotype.Component;
-
+import java.security.InvalidKeyException;
+import java.security.Key;
+import java.security.NoSuchAlgorithmException;
+import java.util.Base64;
 import javax.crypto.BadPaddingException;
 import javax.crypto.Cipher;
 import javax.crypto.IllegalBlockSizeException;
 import javax.crypto.NoSuchPaddingException;
 import javax.crypto.spec.SecretKeySpec;
 import javax.persistence.AttributeConverter;
-import java.security.InvalidKeyException;
-import java.security.Key;
-import java.security.NoSuchAlgorithmException;
-import java.util.Base64;
+import org.springframework.stereotype.Component;
 
 @Component
 public class ColumnEncryptor implements AttributeConverter<String, String> {
