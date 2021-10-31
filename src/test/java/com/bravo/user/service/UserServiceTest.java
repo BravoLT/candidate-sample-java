@@ -1,6 +1,8 @@
 package com.bravo.user.service;
 
 import com.bravo.user.App;
+import com.bravo.user.encrypter.PasswordEncryptor;
+import com.bravo.user.model.dto.PasswordDto;
 import com.bravo.user.model.dto.UserReadDto;
 import com.bravo.user.utility.PageUtil;
 import org.junit.jupiter.api.Test;
@@ -24,13 +26,16 @@ import static org.junit.jupiter.api.Assertions.*;
   @Autowired
   UserService userService;
 
+  @Autowired
+  PasswordEncryptor passwordEncryptor;
+
   @Test
   void retrieveByNameExact() {
     List<UserReadDto> userReadDtos = userService.retrieveByName("lucas", PageUtil.createPageRequest(null, null), null);
-    assertEquals(2, userReadDtos.size());
+    assertEquals(1, userReadDtos.size());
 
     userReadDtos = userService.retrieveByName("Lucas", PageUtil.createPageRequest(null, null), null);
-    assertEquals(2, userReadDtos.size());
+    assertEquals(1, userReadDtos.size());
   }
 
   @Test
@@ -39,17 +44,17 @@ import static org.junit.jupiter.api.Assertions.*;
     assertEquals("Joyce", userReadDtos.get(0).getFirstName());
 
     userReadDtos = userService.retrieveByName("Lucas", PageUtil.createPageRequest(2, 1), null);
-    assertEquals("Lucas", userReadDtos.get(0).getFirstName());
+    assertEquals(0, userReadDtos.size());
   }
 
 
   @Test
   void retrieveByNameLike() {
     List<UserReadDto> userReadDtos = userService.retrieveByName("luc%", PageUtil.createPageRequest(null, null), null);
-    assertEquals(5, userReadDtos.size());
+    assertEquals(2, userReadDtos.size());
 
     userReadDtos = userService.retrieveByName("luc*", PageUtil.createPageRequest(null, null), null);
-    assertEquals(5, userReadDtos.size());
+    assertEquals(2, userReadDtos.size());
   }
 
   @Test
@@ -78,6 +83,39 @@ import static org.junit.jupiter.api.Assertions.*;
 
   }
 
+  @Test
+  void testValidatePassword() {
+    PasswordDto passwordDto = new PasswordDto();
+    String decryptedPassword = passwordEncryptor.decryptPassword("A45jIKG7qo/bVfJZI54J6A==");
+    passwordDto.setPassword(decryptedPassword);
+    passwordDto.setEmail("Joyce.Roberts@gmail.com");
+    UserReadDto readDto = userService.validatePassword(passwordDto);
+    assertEquals(readDto.getFirstName() , "Joyce");
+    assertEquals(readDto.getLastName() , "Roberts");
+  }
 
 
+  @Test
+  void testValidateInvalidPassword() {
+    PasswordDto passwordDto = new PasswordDto();
+    passwordDto.setPassword("invalidPassword");
+    passwordDto.setEmail("Joyce.Roberts@gmail.com");
+    try {
+      UserReadDto readDto = userService.validatePassword(passwordDto);
+    } catch(Exception e) {
+      assertEquals(e.getMessage(), "DataNotFoundException | Invalid user name or password");
+    }
+  }
+
+  @Test
+  void testValidateInvalidPasswordWithUserDoesNotExists() {
+    PasswordDto passwordDto = new PasswordDto();
+    passwordDto.setPassword("invalidPassword");
+    passwordDto.setEmail("invalid.users@gmail.com");
+    try {
+      UserReadDto readDto = userService.validatePassword(passwordDto);
+    } catch(Exception e) {
+      assertEquals(e.getMessage(), "DataNotFoundException | Invalid user name or password");
+    }
+  }
 }
