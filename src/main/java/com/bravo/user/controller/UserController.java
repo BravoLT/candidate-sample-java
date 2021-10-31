@@ -95,7 +95,7 @@ public class UserController {
   }
 
 
-  @PostMapping(path = "/validate", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+  @PostMapping(path = "/login", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
   public
   @ResponseBody  ResponseEntity<UserReadDto> validatePassword(final @RequestBody PasswordDto passwordDto) {
     return ResponseEntity.ok(userService.validatePassword(passwordDto));
