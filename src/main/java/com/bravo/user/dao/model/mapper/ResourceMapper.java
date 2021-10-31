@@ -31,6 +31,8 @@ public class ResourceMapper {
       name = String.format("%s %s", user.getFirstName(), user.getLastName());
     }
     dto.setName(name);
+    dto.setRole(user.getUserRole());
+    dto.setEmail(user.getEmail());
     return dto;
   }
 }

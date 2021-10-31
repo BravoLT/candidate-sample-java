@@ -15,4 +15,6 @@ public class UserFilter {
   private Set<String> lastNames;
   private Set<String> middleNames;
   private DateFilter<LocalDateTime> dateFilter;
+  private Set<String> emails;
+
 }

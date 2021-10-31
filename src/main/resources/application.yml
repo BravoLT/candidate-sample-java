@@ -1,7 +1,11 @@
 
 server.port: ${PORT:9999}
 
+#---
 spring:
+  config:
+    activate:
+      on-profile: dev
   datasource:
     driverClassName: ${DB_DRIVER:org.h2.Driver}
     password: ${DB_PASSWORD:password}
@@ -13,3 +17,11 @@ spring:
     properties.hibernate:
       format_sql: true
       show_sql: ${SHOW_SQL:true}
+
+
+
+app:
+  password:
+    secret:
+      key: "test1234" # this needs to be retrieved from the vault or secret (kubernetes)
+

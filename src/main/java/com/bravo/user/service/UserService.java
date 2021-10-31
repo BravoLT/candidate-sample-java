@@ -5,7 +5,10 @@ import com.bravo.user.dao.model.mapper.ResourceMapper;
 import com.bravo.user.dao.repository.UserRepository;
 import com.bravo.user.dao.specification.UserNameFuzzySpecification;
 import com.bravo.user.dao.specification.UserSpecification;
+import com.bravo.user.encrypter.PasswordEncryptor;
+import com.bravo.user.exception.BadRequestException;
 import com.bravo.user.exception.DataNotFoundException;
+import com.bravo.user.model.dto.PasswordDto;
 import com.bravo.user.model.dto.UserReadDto;
 import com.bravo.user.model.dto.UserSaveDto;
 import com.bravo.user.model.filter.UserFilter;
@@ -15,27 +18,37 @@ import com.bravo.user.utility.ValidatorUtil;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.ExecutionException;
+import java.util.stream.Collectors;
 import javax.servlet.http.HttpServletResponse;
+
+import lombok.AllArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
 
 @Service
+@AllArgsConstructor
 public class UserService {
 
   private static final Logger LOGGER = LoggerFactory.getLogger(UserService.class);
 
   private final UserRepository userRepository;
   private final ResourceMapper resourceMapper;
+  private final PasswordEncryptor passwordEncryptor;
 
-  public UserService(UserRepository userRepository, ResourceMapper resourceMapper) {
-    this.userRepository = userRepository;
-    this.resourceMapper = resourceMapper;
-  }
 
   public UserReadDto create(final UserSaveDto request){
+    String encryptedPassword = passwordEncryptor.encryptPassword(request.getPassword());
+    request.setPassword(encryptedPassword);
+
+    if (userRepository.findByEmail(request.getEmail()).isPresent()) {
+      throw new BadRequestException("email or user already exists");
+    };
     User user = userRepository.save(new User(request));
 
     LOGGER.info("created user '{}'", user.getId());
@@ -99,6 +112,8 @@ public class UserService {
       user.setPhoneNumber(request.getPhoneNumber());
     }
 
+    
+
     final User updated = userRepository.save(user);
 
     LOGGER.info("updated user '{}'", updated.getId());
@@ -129,5 +144,15 @@ public class UserService {
       throw new DataNotFoundException(message);
     }
     return user.get();
+  }
+
+  public UserReadDto validatePassword(final PasswordDto passwordDto) {
+      String encryptedPassword = passwordEncryptor.encryptPassword(passwordDto.getPassword());
+      var user = userRepository.findByEmail(passwordDto.getEmail()).
+              orElseThrow(() -> new DataNotFoundException("Invalid user name or password"));
+      if (!encryptedPassword.equalsIgnoreCase(user.getPassword())) {
+        throw new DataNotFoundException("Invalid user name or password");
+      }
+      return resourceMapper.convertUser(user);
   }
 }

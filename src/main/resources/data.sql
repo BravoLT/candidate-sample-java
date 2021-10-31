@@ -1,3 +1,8 @@
+drop database if exists user;
+
+create database user;
+
+use user;
 drop table if exists user;
 
 create table user (
@@ -8,6 +13,8 @@ create table user (
     phone_number varchar(10) not null,
     updated timestamp not null default current_timestamp()
 );
+
+
 
 insert into user (id, first_name, middle_name, last_name, phone_number) values
 ('008a4215-0b1d-445e-b655-a964039cbb5a', 'Joyce', 'Lucas', 'Roberts', '6422107303'),

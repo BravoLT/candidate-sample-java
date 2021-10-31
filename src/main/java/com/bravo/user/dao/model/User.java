@@ -1,12 +1,11 @@
 package com.bravo.user.dao.model;
 
+import com.bravo.user.model.dto.UserRole;
 import com.bravo.user.model.dto.UserSaveDto;
 import java.time.LocalDateTime;
 import java.util.UUID;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
+
 import lombok.Data;
 
 @Entity
@@ -30,7 +29,16 @@ public class User {
   @Column(name = "phone_number", nullable = false)
   private String phoneNumber;
 
-  @Column(name = "updated", nullable = false)
+  @Column(name = "email", nullable = false, unique = true, columnDefinition = "varchar(255) default ''")
+  private String email;
+
+  @Column(name = "password", nullable = false , columnDefinition = "varchar(255) default ''")
+  private String password;
+
+  @Column(name = "role", nullable = false, columnDefinition = "int default 1")
+  private UserRole userRole;
+
+  @Column(name = "updated", nullable = false, columnDefinition="TIMESTAMP DEFAULT CURRENT_TIMESTAMP")
   private LocalDateTime updated;
 
   public User(){
@@ -45,5 +53,8 @@ public class User {
     this.middleName = user.getMiddleName();
     this.lastName = user.getLastName();
     this.phoneNumber = user.getPhoneNumber();
+    this.email = user.getEmail();
+    this.password = user.getPassword();
+    this.userRole = user.getRole();
   }
 }
