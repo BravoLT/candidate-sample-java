@@ -1,41 +1,52 @@
 package com.bravo.user.service;
 
-import com.bravo.user.dao.model.User;
-import com.bravo.user.dao.model.mapper.ResourceMapper;
-import com.bravo.user.dao.repository.UserRepository;
-import com.bravo.user.dao.specification.UserNameFuzzySpecification;
-import com.bravo.user.dao.specification.UserSpecification;
-import com.bravo.user.exception.DataNotFoundException;
-import com.bravo.user.model.dto.UserReadDto;
-import com.bravo.user.model.dto.UserSaveDto;
-import com.bravo.user.model.filter.UserFilter;
-import com.bravo.user.model.filter.UserNameFuzzyFilter;
-import com.bravo.user.utility.PageUtil;
-import com.bravo.user.utility.ValidatorUtil;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
+
 import javax.servlet.http.HttpServletResponse;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
+import com.bravo.user.converter.PasswordEncryption;
+import com.bravo.user.dao.model.User;
+import com.bravo.user.dao.model.mapper.ResourceMapper;
+import com.bravo.user.dao.repository.UserRepository;
+import com.bravo.user.dao.specification.UserNameFuzzySpecification;
+import com.bravo.user.dao.specification.UserSpecification;
+import com.bravo.user.enumerator.Role;
+import com.bravo.user.exception.DataNotFoundException;
+import com.bravo.user.exception.UnauthorizedException;
+import com.bravo.user.model.dto.UserReadDto;
+import com.bravo.user.model.dto.UserSaveDto;
+import com.bravo.user.model.dto.UserValidateDto;
+import com.bravo.user.model.filter.UserFilter;
+import com.bravo.user.model.filter.UserNameFuzzyFilter;
+import com.bravo.user.utility.PageUtil;
+import com.bravo.user.utility.ValidatorUtil;
+
 @Service
 public class UserService {
 
   private static final Logger LOGGER = LoggerFactory.getLogger(UserService.class);
+  private static final String FAILED_TO_VALIDATE_USER = "Email / Password combindation is invalid";
 
   private final UserRepository userRepository;
   private final ResourceMapper resourceMapper;
+  private final PasswordEncryption passwordEncryption;
 
-  public UserService(UserRepository userRepository, ResourceMapper resourceMapper) {
+  public UserService(UserRepository userRepository, ResourceMapper resourceMapper, PasswordEncryption passwordEncryption) {
     this.userRepository = userRepository;
     this.resourceMapper = resourceMapper;
+    this.passwordEncryption = passwordEncryption;
   }
 
   public UserReadDto create(final UserSaveDto request){
+    request.setPassword(passwordEncryption.encrypt(request.getPassword()));
     User user = userRepository.save(new User(request));
 
     LOGGER.info("created user '{}'", user.getId());
@@ -98,6 +109,15 @@ public class UserService {
     if(ValidatorUtil.isValid(request.getPhoneNumber())){
       user.setPhoneNumber(request.getPhoneNumber());
     }
+    if (ValidatorUtil.isValid(request.getEmail())) {
+      user.setEmail(request.getEmail());
+    }
+    if (ValidatorUtil.isValid(request.getRole())) {
+      user.setRole(Role.findRole(request.getRole()));
+    }
+    if (ValidatorUtil.isValid(request.getPassword())) {
+      user.setPassword(passwordEncryption.encrypt(request.getPassword()));
+    }
 
     final User updated = userRepository.save(user);
 
@@ -129,5 +149,34 @@ public class UserService {
       throw new DataNotFoundException(message);
     }
     return user.get();
+  }
+
+  /**
+   * Queries the repository to see if it can find a matching User based on the passed in
+   * repository, then checks that user's password against the value stored in the DB
+   * 
+   * @param request Request containing Email and Password combination
+   * @return True if no exceptions are thrown
+   * @throws {@link UnauthorizedException} if Email does not exist or password
+   *                does not match
+   */
+  public boolean validate(UserValidateDto request) {
+    final User user = userRepository.findByEmail(request.getEmail()).orElse(null);
+
+    if (user == null) {
+      throw new UnauthorizedException(FAILED_TO_VALIDATE_USER);
+    }
+
+    boolean passwordMatches = passwordEncryption.matches(request.getPassword(), user.getPassword());
+
+    if (!passwordMatches) {
+      throw new UnauthorizedException(FAILED_TO_VALIDATE_USER);
+    }
+
+    /*
+     * Returned true here rather than 'passwordMatches' because it is the only valid
+     * value at this point. I believe that it increases code readability
+     */
+    return true;
   }
 }

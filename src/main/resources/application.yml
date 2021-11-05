@@ -1,6 +1,11 @@
 
 server.port: ${PORT:9999}
 
+security:
+  encryption:
+    type: AES/ECB/PKCS5Padding
+    key: MySuperSecretKey
+
 spring:
   datasource:
     driverClassName: ${DB_DRIVER:org.h2.Driver}

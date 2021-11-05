@@ -8,6 +8,9 @@
 }
 ${
        "id":"testId",
+       "firstName":"John",
+       "middleName":"C",
+       "lastName":"Doe", 
        "name":"John C Doe",
        "phoneNumber":"0123456789",
        "updated":"2021-07-12 12:00:00"

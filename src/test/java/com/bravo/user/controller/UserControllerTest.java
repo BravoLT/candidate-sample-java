@@ -1,6 +1,10 @@
 package com.bravo.user.controller;
 
-import com.bravo.user.App;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static org.springframework.http.MediaType.*;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,9 +14,9 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.servlet.MockMvc;
 
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import com.bravo.user.App;
+import com.bravo.user.model.dto.UserValidateDto;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 @ContextConfiguration(classes = {App.class})
 @ExtendWith(SpringExtension.class)
@@ -62,5 +66,64 @@ class UserControllerTest {
     this.mockMvc.perform(get("/user/retrieve"))
         .andExpect(status().isBadRequest());
   }
+  
+  @Test
+  void validateEmailIsBlank() throws Exception {
+    UserValidateDto request = new UserValidateDto();
+    request.setEmail("");
+    request.setPassword("totallyRealPassword");
+    mockMvc.perform(post("/user/validate").content(asJsonString(request)).contentType(APPLICATION_JSON)
+        .accept(APPLICATION_JSON)).andExpect(status().isBadRequest());
+  }
+  
+  @Test
+  void validatePasswordIsBlank() throws Exception {
+    UserValidateDto request = new UserValidateDto();
+    request.setEmail("Email@gmail.com");
+    request.setPassword("");
+    mockMvc.perform(
+        post("/user/validate").content(asJsonString(request)).contentType(APPLICATION_JSON).accept(APPLICATION_JSON))
+        .andExpect(status().isBadRequest());
+  }
+
+  @Test
+  void validateEmailNotFound() throws Exception {
+    UserValidateDto request = new UserValidateDto();
+    request.setEmail("Email@gmail.com");
+    request.setPassword("totallyRealPassword");
+    mockMvc.perform(
+        post("/user/validate").content(asJsonString(request)).contentType(APPLICATION_JSON).accept(APPLICATION_JSON))
+        .andExpect(status().isUnauthorized());
+  }
+
+  @Test
+  void validatePasswordInvalid() throws Exception {
+    UserValidateDto request = new UserValidateDto();
+    request.setEmail("Joyce.Roberts@gmail.com");
+    request.setPassword("totallyRealPassword");
+    mockMvc.perform(
+        post("/user/validate").content(asJsonString(request)).contentType(APPLICATION_JSON).accept(APPLICATION_JSON))
+        .andExpect(status().isUnauthorized());
+  }
+
+  @Test
+  void validateUserValid() throws Exception {
+    UserValidateDto request = new UserValidateDto();
+    request.setEmail("Joyce.Roberts@gmail.com");
+    request.setPassword("passwordOne");
+    mockMvc.perform(
+        post("/user/validate").content(asJsonString(request)).contentType(APPLICATION_JSON).accept(APPLICATION_JSON))
+        .andExpect(status().isOk());
+  }
+
+  public static String asJsonString(final Object obj) {
+    try {
+        final ObjectMapper mapper = new ObjectMapper();
+        final String jsonContent = mapper.writeValueAsString(obj);
+        return jsonContent;
+    } catch (Exception e) {
+        throw new RuntimeException(e);
+    }
+}
 
 }

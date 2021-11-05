@@ -24,6 +24,62 @@ public class UserValidator extends CrudValidator {
     }
 
   }
+  
+  /**
+   * Throws Bad Request exception if Email is blank <br>
+   * Could have also done a REGEX to validate email structure, but I didn't
+   * 
+   * @param email Email on Request
+   */
+  public void validateEmail(String email) {
+    if (ValidatorUtil.isInvalid(email)) {
+      throw new BadRequestException("'email' is required");
+    }
+  }
+
+  /**
+   * Allows for us to catch the errors caught in the other method, adding the
+   * errors to the passed in object
+   * 
+   * @param email  Email on Request
+   * @param errors Area to add errors
+   */
+  private void validateEmail(String email, Errors errors) {
+    try {
+      validateEmail(email);
+    } catch (BadRequestException e) {
+      errors.reject(e.getMessage());
+    }
+  }
+
+  /**
+   * Throws a Bad Request Exception if Password is blank <br>
+   * Would have placed any password requirements in this method were they
+   * specified, but having this cut out place should allow easy enough work in the
+   * future
+   * 
+   * @param password
+   */
+  public void validatePassword(String password) {
+    if (ValidatorUtil.isInvalid(password)) {
+      throw new BadRequestException("'password' is required");
+    }
+  }
+
+  /**
+   * Allows for us to catch the errors caught in the other method, adding the
+   * errors to the passed in object
+   * 
+   * @param email
+   * @param errors
+   */
+  private void validatePassword(String email, Errors errors) {
+    try {
+      validatePassword(email);
+    } catch (BadRequestException e) {
+      errors.reject(e.getMessage());
+    }
+  }
 
 
   @Override
@@ -38,6 +94,12 @@ public class UserValidator extends CrudValidator {
     if(ValidatorUtil.isInvalid(instance.getLastName())){
       errors.reject("'lastName' is required");
     }
+    
+    /*
+     * Using the more robust methods that may have additional validation later
+     */
+    validateEmail(instance.getEmail(), errors);
+    validatePassword(instance.getPassword(), errors);
 
     if(Objects.isNull(instance.getPhoneNumber()) || !instance.getPhoneNumber().matches("[0-9]{10}")){
       errors.reject("'phoneNumber' of format [0-9]{10} is required");

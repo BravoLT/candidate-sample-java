@@ -17,6 +17,8 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 @SpringBootTest
 @TestPropertySource(properties = {
     "server.port=9090",
+    "security.encryption.type=AES",
+    "security.encryption.key=MySup3rS3cr3tK3y"
 })
 public class AppConfigTest {
 
@@ -45,4 +47,33 @@ public class AppConfigTest {
     final String expect = "ma.glasnost.orika.impl.MapperFacadeImpl";
     Assertions.assertEquals(expect, actual);
   }
+  
+  @Test
+  public void encryptionType() {
+    final String actual = appConfig.encryptionType();
+    final String expect = "AES";
+    Assertions.assertEquals(expect, actual);
+  }
+  
+  @Test
+  public void encryptionKey() {
+    final String actual = appConfig.encryptionKey();
+    final String expect = "MySup3rS3cr3tK3y";
+    Assertions.assertEquals(expect, actual);
+  }
+  
+  @Test
+  public void encryptCipher() {
+    final String actual = appConfig.encryptCipher().getClass().getName();
+    final String expect = "javax.crypto.Cipher";
+    Assertions.assertEquals(expect, actual);
+  }
+  
+  @Test
+  public void decryptCipher() {
+    final String actual = appConfig.decriptCipher().getClass().getName();
+    final String expect = "javax.crypto.Cipher";
+    Assertions.assertEquals(expect, actual);
+  }
+  
 }

@@ -11,6 +11,9 @@ public class UserReadDto {
   private String firstName;
   private String middleName;
   private String lastName;
+  private String email;
+  private String role;
   private String phoneNumber;
   private LocalDateTime updated;
+  
 }

@@ -5,6 +5,7 @@ import com.bravo.user.enumerator.Crud;
 import com.bravo.user.exception.BadRequestException;
 import com.bravo.user.model.dto.UserReadDto;
 import com.bravo.user.model.dto.UserSaveDto;
+import com.bravo.user.model.dto.UserValidateDto;
 import com.bravo.user.model.filter.UserFilter;
 import com.bravo.user.service.UserService;
 import com.bravo.user.utility.PageUtil;
@@ -14,8 +15,10 @@ import java.util.Collections;
 import java.util.List;
 import javax.servlet.http.HttpServletResponse;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.http.HttpStatus;
 import org.springframework.validation.BindException;
 import org.springframework.validation.BindingResult;
+import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
@@ -25,6 +28,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.ResponseStatus;
 
 @RequestMapping(value = "/user")
 @SwaggerController
@@ -40,6 +44,7 @@ public class UserController {
 
   @PostMapping(value = "/create")
   @ResponseBody
+  @ResponseStatus(HttpStatus.CREATED)
   public UserReadDto create(final @RequestBody UserSaveDto request, final BindingResult errors)
       throws BindException {
     userValidator.validate(Crud.CREATE, request, errors);
@@ -99,4 +104,13 @@ public class UserController {
     userValidator.validateId(id);
     return userService.delete(id);
   }
+  
+  @PostMapping(value = "/validate")
+  @ResponseBody
+  public void validate(final @RequestBody UserValidateDto request, Errors errors) {
+    userValidator.validateEmail(request.getEmail());
+    userValidator.validatePassword(request.getPassword());
+    userService.validate(request);
+  }
+  
 }

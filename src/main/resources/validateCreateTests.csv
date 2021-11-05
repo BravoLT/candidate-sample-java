@@ -32,5 +32,7 @@
     "firstName":"John",
     "middleName":"C",
     "lastName":"Doe",
-    "phoneNumber":"0123456789"
+    "phoneNumber":"0123456789",
+    "password":"passwordOne",
+    "email":"John.Doe@Gmail.com"
 }$true
