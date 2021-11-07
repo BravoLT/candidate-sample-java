@@ -1,6 +1,8 @@
 package com.bravo.user.dao.model.mapper;
 
+import com.bravo.user.dao.model.Address;
 import com.bravo.user.dao.model.User;
+import com.bravo.user.model.dto.AddressReadDto;
 import com.bravo.user.model.dto.UserReadDto;
 import java.util.Collection;
 import java.util.List;
@@ -32,5 +34,21 @@ public class ResourceMapper {
     }
     dto.setName(name);
     return dto;
+  }
+
+  public AddressReadDto convertAddress(final Address userAddress){
+    final AddressReadDto addressReadDto = mapperFacade.map(userAddress, AddressReadDto.class);
+    String addressField;
+    if(userAddress.getLine2() != null){
+      addressField = String.format("%s %s %s, %s, %s", userAddress.getLine1(), userAddress.getLine2(), userAddress.getCity(), userAddress.getState(), userAddress.getZip());
+    }else{
+      addressField = String.format("%s %s, %s, %s", userAddress.getLine1(),  userAddress.getCity(), userAddress.getState(), userAddress.getZip());
+    }
+    addressReadDto.setAddress(addressField);
+    return addressReadDto;
+  }
+
+  public static void main(String[] args) {
+
   }
 }

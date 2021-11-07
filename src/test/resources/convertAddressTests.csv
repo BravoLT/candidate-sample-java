@@ -1,0 +1,19 @@
+>{
+       "id":"testId",
+       "line1":"55728 Brock Knoll",
+       "line2":"Suite 613",
+       "city":"North Arthurside",
+       "state":"MO",
+       "zip":"21537",
+       "updated":"2021-07-12 12:00:00"
+}
+${
+       "id":"testId",
+       "address":"55728 Brock Knoll Suite 613 North Arthurside, MO, 21537",
+       "line1":"55728 Brock Knoll",
+       "line2":"Suite 613",
+       "city":"North Arthurside",
+       "state":"MO",
+       "zip":"21537",
+       "updated":"2021-07-12 12:00:00"
+}

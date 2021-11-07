@@ -7,7 +7,7 @@ spring:
     password: ${DB_PASSWORD:password}
     username: ${DB_USERNAME:sa}
     url: ${DB_URL:jdbc:h2:mem:testdb}
-  h2.console.enabled: false
+  h2.console.enabled: true
   jpa:
     database-platform: ${DB_DIALECT:org.hibernate.dialect.H2Dialect}
     properties.hibernate:

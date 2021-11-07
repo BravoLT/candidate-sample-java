@@ -1,6 +1,7 @@
 package com.bravo.user.controller;
 
 import com.bravo.user.annotation.SwaggerController;
+import com.bravo.user.dao.model.User;
 import com.bravo.user.enumerator.Crud;
 import com.bravo.user.exception.BadRequestException;
 import com.bravo.user.model.dto.UserReadDto;
