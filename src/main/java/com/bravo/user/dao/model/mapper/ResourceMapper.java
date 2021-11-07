@@ -48,7 +48,4 @@ public class ResourceMapper {
     return addressReadDto;
   }
 
-  public static void main(String[] args) {
-
-  }
 }
