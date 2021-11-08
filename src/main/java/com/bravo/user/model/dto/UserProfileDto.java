@@ -1,11 +1,9 @@
 package com.bravo.user.model.dto;
 
 import lombok.Data;
-import lombok.NoArgsConstructor;
 
 @Data
-@NoArgsConstructor
-public class UserProfileSaveDto {
+public class UserProfileDto {
 
   private String imageRef;
 }

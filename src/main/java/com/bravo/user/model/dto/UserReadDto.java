@@ -14,5 +14,5 @@ public class UserReadDto {
   private String lastName;
   private String phoneNumber;
   private LocalDateTime updated;
-  private UserProfileReadDto profile;
+  private UserProfileDto profile;
 }
