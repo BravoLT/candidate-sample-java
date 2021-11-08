@@ -1,12 +1,19 @@
 package com.bravo.user.dao.model;
 
-import com.bravo.user.model.dto.UserSaveDto;
 import java.time.LocalDateTime;
 import java.util.UUID;
+
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
+
+import com.bravo.user.model.dto.UserSaveDto;
+
 import lombok.Data;
 
 @Entity
@@ -32,6 +39,10 @@ public class User {
 
   @Column(name = "updated", nullable = false)
   private LocalDateTime updated;
+
+  @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
+  @JoinColumn(name = "profile_id")
+  private UserProfile userProfile;
 
   public User(){
     super();
