@@ -609,8 +609,8 @@ insert into user (id, first_name, middle_name, last_name, phone_number, profile_
 ('fcee9b60-6a3f-4fae-b7b3-27bc70c68b6f', 'Daisy', 'Adele', 'Williams', '2264357140'	,'ff5eadb3-353b-48ce-b2c9-ecf98a36869d'	),
 ('fd10b53c-a428-49a1-9628-f96f5dcaaed6', 'Carl', null, 'Thomas', '5455464561'	,'d17efc40-fd8b-45f0-83a5-ceadd0781152'	),
 ('fd152dd9-6fae-4cb2-a041-02162f200678', 'Brooke', 'Aiden', 'Watson', '2535073126'	,'f600ee2a-7742-4356-ad4a-589de4a787c2'	),
-('fd6d21f6-f1c2-473d-8ed7-f3f9c7550cc9', 'Elian', 'Cherry', 'Gibson', '3226211765'	,'b9361cb7-5931-49f0-b004-456019305a26'	),
-('fd9e22ef-20f1-4e1b-9f9e-3139fd13fa85', 'Ashton', 'Carina', 'Foster', '4653236364'	,'fb4eccaf-c7e7-48f8-9a2b-d7c7129bec23'	);
+('fd6d21f6-f1c2-473d-8ed7-f3f9c7550cc9', 'Elian', 'Cherry', 'Gibson', '3226211765'	, null	),
+('fd9e22ef-20f1-4e1b-9f9e-3139fd13fa85', 'Ashton', 'Carina', 'Foster', '4653236364'	, null	); -- for sanity
 
 drop table if exists user_profile;
 
