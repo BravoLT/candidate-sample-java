@@ -7,6 +7,5 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class UserProfileSaveDto {
 
-  private String userId;
   private String imageRef;
 }

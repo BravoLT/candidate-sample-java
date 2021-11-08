@@ -35,8 +35,4 @@ public class ResourceMapper {
     dto.setName(name);
     return dto;
   }
-
-  public UserProfileReadDto convertProfile(final UserProfile profile) {
-    return mapperFacade.map(profile, UserProfileReadDto.class);
-  }
 }
