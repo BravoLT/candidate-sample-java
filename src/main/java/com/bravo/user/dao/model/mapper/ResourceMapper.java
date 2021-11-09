@@ -1,17 +1,12 @@
 package com.bravo.user.dao.model.mapper;
 
-<<<<<<< HEAD
-=======
-import com.bravo.user.dao.model.User;
-import com.bravo.user.dao.model.Profile;
-import com.bravo.user.model.dto.ProfileReadDto;
-import com.bravo.user.model.dto.UserReadDto;
->>>>>>> 4ce67c8
 import java.util.Collection;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import com.bravo.user.dao.model.Profile;
 import com.bravo.user.dao.model.User;
+import com.bravo.user.model.dto.ProfileReadDto;
 import com.bravo.user.model.dto.UserReadDto;
 
 import org.springframework.stereotype.Component;
