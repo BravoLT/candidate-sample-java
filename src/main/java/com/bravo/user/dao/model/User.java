@@ -2,6 +2,7 @@ package com.bravo.user.dao.model;
 
 import com.bravo.user.model.dto.UserSaveDto;
 import java.time.LocalDateTime;
+import java.util.Set;
 import java.util.UUID;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -30,8 +31,19 @@ public class User {
   @Column(name = "phone_number", nullable = false)
   private String phoneNumber;
 
+  @Column(name="email")
+  private String email;
+
+  @Column(name="password")
+  private String password;
+
+  @Column(name="userRole")
+  private String userRole;
+
   @Column(name = "updated", nullable = false)
   private LocalDateTime updated;
+
+
 
   public User(){
     super();
@@ -45,5 +57,7 @@ public class User {
     this.middleName = user.getMiddleName();
     this.lastName = user.getLastName();
     this.phoneNumber = user.getPhoneNumber();
+    this.email = user.getEmail();
+    this.userRole = user.getUserRole();
   }
 }

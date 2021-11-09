@@ -6,4 +6,6 @@ import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface UserRepository extends JpaRepository<User, String>, JpaSpecificationExecutor<User>{}
+public interface UserRepository extends JpaRepository<User, String>, JpaSpecificationExecutor<User>{
+    public User findByEmail(String email);
+}
