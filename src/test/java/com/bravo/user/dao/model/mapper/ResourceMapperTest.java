@@ -5,14 +5,11 @@ import com.bravo.user.MapperArgConverter;
 import com.bravo.user.model.dto.UserReadDto;
 import ma.glasnost.orika.impl.DefaultMapperFactory;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.function.Executable;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.converter.ConvertWith;
 import org.junit.jupiter.params.provider.CsvFileSource;
-import org.springframework.validation.BindException;
 
-import static org.junit.jupiter.api.Assertions.*;
-
+// TODO: 11/9/2021 First, middle, and last are mapped, but it's asserted that it isn't. Intended behavior?
 class ResourceMapperTest {
 
   @ParameterizedTest
