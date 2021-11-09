@@ -1,8 +1,8 @@
 package com.bravo.user.dao.model.mapper;
 
 import com.bravo.user.dao.model.User;
-import com.bravo.user.dao.model.UserProfile;
-import com.bravo.user.model.dto.UserProfileReadDto;
+import com.bravo.user.dao.model.Profile;
+import com.bravo.user.model.dto.ProfileReadDto;
 import com.bravo.user.model.dto.UserReadDto;
 import java.util.Collection;
 import java.util.List;
@@ -34,5 +34,9 @@ public class ResourceMapper {
     }
     dto.setName(name);
     return dto;
+  }
+
+  public ProfileReadDto convertProfile(final Profile profile) {
+    return mapperFacade.map(profile, ProfileReadDto.class);
   }
 }

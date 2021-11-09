@@ -5,7 +5,9 @@ import java.time.LocalDateTime;
 import lombok.Data;
 
 @Data
-public class UserProfileReadDto {
+public class ProfileReadDto {
 
+  private String id;
   private String imageRef;
+  private LocalDateTime updated;
 }

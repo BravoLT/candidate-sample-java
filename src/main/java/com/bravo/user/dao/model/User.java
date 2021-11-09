@@ -40,9 +40,9 @@ public class User {
   @Column(name = "updated", nullable = false)
   private LocalDateTime updated;
 
-  @OneToOne(cascade = CascadeType.REMOVE)
+  @OneToOne(cascade = CascadeType.REMOVE, fetch = FetchType.LAZY)
   @JoinColumn(name = "profile_id")
-  private UserProfile profile;
+  private Profile profile;
 
   public User(){
     super();
