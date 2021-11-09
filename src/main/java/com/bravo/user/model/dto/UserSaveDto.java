@@ -11,5 +11,4 @@ public class UserSaveDto {
   private String middleName;
   private String lastName;
   private String phoneNumber;
-  private UserProfileDto profile;
 }

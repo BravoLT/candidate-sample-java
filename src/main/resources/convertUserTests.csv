@@ -4,10 +4,7 @@
        "middleName":"C",
        "lastName":"Doe",
        "phoneNumber":"0123456789",
-       "updated":"2021-07-12 12:00:00",
-       "profile": {
-         "imageRef": "someurl"
-       }
+       "updated":"2021-07-12 12:00:00"
 }
 ${
        "id":"testId",
@@ -16,9 +13,5 @@ ${
        "middleName":"C",
        "lastName":"Doe",
        "phoneNumber":"0123456789",
-       "updated":"2021-07-12 12:00:00",
-       "profile": {
-         "imageRef": "someurl"
-       }
-       
+       "updated":"2021-07-12 12:00:00"  
 }

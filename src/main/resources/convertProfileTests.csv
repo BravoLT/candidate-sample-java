@@ -1,0 +1,10 @@
+>{
+       "id":"testId",
+       "imageRef":"someUrl",
+       "updated":"2021-07-12 12:00:00"    
+}
+${
+       "id":"testId",
+       "imageRef":"someUrl",
+       "updated":"2021-07-12 12:00:00"    
+}

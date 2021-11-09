@@ -612,15 +612,15 @@ insert into user (id, first_name, middle_name, last_name, phone_number, profile_
 ('fd6d21f6-f1c2-473d-8ed7-f3f9c7550cc9', 'Elian', 'Cherry', 'Gibson', '3226211765'	, null	),
 ('fd9e22ef-20f1-4e1b-9f9e-3139fd13fa85', 'Ashton', 'Carina', 'Foster', '4653236364'	, null	); -- for sanity
 
-drop table if exists user_profile;
+drop table if exists profile;
 
-create table user_profile (
+create table profile (
     id varchar(60) primary key,
     image_ref varchar(2000) not null,
     updated timestamp not null default current_timestamp()
 );
 
-insert into user_profile (id, image_ref) values
+insert into profile (id, image_ref) values
 ('8aec8c89-0521-43f6-af44-b232acffb729','https://totallyradbucket.s3.amazonaws.com/profile.jpg'),
 ('7d9a9d2a-2ea9-42ee-b89e-f817ef5228e9','https://totallyradbucket.s3.amazonaws.com/profile.jpg'),
 ('1038a20a-d533-4c31-a51f-08bb204d32e3','https://totallyradbucket.s3.amazonaws.com/profile.jpg'),
