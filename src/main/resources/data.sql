@@ -6,7 +6,10 @@ create table user (
     middle_name varchar(100) null,
     last_name varchar(100) not null,
     phone_number varchar(10) not null,
-    updated timestamp not null default current_timestamp()
+    updated timestamp not null default current_timestamp()--,
+--    email varchar(100) not null unique, todo Need a way to generate this
+--    password varchar(100) not null, todo Need a way to generate this
+--    role varchar(100)
 );
 
 insert into user (id, first_name, middle_name, last_name, phone_number) values

@@ -3,11 +3,10 @@ package com.bravo.user.dao.model;
 import com.bravo.user.model.dto.UserSaveDto;
 import java.time.LocalDateTime;
 import java.util.UUID;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
+
 import lombok.Data;
+import org.hibernate.annotations.ColumnTransformer;
 
 @Entity
 @Data
@@ -32,6 +31,16 @@ public class User {
 
   @Column(name = "updated", nullable = false)
   private LocalDateTime updated;
+
+//  @Column(name = "email"/*, nullable = false*/, unique = true)
+//  private String email;
+//
+//  @Convert(converter = PasswordEncryptor.class)
+//  @Column(name = "password", nullable = false)
+//  private String password;
+//
+//  @Column(name = "role")
+//  private Role role;
 
   public User(){
     super();
