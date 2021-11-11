@@ -20,7 +20,6 @@ class ResourceMapperTest {
       resources = ("/convertUserTests.csv"),
       delimiter = '$',
       lineSeparator = ">"
-
   )
   void convertUserTest(
       @ConvertWith(MapperArgConverter.class) User user,

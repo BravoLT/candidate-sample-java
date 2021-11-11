@@ -13,3 +13,8 @@ spring:
     properties.hibernate:
       format_sql: true
       show_sql: ${SHOW_SQL:true}
+
+application:
+  h2-column-encryption:
+      algorithm: ${COLUMN_ENCRYPTION_ALGORITHM:AES}
+      secret: ${COLUMN_ENCRYPTION_SECRET:changeit}

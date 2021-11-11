@@ -1,8 +1,11 @@
 package com.bravo.user.controller;
 
 import com.bravo.user.annotation.SwaggerController;
+import com.bravo.user.dao.model.User;
 import com.bravo.user.enumerator.Crud;
 import com.bravo.user.exception.BadRequestException;
+import com.bravo.user.exception.DataNotFoundException;
+import com.bravo.user.exception.ForbiddenException;
 import com.bravo.user.model.dto.PasswordValidateDto;
 import com.bravo.user.model.dto.UserReadDto;
 import com.bravo.user.model.dto.UserSaveDto;
@@ -13,8 +16,12 @@ import com.bravo.user.utility.ValidatorUtil;
 import com.bravo.user.validator.UserValidator;
 import java.util.Collections;
 import java.util.List;
+import java.util.Objects;
+
 import javax.servlet.http.HttpServletResponse;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.http.ResponseEntity;
+import org.springframework.util.StringUtils;
 import org.springframework.validation.BindException;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -102,7 +109,28 @@ public class UserController {
   }
 
   @PostMapping(value = "/validate")
-  public boolean validatePassword(final @RequestBody PasswordValidateDto credentials) {
-    throw new UnsupportedOperationException("Method not yet implemented.");
+  public ResponseEntity<Void> validatePassword(final @RequestBody PasswordValidateDto credentials) {
+
+    if (credentials == null) {
+      throw new ForbiddenException("Access is forbidden.");
+    }
+
+    String email = StringUtils.trimWhitespace(credentials.getEmail());
+    String password = credentials.getPassword();
+
+    if (!StringUtils.hasLength(email) || !StringUtils.hasLength(password)) {
+      throw new ForbiddenException("Access is forbidden.");
+    }
+
+    try {
+      User user = userService.retrieveByEmail(email);
+      if (!Objects.equals(user.getPassword(), password)) {
+        throw new ForbiddenException("Access is forbidden.");
+      }
+    } catch (DataNotFoundException e) {
+      throw new ForbiddenException("Access is forbidden.");
+    }
+
+    return ResponseEntity.ok().build();
   }
 }

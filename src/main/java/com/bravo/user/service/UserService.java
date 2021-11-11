@@ -50,6 +50,13 @@ public class UserService {
     return resourceMapper.convertUser(user);
   }
 
+  public User retrieveByEmail(final String email) {
+    Optional<User> user = userRepository.findByEmail(email);
+    return user.orElseThrow(() -> {
+      return new DataNotFoundException("User not found.");
+    });
+  }
+
   public List <UserReadDto> retrieveByName(
       final String name,
       final PageRequest pageRequest,

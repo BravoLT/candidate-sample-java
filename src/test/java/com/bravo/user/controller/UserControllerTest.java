@@ -9,6 +9,7 @@ import org.junit.jupiter.params.provider.CsvFileSource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.http.MediaType;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.servlet.MockMvc;
@@ -76,7 +77,7 @@ class UserControllerTest {
   void validateUser(
     String body
   ) throws Exception {
-    this.mockMvc.perform(post("/user/validate").content(body))
+    this.mockMvc.perform(post("/user/validate").contentType(MediaType.APPLICATION_JSON).content(body))
         .andExpect(status().isOk());
   }
 
@@ -93,7 +94,7 @@ class UserControllerTest {
       lineSeparator = ">"
   )
   void validateUserMalformedBody(String body) throws Exception {
-    this.mockMvc.perform(post("/user/validate").content(body))
+    this.mockMvc.perform(post("/user/validate").contentType(MediaType.APPLICATION_JSON).content(body))
         .andExpect(status().isBadRequest());
   }
 
@@ -104,7 +105,7 @@ class UserControllerTest {
       lineSeparator = ">"
   )
   void validateUserMissingEmail(String body) throws Exception {
-    this.mockMvc.perform(post("/user/validate").content(body))
+    this.mockMvc.perform(post("/user/validate").contentType(MediaType.APPLICATION_JSON).content(body))
         .andExpect(status().isForbidden());
   }
 
@@ -115,7 +116,7 @@ class UserControllerTest {
       lineSeparator = ">"
   )
   void validateUserInvalidEmail(String body) throws Exception {
-    this.mockMvc.perform(post("/user/validate").content(body))
+    this.mockMvc.perform(post("/user/validate").contentType(MediaType.APPLICATION_JSON).content(body))
         .andExpect(status().isForbidden());
   }
 
@@ -126,7 +127,7 @@ class UserControllerTest {
       lineSeparator = ">"
   )
   void validateUserMissingPassword(String body) throws Exception {
-    this.mockMvc.perform(post("/user/validate").content(body))
+    this.mockMvc.perform(post("/user/validate").contentType(MediaType.APPLICATION_JSON).content(body))
         .andExpect(status().isForbidden());
   }
 
@@ -137,7 +138,7 @@ class UserControllerTest {
       lineSeparator = ">"
   )
   void validateUserInvalidPassword(String body) throws Exception {
-    this.mockMvc.perform(post("/user/validate").content(body))
+    this.mockMvc.perform(post("/user/validate").contentType(MediaType.APPLICATION_JSON).content(body))
         .andExpect(status().isForbidden());
   }
 
