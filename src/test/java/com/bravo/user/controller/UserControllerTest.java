@@ -7,9 +7,13 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvFileSource;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
+import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase.Replace;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
+import org.springframework.test.annotation.DirtiesContext;
+import org.springframework.test.annotation.DirtiesContext.ClassMode;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.servlet.MockMvc;
@@ -23,6 +27,8 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @ExtendWith(SpringExtension.class)
 @SpringBootTest()
 @AutoConfigureMockMvc
+@DirtiesContext(classMode = ClassMode.BEFORE_EACH_TEST_METHOD)
+@AutoConfigureTestDatabase(replace = Replace.ANY)
 class UserControllerTest {
   @Autowired
   private MockMvc mockMvc;
@@ -65,6 +71,65 @@ class UserControllerTest {
   @Test
   void retrieveByNameMissingArgument() throws Exception {
     this.mockMvc.perform(get("/user/retrieve"))
+        .andExpect(status().isBadRequest());
+  }
+
+  @ParameterizedTest
+  @CsvFileSource(
+      resources = ("/createUser.csv"),
+      delimiter = '$',
+      lineSeparator = ">"
+  )
+  void createUser(String newUser) throws Exception {
+    this.mockMvc.perform(post("/user/create").contentType(MediaType.APPLICATION_JSON).content(newUser))
+        .andExpect(status().isOk())
+        .andExpect(jsonPath("$.name").value("John Q Doe"))
+        .andExpect(jsonPath("$.email").value("john.q.doe@example.com"))
+        .andExpect(jsonPath("$.role").isEmpty())
+        .andExpect(jsonPath("$.password").doesNotExist());
+  }
+
+  @ParameterizedTest
+  @CsvFileSource(
+      resources = ("/createUserMissingEmail.csv"),
+      delimiter = '$',
+      lineSeparator = ">"
+  )
+  void createUserMissingEmail(String newUser) throws Exception {
+    this.mockMvc.perform(post("/user/create").contentType(MediaType.APPLICATION_JSON).content(newUser))
+        .andExpect(status().isBadRequest());
+  }
+
+  @ParameterizedTest
+  @CsvFileSource(
+      resources = ("/createUserInvalidRole.csv"),
+      delimiter = '$',
+      lineSeparator = ">"
+  )
+  void createUserInvalidRole(String newUser) throws Exception {
+    this.mockMvc.perform(post("/user/create").contentType(MediaType.APPLICATION_JSON).content(newUser))
+        .andExpect(jsonPath("$.role").isEmpty());
+  }
+
+  @ParameterizedTest
+  @CsvFileSource(
+      resources = ("/createUserAdminRole.csv"),
+      delimiter = '$',
+      lineSeparator = ">"
+  )
+  void createUserAdminRole(String newUser) throws Exception {
+    this.mockMvc.perform(post("/user/create").contentType(MediaType.APPLICATION_JSON).content(newUser))
+        .andExpect(jsonPath("$.role").value("ADMIN"));
+  }
+
+  @ParameterizedTest
+  @CsvFileSource(
+      resources = ("/createUserDuplicateEmail.csv"),
+      delimiter = '$',
+      lineSeparator = ">"
+  )
+  void createUserDuplicateEmail(String newUser) throws Exception {
+    this.mockMvc.perform(post("/user/create").contentType(MediaType.APPLICATION_JSON).content(newUser))
         .andExpect(status().isBadRequest());
   }
 

@@ -1,0 +1,9 @@
+>{
+    "firstName": "John",
+    "middleName": "Q",
+    "lastName": "Doe",
+    "phoneNumber": "5555555555",
+    "email": "john.q.doe@example.com",
+    "password": "changeit",
+    "role": "ADMIN"
+}

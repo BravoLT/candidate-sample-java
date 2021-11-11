@@ -19,6 +19,8 @@ import java.util.List;
 import java.util.Objects;
 
 import javax.servlet.http.HttpServletResponse;
+
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.http.ResponseEntity;
 import org.springframework.util.StringUtils;
@@ -51,7 +53,11 @@ public class UserController {
   public UserReadDto create(final @RequestBody UserSaveDto request, final BindingResult errors)
       throws BindException {
     userValidator.validate(Crud.CREATE, request, errors);
-    return userService.create(request);
+    try {
+      return userService.create(request);
+    } catch (DataIntegrityViolationException e) {
+      throw new BadRequestException("Missing required fields, or field was invalid.");
+    }
   }
 
   @GetMapping(value = "/retrieve")
