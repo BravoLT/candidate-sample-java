@@ -1,8 +1,11 @@
 package com.bravo.user.controller;
 
 import com.bravo.user.App;
+
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.CsvFileSource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -11,6 +14,7 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.servlet.MockMvc;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -61,6 +65,80 @@ class UserControllerTest {
   void retrieveByNameMissingArgument() throws Exception {
     this.mockMvc.perform(get("/user/retrieve"))
         .andExpect(status().isBadRequest());
+  }
+
+  @ParameterizedTest
+  @CsvFileSource(
+      resources = ("/validateUser.csv"),
+      delimiter = '$',
+      lineSeparator = ">"
+  )
+  void validateUser(
+    String body
+  ) throws Exception {
+    this.mockMvc.perform(post("/user/validate").content(body))
+        .andExpect(status().isOk());
+  }
+
+  @Test
+  void validateUserMissingBody() throws Exception {
+    this.mockMvc.perform(post("/user/validate"))
+        .andExpect(status().isBadRequest());
+  }
+
+  @ParameterizedTest
+  @CsvFileSource(
+      resources = ("/validateUserMalformedBody.csv"),
+      delimiter = '$',
+      lineSeparator = ">"
+  )
+  void validateUserMalformedBody(String body) throws Exception {
+    this.mockMvc.perform(post("/user/validate").content(body))
+        .andExpect(status().isBadRequest());
+  }
+
+  @ParameterizedTest
+  @CsvFileSource(
+      resources = ("/validateUserMissingEmail.csv"),
+      delimiter = '$',
+      lineSeparator = ">"
+  )
+  void validateUserMissingEmail(String body) throws Exception {
+    this.mockMvc.perform(post("/user/validate").content(body))
+        .andExpect(status().isForbidden());
+  }
+
+  @ParameterizedTest
+  @CsvFileSource(
+      resources = ("/validateUserInvalidEmail.csv"),
+      delimiter = '$',
+      lineSeparator = ">"
+  )
+  void validateUserInvalidEmail(String body) throws Exception {
+    this.mockMvc.perform(post("/user/validate").content(body))
+        .andExpect(status().isForbidden());
+  }
+
+  @ParameterizedTest
+  @CsvFileSource(
+      resources = ("/validateUserMissingPassword.csv"),
+      delimiter = '$',
+      lineSeparator = ">"
+  )
+  void validateUserMissingPassword(String body) throws Exception {
+    this.mockMvc.perform(post("/user/validate").content(body))
+        .andExpect(status().isForbidden());
+  }
+
+  @ParameterizedTest
+  @CsvFileSource(
+      resources = ("/validateUserInvalidPassword.csv"),
+      delimiter = '$',
+      lineSeparator = ">"
+  )
+  void validateUserInvalidPassword(String body) throws Exception {
+    this.mockMvc.perform(post("/user/validate").content(body))
+        .andExpect(status().isForbidden());
   }
 
 }

@@ -3,6 +3,7 @@ package com.bravo.user.controller;
 import com.bravo.user.annotation.SwaggerController;
 import com.bravo.user.enumerator.Crud;
 import com.bravo.user.exception.BadRequestException;
+import com.bravo.user.model.dto.PasswordValidateDto;
 import com.bravo.user.model.dto.UserReadDto;
 import com.bravo.user.model.dto.UserSaveDto;
 import com.bravo.user.model.filter.UserFilter;
@@ -98,5 +99,10 @@ public class UserController {
   public boolean delete(final @PathVariable String id) {
     userValidator.validateId(id);
     return userService.delete(id);
+  }
+
+  @PostMapping(value = "/validate")
+  public boolean validatePassword(final @RequestBody PasswordValidateDto credentials) {
+    throw new UnsupportedOperationException("Method not yet implemented.");
   }
 }
