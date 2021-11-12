@@ -43,8 +43,4 @@ public class PasswordEncryptorTest {
         String decrypted = encryptor.convertToEntityAttribute(encrypted);
         assertEquals(password, decrypted);
     }
-
-    public void a(){
-
-    }
 }
