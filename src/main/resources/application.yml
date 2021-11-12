@@ -16,4 +16,4 @@ spring:
 
 security:
   algorithm: ${ALGORITHM:AES}
-  secretKey: ${SECRET_KEY:kA65WT4zAVpK9rf5Vu8g6etWUiBuCD5GkzXa4b9ef2frUCflgBNafLito0IvwxMbeUjy5G4nRht6Fswzg7NssXcYQo2FrNmtYZbX3ImvQSRRa9jJL7ocDUSOwWr2R8ZQ}
+  secretKey: ${SECRET_KEY:yH6BctTTxQzE9eITGvLiUAsXmwqoRqQY}

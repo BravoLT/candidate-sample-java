@@ -1,7 +1,7 @@
 package com.bravo.user.dao.model;
 
-import lombok.SneakyThrows;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 import javax.crypto.BadPaddingException;
 import javax.crypto.Cipher;
@@ -11,6 +11,7 @@ import java.security.InvalidKeyException;
 import java.security.Key;
 import java.util.Base64;
 
+@Component
 public class PasswordEncryptor implements AttributeConverter<String, String> {
 
     private Key key;

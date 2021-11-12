@@ -32,15 +32,16 @@ public class User {
   @Column(name = "updated", nullable = false)
   private LocalDateTime updated;
 
-//  @Column(name = "email"/*, nullable = false*/, unique = true)
-//  private String email;
-//
-//  @Convert(converter = PasswordEncryptor.class)
-//  @Column(name = "password", nullable = false)
-//  private String password;
-//
-//  @Column(name = "role")
-//  private Role role;
+  @Column(name = "email", nullable = false, unique = true)
+  private String email;
+
+  @Convert(converter = PasswordEncryptor.class)
+  @Column(name = "password", nullable = false)
+  private String password;
+
+  @Column(name = "role")
+  @Enumerated(EnumType.STRING)
+  private Role role;
 
   public User(){
     super();
