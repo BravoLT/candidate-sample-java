@@ -13,3 +13,7 @@ spring:
     properties.hibernate:
       format_sql: true
       show_sql: ${SHOW_SQL:true}
+
+security:
+  algorithm: ${ALGORITHM:AES}
+  secretKey: ${SECRET_KEY:yH6BctTTxQzE9eITGvLiUAsXmwqoRqQY}

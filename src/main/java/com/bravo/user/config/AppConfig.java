@@ -18,6 +18,12 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.converter.json.Jackson2ObjectMapperBuilder;
 
+import javax.crypto.Cipher;
+import javax.crypto.NoSuchPaddingException;
+import javax.crypto.spec.SecretKeySpec;
+import java.security.Key;
+import java.security.NoSuchAlgorithmException;
+
 @Configuration
 public class AppConfig {
 
@@ -27,6 +33,16 @@ public class AppConfig {
   @Bean
   public int serverPort(){
     return serverPort;
+  }
+
+  @Bean
+  public Cipher cipher(@Value("${security.algorithm}") String algo) throws NoSuchPaddingException, NoSuchAlgorithmException {
+    return Cipher.getInstance(algo);
+  }
+
+  @Bean
+  public Key key(@Value("${security.algorithm}") String algo, @Value("${security.secretKey}") String secret) {
+    return new SecretKeySpec(secret.getBytes(), algo);
   }
 
   @Bean
