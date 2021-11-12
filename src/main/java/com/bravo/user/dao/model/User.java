@@ -6,7 +6,6 @@ import java.util.UUID;
 import javax.persistence.*;
 
 import lombok.Data;
-import org.hibernate.annotations.ColumnTransformer;
 
 @Entity
 @Data
@@ -35,7 +34,6 @@ public class User {
   @Column(name = "email", nullable = false, unique = true)
   private String email;
 
-  @Convert(converter = PasswordEncryptor.class)
   @Column(name = "password", nullable = false)
   private String password;
 
