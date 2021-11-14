@@ -13,3 +13,6 @@ target/
 
 # Log Files
 *.log
+
+# Maven
+.factorypath

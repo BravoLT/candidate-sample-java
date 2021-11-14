@@ -1,12 +1,16 @@
 package com.bravo.user.dao.model.mapper;
 
-import com.bravo.user.dao.model.User;
-import com.bravo.user.model.dto.UserReadDto;
 import java.util.Collection;
 import java.util.List;
 import java.util.stream.Collectors;
-import ma.glasnost.orika.MapperFacade;
+
 import org.springframework.stereotype.Component;
+
+import com.bravo.user.dao.model.User;
+import com.bravo.user.model.dto.UserReadDto;
+import com.bravo.user.model.dto.UserRole;
+
+import ma.glasnost.orika.MapperFacade;
 
 @Component
 public class ResourceMapper {
@@ -31,6 +35,10 @@ public class ResourceMapper {
       name = String.format("%s %s", user.getFirstName(), user.getLastName());
     }
     dto.setName(name);
+
+	UserRole userRole = UserRole.getUserRoleByID(user.getUserRoleID());
+	dto.setUserRole(userRole);
+
     return dto;
   }
 }

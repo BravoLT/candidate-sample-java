@@ -1,8 +1,10 @@
 package com.bravo.user.service;
 
-import com.bravo.user.App;
-import com.bravo.user.model.dto.UserReadDto;
-import com.bravo.user.utility.PageUtil;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+
+import java.util.List;
+
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,9 +13,11 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
-import java.util.List;
-
-import static org.junit.jupiter.api.Assertions.*;
+import com.bravo.user.App;
+import com.bravo.user.exception.UnauthorizedException;
+import com.bravo.user.model.dto.UserAuthDto;
+import com.bravo.user.model.dto.UserReadDto;
+import com.bravo.user.utility.PageUtil;
 
 @ContextConfiguration(classes = {App.class})
 @ExtendWith(SpringExtension.class)
@@ -78,6 +82,42 @@ import static org.junit.jupiter.api.Assertions.*;
 
   }
 
+	/**
+	 * Verify that this service method, given a valid user and the correct password,
+	 * does not throw a BadRequestException.
+	 */
+	@Test
+	void authenticateUserSuccess() {
+		UserAuthDto userAuthDto = new UserAuthDto();
+		userAuthDto.setEmail("joyce.roberts@yahoo.com");
+		char[] password = { 'B', 'r', 'a', 'v', 'o', '.', 'J', 'o', 'y', 'c', 'e', '.', 'R', 'o', 'b', 'e', 'r', 't',
+				's' };
+		userAuthDto.setPassword(password);
+		userService.authenticateUser(userAuthDto);
+	}
 
+	/**
+	 * Verify that an invalid user and a wrong password (separately) will throw a
+	 * BadRequestException. Then make sure both exceptions caught have the same
+	 * message.
+	 */
+	@Test
+	void authenticateUserInvalidUserAndWrongPassword() {
+		UserAuthDto userAuthDtoInvalidUser = new UserAuthDto();
+		userAuthDtoInvalidUser.setEmail("joyce.robert@yahoo.com");
+		userAuthDtoInvalidUser.setPassword((new String("Bravo.Joyce.Roberts").toCharArray()));
+		UnauthorizedException unauthorizedExceptionOne = assertThrows(UnauthorizedException.class, () -> {
+			userService.authenticateUser(userAuthDtoInvalidUser);
+		});
+
+		UserAuthDto userAuthDtoWrongPassword = new UserAuthDto();
+		userAuthDtoWrongPassword.setEmail("joyce.roberts@yahoo.com");
+		userAuthDtoWrongPassword.setPassword((new String("Bravo").toCharArray()));
+		UnauthorizedException unauthorizedExceptionTwo = assertThrows(UnauthorizedException.class, () -> {
+			userService.authenticateUser(userAuthDtoInvalidUser);
+		});
+
+		assertEquals(unauthorizedExceptionOne.getMessage(), unauthorizedExceptionTwo.getMessage());
+	}
 
 }
