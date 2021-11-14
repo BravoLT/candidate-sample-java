@@ -1,11 +1,14 @@
 package com.bravo.user.validator;
 
-import com.bravo.user.exception.BadRequestException;
-import com.bravo.user.model.dto.UserSaveDto;
-import com.bravo.user.utility.ValidatorUtil;
 import java.util.Objects;
+
 import org.springframework.stereotype.Component;
 import org.springframework.validation.Errors;
+
+import com.bravo.user.exception.BadRequestException;
+import com.bravo.user.model.dto.UserSaveDto;
+import com.bravo.user.utility.AuthUtil;
+import com.bravo.user.utility.ValidatorUtil;
 
 @Component
 public class UserValidator extends CrudValidator {
@@ -15,6 +18,7 @@ public class UserValidator extends CrudValidator {
       throw new BadRequestException("'id' is required");
     }
   }
+
   public void validateName(String name){
     if(ValidatorUtil.isInvalid(name)){
       throw new BadRequestException("'name' is required");
@@ -25,6 +29,31 @@ public class UserValidator extends CrudValidator {
 
   }
 
+	/**
+	 * Validates that valid e-mail address and password were provided. A valid
+	 * e-mail address can never be longer than a total of 254 characters. A password
+	 * with less than 8 characters is weak. A password with more than 64 characters
+	 * will trigger pre-hashing, which has certain security and performance problems
+	 * if abused.<br/>
+	 * <br/>
+	 * References: <br/>
+	 * https://www.regular-expressions.info/email.html <br/>
+	 * https://blog.greglow.com/2019/05/17/sql-column-length-storing-email-addresses-sqlserver-database/
+	 * <br/>
+	 * https://cheatsheetseries.owasp.org/cheatsheets/Password_Storage_Cheat_Sheet.html#pbkdf2
+	 * 
+	 * @param email    String
+	 * @param password char{@literal []}
+	 */
+	public void validateEmailAndPassword(String email, char[] password) {
+		if (ValidatorUtil.isInvalid(email) || email.length() > 254
+				|| !email.matches("^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+.[A-Za-z]{2,}$") || password == null
+				|| password.length < 8 || password.length > 64) {
+			AuthUtil.clearAuth(password);
+			throw new BadRequestException(
+					"'email' and 'password' are required; 'email' must contain alphanumeric text, followed an '@', followed by a domain, and 'password' must be at least 8 characters, but no more than 64 characters.");
+		}
+	}
 
   @Override
   protected void validateCreate(Object o, Errors errors) {

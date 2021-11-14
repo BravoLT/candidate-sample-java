@@ -1,0 +1,21 @@
+>{
+    "firstName":"John",
+    "lastName":"Doe",
+    "email":"john.doe@yahoo.com",
+    "password":"Bravo.John.Doe",
+    "phoneNumber":"5555555555"
+}$true
+>{
+    "firstName":"John",
+    "lastName":"Doe",
+    "email":"john.doe",
+    "password":"Bravo.John.Doe",
+    "phoneNumber":"5555555555"
+}$false
+>{
+    "firstName":"John",
+    "lastName":"Doe",
+    "email":"john.doe@yahoo.com",
+    "password":"1234567890abcdefghijklmnopqrstuvwxyz1234567890abcdefghijklmnopqrs",
+    "phoneNumber":"5555555555"
+}$false

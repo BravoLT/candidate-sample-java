@@ -1,19 +1,12 @@
 package com.bravo.user.controller;
 
-import com.bravo.user.annotation.SwaggerController;
-import com.bravo.user.enumerator.Crud;
-import com.bravo.user.exception.BadRequestException;
-import com.bravo.user.model.dto.UserReadDto;
-import com.bravo.user.model.dto.UserSaveDto;
-import com.bravo.user.model.filter.UserFilter;
-import com.bravo.user.service.UserService;
-import com.bravo.user.utility.PageUtil;
-import com.bravo.user.utility.ValidatorUtil;
-import com.bravo.user.validator.UserValidator;
 import java.util.Collections;
 import java.util.List;
+
 import javax.servlet.http.HttpServletResponse;
+
 import org.springframework.data.domain.PageRequest;
+import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindException;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -25,6 +18,20 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+
+import com.bravo.user.annotation.SwaggerController;
+import com.bravo.user.enumerator.Crud;
+import com.bravo.user.exception.BadRequestException;
+import com.bravo.user.exception.UnauthorizedException;
+import com.bravo.user.model.dto.UserAuthDto;
+import com.bravo.user.model.dto.UserReadDto;
+import com.bravo.user.model.dto.UserSaveDto;
+import com.bravo.user.model.dto.UserSessionDto;
+import com.bravo.user.model.filter.UserFilter;
+import com.bravo.user.service.UserService;
+import com.bravo.user.utility.PageUtil;
+import com.bravo.user.utility.ValidatorUtil;
+import com.bravo.user.validator.UserValidator;
 
 @RequestMapping(value = "/user")
 @SwaggerController
@@ -42,6 +49,7 @@ public class UserController {
   @ResponseBody
   public UserReadDto create(final @RequestBody UserSaveDto request, final BindingResult errors)
       throws BindException {
+		userValidator.validateEmailAndPassword(request.getEmail(), request.getPassword());
     userValidator.validate(Crud.CREATE, request, errors);
     return userService.create(request);
   }
@@ -99,4 +107,31 @@ public class UserController {
     userValidator.validateId(id);
     return userService.delete(id);
   }
+
+	/**
+	 * Authenticates the user. Returns 200 with a User Session DTO containing user
+	 * data and a placeholder for a session token. Returns 401 Unauthorized if the
+	 * credentials are invalid or don't match our records. <br/>
+	 * <br/>
+	 * References: <br/>
+	 * https://datatracker.ietf.org/doc/html/rfc7235#section-3.1 <br/>
+	 * https://www.freecodecamp.org/news/http-401-error-vs-http-403-error-status-code-responses-explained/
+	 * 
+	 * @param request {@link UserAuthDto}
+	 * @throws BindException
+	 */
+	@PostMapping(value = "/authenticate")
+	@ResponseBody
+	public ResponseEntity<UserSessionDto> authenticate(final @RequestBody UserAuthDto request) throws BindException {
+		UserSessionDto response = new UserSessionDto();
+		try {
+			userValidator.validateEmailAndPassword(request.getEmail(), request.getPassword());
+		} catch (BadRequestException badRequestException) {
+			throw new UnauthorizedException();
+		}
+		response.setUser(userService.authenticateUser(request));
+		response.setToken("placeholder, not implemented");
+		return ResponseEntity.ok(response);
+	}
+
 }

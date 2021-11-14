@@ -1,26 +1,37 @@
 package com.bravo.user.service;
 
+import java.time.LocalDateTime;
+import java.util.Arrays;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Optional;
+import java.util.Set;
+
+import javax.servlet.http.HttpServletResponse;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.dao.IncorrectResultSizeDataAccessException;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.stereotype.Service;
+
 import com.bravo.user.dao.model.User;
 import com.bravo.user.dao.model.mapper.ResourceMapper;
 import com.bravo.user.dao.repository.UserRepository;
 import com.bravo.user.dao.specification.UserNameFuzzySpecification;
 import com.bravo.user.dao.specification.UserSpecification;
 import com.bravo.user.exception.DataNotFoundException;
+import com.bravo.user.exception.ServiceException;
+import com.bravo.user.exception.UnauthorizedException;
+import com.bravo.user.model.dto.UserAuthDto;
 import com.bravo.user.model.dto.UserReadDto;
 import com.bravo.user.model.dto.UserSaveDto;
 import com.bravo.user.model.filter.UserFilter;
 import com.bravo.user.model.filter.UserNameFuzzyFilter;
+import com.bravo.user.utility.AuthUtil;
 import com.bravo.user.utility.PageUtil;
 import com.bravo.user.utility.ValidatorUtil;
-import java.time.LocalDateTime;
-import java.util.List;
-import java.util.Optional;
-import javax.servlet.http.HttpServletResponse;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.stereotype.Service;
 
 @Service
 public class UserService {
@@ -35,12 +46,37 @@ public class UserService {
     this.resourceMapper = resourceMapper;
   }
 
-  public UserReadDto create(final UserSaveDto request){
-    User user = userRepository.save(new User(request));
+	/**
+	 * Creates a new user in the database. Generates a salt and hash for the
+	 * password in the process. For added security, the password, salt, and hash are
+	 * cleared from memory upon completion.
+	 * 
+	 * @param request {@link UserSaveDto}
+	 * @return {@link UserReadDto}
+	 */
+	public UserReadDto create(final UserSaveDto request) {
+		try {
+			User user = new User(request);
+			try {
+				user = userRepository.save(user);
+				user.clearAuth();
+				request.clearAuth();
 
-    LOGGER.info("created user '{}'", user.getId());
-    return resourceMapper.convertUser(user);
-  }
+				LOGGER.info("created user '{}'", user.getId());
+				return resourceMapper.convertUser(user);
+			} catch (Throwable throwable) {
+				// We don't care about the throwable here, we just want to intercept it so we
+				// can clear the password from memory, and then pass it on.
+				user.clearAuth();
+				throw throwable;
+			}
+		} catch (Throwable throwable) {
+			// We don't care about the throwable here, we just want to intercept it so we
+			// can clear the password from memory, and then pass it on.
+			request.clearAuth();
+			throw throwable;
+		}
+	}
 
   public UserReadDto retrieve(final String id){
     Optional<User> optional = userRepository.findById(id);
@@ -130,4 +166,60 @@ public class UserService {
     }
     return user.get();
   }
+
+	/**
+	 * 1. Retrieves the hash and salt from the DB. <br/>
+	 * 2. Generates a new hash using the password and the salt. <br/>
+	 * 3. Compares the two hashes to make sure they are equal. <br/>
+	 * 4. Clears the salt, password, and both hashes. <br/>
+	 * 5. If the encrypted password and the saved hash are not equal, throw an
+	 * exception. <br/>
+	 * 
+	 * @param userAuthDto {@link UserAuthDto}
+	 * @return {@link UserReadDto}
+	 */
+	public UserReadDto authenticateUser(final UserAuthDto userAuthDto) {
+		UserReadDto userReadDto = null;
+		boolean isAuthenticated = false;
+		try {
+			User user = null;
+			try {
+				Set<String> emailFilter = new HashSet<String>();
+				emailFilter.add(userAuthDto.getEmail());
+				UserFilter userFilter = UserFilter.builder().emails(emailFilter).build();
+				UserSpecification userSpecification = new UserSpecification(userFilter);
+				user = getUser(userAuthDto.getEmail(), userRepository.findOne(userSpecification));
+			} catch (DataNotFoundException | IncorrectResultSizeDataAccessException exception) {
+				// Since we won't get the user at this point, we only need to clear the plain
+				// text password from the UserAuthDto. We can safely bail here.
+				throw new UnauthorizedException();
+			}
+			byte[] hash = AuthUtil.hashPassword(userAuthDto.getPassword(), user.getSalt());
+			if (Arrays.equals(user.getHash(), hash)) {
+				isAuthenticated = true;
+			}
+			AuthUtil.clearAuth(hash);
+			userAuthDto.clearAuth();
+			user.clearAuth();
+			if (!isAuthenticated) {
+				throw new UnauthorizedException();
+			}
+			userReadDto = resourceMapper.convertUser(user);
+		} catch (Throwable throwable) {
+			// No matter what breaks, we should clear the password from memory.
+			userAuthDto.clearAuth();
+			if (throwable instanceof UnauthorizedException) {
+				throw (UnauthorizedException) throwable;
+			} else {
+				// And since we're here, it's probably a good idea replace any other
+				// exceptions with a generic ServiceException so someone outside the system
+				// can't tell how exactly he broke it.
+				LOGGER.error("fatal error while authenticating user '{}'", userAuthDto.getEmail());
+				LOGGER.error(throwable.getMessage());
+				throw new ServiceException();
+			}
+		}
+		return userReadDto;
+	}
+
 }

@@ -1,0 +1,21 @@
+>{
+    "email":"john.baker@yahoo.com",
+    "password":"Bravo.John.Baker"
+}$true
+>{
+    "email":"john.baker",
+    "password":"Bravo.John.Baker"
+}$false
+>{
+    "email":"1234567890abcdefghijklmnopqrstuvwxyz1234567890abcdefghijklmnopqrstuvwxyz1234567890abcdefghijklmnopqrstuvwxyz1234567890abcdefghijklmnopqrstuvwxyz1234567890abcdefghijklmnopqrstuvwxyz1234567890abcdefghijklmnopqrstuvwxyz1234567890abcdefghijklmnopqrs@yahoo.com",
+    "password":"Bravo.John.Baker"
+}$false
+>{
+    "email":"john.baker@yahoo.com",
+    "password":"1234567"
+}$false
+>{
+    "email":"john.baker@yahoo.com",
+    "password":"1234567890abcdefghijklmnopqrstuvwxyz1234567890abcdefghijklmnopqrsr"
+}$false
+>{}$false
