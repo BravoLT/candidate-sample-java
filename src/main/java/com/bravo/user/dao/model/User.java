@@ -6,7 +6,7 @@ import java.util.UUID;
 import javax.persistence.*;
 
 import lombok.Data;
-import org.hibernate.annotations.ColumnTransformer;
+import org.springframework.util.ObjectUtils;
 
 @Entity
 @Data
@@ -35,7 +35,6 @@ public class User {
   @Column(name = "email", nullable = false, unique = true)
   private String email;
 
-  @Convert(converter = PasswordEncryptor.class)
   @Column(name = "password", nullable = false)
   private String password;
 
@@ -55,5 +54,8 @@ public class User {
     this.middleName = user.getMiddleName();
     this.lastName = user.getLastName();
     this.phoneNumber = user.getPhoneNumber();
+    this.email = user.getEmail();
+    this.password = user.getPassword();
+    this.role = ObjectUtils.isEmpty(user.getRole()) ? null : Role.valueOf(user.getRole());
   }
 }

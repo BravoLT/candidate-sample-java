@@ -29,13 +29,17 @@ public class UserService {
 
   private final UserRepository userRepository;
   private final ResourceMapper resourceMapper;
+  private final PasswordService passwordService;
 
-  public UserService(UserRepository userRepository, ResourceMapper resourceMapper) {
+  public UserService(UserRepository userRepository, ResourceMapper resourceMapper, PasswordService passwordService) {
     this.userRepository = userRepository;
     this.resourceMapper = resourceMapper;
+    this.passwordService = passwordService;
   }
 
   public UserReadDto create(final UserSaveDto request){
+    String encryptedPassword = passwordService.encrypt(request.getPassword());
+    request.setPassword(encryptedPassword);
     User user = userRepository.save(new User(request));
 
     LOGGER.info("created user '{}'", user.getId());
