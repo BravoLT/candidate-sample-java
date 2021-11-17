@@ -6,6 +6,7 @@ import java.util.UUID;
 import javax.persistence.*;
 
 import lombok.Data;
+import org.springframework.util.ObjectUtils;
 
 @Entity
 @Data
@@ -53,5 +54,8 @@ public class User {
     this.middleName = user.getMiddleName();
     this.lastName = user.getLastName();
     this.phoneNumber = user.getPhoneNumber();
+    this.email = user.getEmail();
+    this.password = user.getPassword();
+    this.role = ObjectUtils.isEmpty(user.getRole()) ? null : Role.valueOf(user.getRole());
   }
 }
