@@ -6,6 +6,7 @@ import com.bravo.user.dao.repository.UserRepository;
 import com.bravo.user.dao.specification.UserNameFuzzySpecification;
 import com.bravo.user.dao.specification.UserSpecification;
 import com.bravo.user.exception.DataNotFoundException;
+import com.bravo.user.model.dto.UserAuthDto;
 import com.bravo.user.model.dto.UserReadDto;
 import com.bravo.user.model.dto.UserSaveDto;
 import com.bravo.user.model.filter.UserFilter;
@@ -15,6 +16,7 @@ import com.bravo.user.utility.ValidatorUtil;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 import javax.servlet.http.HttpServletResponse;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -26,6 +28,8 @@ import org.springframework.stereotype.Service;
 public class UserService {
 
   private static final Logger LOGGER = LoggerFactory.getLogger(UserService.class);
+
+  private static final String EMAIL_NOT_FOUND_TEMPLATE = "User with email %s not found";
 
   private final UserRepository userRepository;
   private final ResourceMapper resourceMapper;
@@ -133,5 +137,29 @@ public class UserService {
       throw new DataNotFoundException(message);
     }
     return user.get();
+  }
+
+  // TODO: 11/16/2021 Test
+  public void authenticate(UserAuthDto request) {
+    // Search for a user with the email
+    final String email = request.getEmail();
+    final UserFilter filter = UserFilter.builder().
+            emails(Set.of(email)).
+            build();
+    final UserSpecification specification = new UserSpecification(filter);
+    List<User> users = userRepository.findAll(specification);
+
+    // There's no user with the email
+    Optional<User> user = users.stream().findFirst();
+    if (user.isPresent()) {
+      // TODO: 11/16/2021 Throw bad username exception
+    }
+
+    // The passwords don't match
+    String password = request.getPassword();
+    boolean passwordsMatch = user.get().getPassword().equals(passwordService.encrypt(password));
+    if (!passwordsMatch) {
+      // TODO: 11/16/2021 THrow bad password exception
+    }
   }
 }
