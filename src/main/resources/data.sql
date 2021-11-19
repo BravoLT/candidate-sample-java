@@ -644,3 +644,10 @@ insert into user (id, first_name, middle_name, last_name, phone_number) values
 ('fd6d21f6-f1c2-473d-8ed7-f3f9c7550cc9', 'Elian', 'Cherry', 'Gibson', '3226211765'),
 ('fd9e22ef-20f1-4e1b-9f9e-3139fd13fa85', 'Ashton', 'Carina', 'Foster', '4653236364');
 
+insert into address (id, user_id, line1, line2, city, state, zip) values
+('33c20a09-ef94-4e7f-8c55-5d96b64df609', '008a4215-0b1d-445e-b655-a964039cbb5a', '1983 Post Avenue', '', 'Nisswa', 'MN', '56468'),
+('2258c007-05da-4724-903c-bf02dc6ff0db', '008a4215-0b1d-445e-b655-a964039cbb5a', '2236 Cedar Lane', 'Ste 500', 'Boston', 'MA', '02210'),
+('a4e7abb0-1d03-448c-b994-1d2cd1e2e3d8', '00963d9b-f884-485e-9455-fcf30c6ac379', '4496 Stoneybrook Road', '', 'Palm Bay', 'FL', '32905'),
+('252e95cb-3419-4a9a-af4e-be9d40f765fa', '00bed3ac-5f3c-4a2d-a67b-80376ea9f941', '1206 Parkway Drive', '', 'PISCATAWAY', 'NJ', '08854'),
+('a1065dbd-759a-4cf8-b928-f05eba5fc942', '0111d3ca-514b-4ae8-8f57-e85cca43fb1e', '1515 Morningview Lane', '', 'FLORISSANT', 'MO', '63033'),
+('23179ba5-04da-43e1-ac38-8dde2a37d9d5', '01316816-0cb7-41c4-8424-8367294aea27', '2785 Wexford Way', '', 'BOWLING GREEN', 'OH', '43403');
