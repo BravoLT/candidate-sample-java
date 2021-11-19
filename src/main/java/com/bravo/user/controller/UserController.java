@@ -101,7 +101,6 @@ public class UserController {
     userValidator.validateEmail(request.getEmail());
     userValidator.validatePassword(request.getPassword());
 
-    System.out.println(request);
     // Authenticate the request
     userService.authenticate(request);
 

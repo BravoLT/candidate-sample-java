@@ -140,8 +140,9 @@ public class UserService {
     return user.get();
   }
 
-  // TODO: 11/16/2021 Test
   public void authenticate(UserAuthDto request) {
+    LOGGER.debug("Authenticating {}", request.getEmail());
+
     // Search for a user with the email
     final String email = request.getEmail();
     final UserFilter filter = UserFilter.builder().
@@ -153,6 +154,7 @@ public class UserService {
     // There's no user with the email
     Optional<User> user = users.stream().findFirst();
     if (user.isEmpty()) {
+      LOGGER.trace("Email not on record");
       throw new InvalidCredentialsException();
     }
 
@@ -160,7 +162,10 @@ public class UserService {
     String password = request.getPassword();
     boolean passwordsMatch = user.get().getPassword().equals(passwordService.encrypt(password));
     if (!passwordsMatch) {
+      LOGGER.trace("Invalid password");
       throw new InvalidCredentialsException();
     }
+
+    LOGGER.info("Successfully authenticated {}", email);
   }
 }
