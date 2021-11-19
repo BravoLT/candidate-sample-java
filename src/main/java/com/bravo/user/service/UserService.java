@@ -6,6 +6,7 @@ import com.bravo.user.dao.repository.UserRepository;
 import com.bravo.user.dao.specification.UserNameFuzzySpecification;
 import com.bravo.user.dao.specification.UserSpecification;
 import com.bravo.user.exception.DataNotFoundException;
+import com.bravo.user.exception.InvalidCredentialsException;
 import com.bravo.user.model.dto.UserAuthDto;
 import com.bravo.user.model.dto.UserReadDto;
 import com.bravo.user.model.dto.UserSaveDto;
@@ -29,7 +30,7 @@ public class UserService {
 
   private static final Logger LOGGER = LoggerFactory.getLogger(UserService.class);
 
-  private static final String EMAIL_NOT_FOUND_TEMPLATE = "User with email %s not found";
+  private static final String INVALID_CREDENTIALS = "Invalid credentials";
 
   private final UserRepository userRepository;
   private final ResourceMapper resourceMapper;
@@ -151,15 +152,15 @@ public class UserService {
 
     // There's no user with the email
     Optional<User> user = users.stream().findFirst();
-    if (user.isPresent()) {
-      // TODO: 11/16/2021 Throw bad username exception
+    if (user.isEmpty()) {
+      throw new InvalidCredentialsException();
     }
 
     // The passwords don't match
     String password = request.getPassword();
     boolean passwordsMatch = user.get().getPassword().equals(passwordService.encrypt(password));
     if (!passwordsMatch) {
-      // TODO: 11/16/2021 THrow bad password exception
+      throw new InvalidCredentialsException();
     }
   }
 }
