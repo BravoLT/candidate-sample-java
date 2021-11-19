@@ -1,6 +1,8 @@
 package com.bravo.user.service;
 
 import com.bravo.user.App;
+import com.bravo.user.exception.InvalidCredentialsException;
+import com.bravo.user.model.dto.UserAuthDto;
 import com.bravo.user.model.dto.UserReadDto;
 import com.bravo.user.utility.PageUtil;
 import org.junit.jupiter.api.Test;
@@ -78,6 +80,33 @@ import static org.junit.jupiter.api.Assertions.*;
 
   }
 
+  @Test
+  void authenticateNonExistentEmail() {
+    UserAuthDto request = new UserAuthDto();
+    request.setEmail("not-an-email");
+    request.setPassword("password");
+    assertThrows(
+            InvalidCredentialsException.class,
+            () -> userService.authenticate(request)
+    );
+  }
 
+  @Test
+  void authenticateBadPassword() {
+    UserAuthDto request = new UserAuthDto();
+    request.setEmail("01e24e4e-1018-40fa-b92a-a7ad669e7805@gmail.com");
+    request.setPassword("password");
+    assertThrows(
+            InvalidCredentialsException.class,
+            () -> userService.authenticate(request)
+    );
+  }
 
+  @Test
+  void authenticateHappyPath() {
+    UserAuthDto request = new UserAuthDto();
+    request.setEmail("01e24e4e-1018-40fa-b92a-a7ad669e7805@gmail.com");
+    request.setPassword("Chelsea");
+    userService.authenticate(request);
+  }
 }

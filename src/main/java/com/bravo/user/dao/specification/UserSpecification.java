@@ -30,5 +30,6 @@ public class UserSpecification extends AbstractSpecification<User> {
     applyStringFilter(root.get("firstName"), filter.getFirstNames());
     applyStringFilter(root.get("lastName"), filter.getLastNames());
     applyStringFilter(root.get("middleName"), filter.getMiddleNames());
+    applyStringFilter(root.get("email"), filter.getEmails());
   }
 }

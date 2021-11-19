@@ -24,6 +24,16 @@ public class UserValidator extends CrudValidator {
     }
 
   }
+  public void validateEmail(String email) {
+    if(ValidatorUtil.isInvalid(email)) {
+      throw new BadRequestException("'email' is required");
+    }
+  }
+  public void validatePassword(String password) {
+    if(ValidatorUtil.isInvalid(password)) {
+      throw new BadRequestException("'password' is required");
+    }
+  }
 
 
   @Override

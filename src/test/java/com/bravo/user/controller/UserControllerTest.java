@@ -1,18 +1,19 @@
 package com.bravo.user.controller;
 
 import com.bravo.user.App;
+import com.bravo.user.exception.InvalidCredentialsException;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.http.MediaType;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.servlet.MockMvc;
 
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 @ContextConfiguration(classes = {App.class})
 @ExtendWith(SpringExtension.class)
@@ -63,4 +64,39 @@ class UserControllerTest {
         .andExpect(status().isBadRequest());
   }
 
+  @Test
+  void authenticateBadPassword() throws Exception {
+    String body =
+            "{\n" +
+            "    \"email\": \"008a4215-0b1d-445e-b655-a964039cbb5a@gmail.com\",\n" +
+            "    \"password\": \"NotJoyce\"\n" +
+            "}";
+    this.mockMvc.perform(post("/user/authenticate").content(body).contentType(MediaType.APPLICATION_JSON_VALUE))
+            .andExpect(status().isUnauthorized())
+            .andExpect(content().string(""));
+  }
+
+  @Test
+  void authenticateNonExistentEmail() throws Exception {
+    String body =
+            "{\n" +
+            "    \"email\": \"not-an-email@gmail.com\",\n" +
+            "    \"password\": \"Joyce\"\n" +
+            "}";
+    this.mockMvc.perform(post("/user/authenticate").content(body).contentType(MediaType.APPLICATION_JSON_VALUE))
+            .andExpect(status().isUnauthorized())
+            .andExpect(content().string(""));
+  }
+
+  @Test
+  void authenticateHappyPath() throws Exception {
+    String body =
+            "{\n" +
+            "    \"email\": \"008a4215-0b1d-445e-b655-a964039cbb5a@gmail.com\",\n" +
+            "    \"password\": \"Joyce\"\n" +
+            "}";
+    this.mockMvc.perform(post("/user/authenticate").content(body).contentType(MediaType.APPLICATION_JSON_VALUE))
+            .andExpect(status().isOk())
+            .andExpect(content().string(""));
+  }
 }
