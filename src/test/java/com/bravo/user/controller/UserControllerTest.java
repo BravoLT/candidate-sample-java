@@ -3,6 +3,7 @@ package com.bravo.user.controller;
 import com.bravo.user.App;
 import com.bravo.user.dao.model.User;
 import com.bravo.user.model.dto.UserReadDto;
+import com.bravo.user.model.dto.PasswordValidateDto;
 import com.bravo.user.model.filter.UserFilter;
 import com.bravo.user.service.UserService;
 import com.bravo.user.utility.PageUtil;
@@ -23,6 +24,8 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
+import org.springframework.http.MediaType;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyString;
@@ -30,8 +33,10 @@ import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 @ContextConfiguration(classes = {App.class})
 @ExtendWith(SpringExtension.class)
@@ -46,6 +51,8 @@ class UserControllerTest {
   private UserService userService;
 
   private List<UserReadDto> users;
+  
+  private PasswordValidateDto passwordValidate;
 
   @BeforeEach
   public void beforeEach(){
@@ -78,7 +85,7 @@ class UserControllerTest {
         eq("lucy"), eq(pageRequest), any(HttpServletResponse.class)
     );
   }
-
+  
   @Test
   void getRetrieveWithNameEmpty() throws Exception {
     this.mockMvc.perform(get("/user/retrieve?name="))
@@ -101,6 +108,33 @@ class UserControllerTest {
   void getRetrieveWithNameMissing() throws Exception {
     this.mockMvc.perform(get("/user/retrieve"))
         .andExpect(status().isBadRequest());
+  }
+  
+  @Test
+  public void createValidateAPI() throws Exception {
+    PasswordValidateDto pvalidate = new PasswordValidateDto();
+    pvalidate.setEmail("david.valen@live.com");
+    pvalidate.setPassword("xxxxxx"); 
+    
+   when(userService
+        .validate(any(PasswordValidateDto.class), any(PageRequest.class), any(HttpServletResponse.class)))
+        .thenReturn(passwordValidate);
+   
+   final ResultActions result = this.mockMvc
+      .perform(post("/user/validate")
+      .content(asJsonString(pvalidate))
+      .contentType(MediaType.APPLICATION_JSON)
+      .accept(MediaType.APPLICATION_JSON))
+      .andExpect(status().isOk());
+
+  }
+ 
+  public static String asJsonString(final Object obj) {
+    try {
+        return new ObjectMapper().writeValueAsString(obj);
+    } catch (Exception e) {
+        throw new RuntimeException(e);
+    }
   }
 
   private UserReadDto createUserReadDto(final String id){

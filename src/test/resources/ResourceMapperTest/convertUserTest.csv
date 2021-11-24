@@ -4,6 +4,7 @@
   "middleName":"C",
   "lastName":"Doe",
   "phoneNumber":"0123456789",
+  "email":"noone@phredd.net",
   "updated":"2021-07-12 12:00:00"
 }
 ${
@@ -13,5 +14,6 @@ ${
   "middleName":"C",
   "lastName":"Doe",
   "phoneNumber":"0123456789",
+  "email":"noone@phredd.net",
   "updated":"2021-07-12 12:00:00"
 }

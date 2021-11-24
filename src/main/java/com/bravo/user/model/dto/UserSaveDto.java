@@ -11,5 +11,7 @@ public class UserSaveDto {
   private String middleName;
   private String lastName;
   private String phoneNumber;
-
+  private String email;
+  private String role;
+  private String password;
 }

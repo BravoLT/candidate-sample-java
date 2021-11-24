@@ -3,8 +3,10 @@ package com.bravo.user.controller;
 import com.bravo.user.annotation.SwaggerController;
 import com.bravo.user.enumerator.Crud;
 import com.bravo.user.exception.BadRequestException;
+import com.bravo.user.exception.UserNamePasswordException;
 import com.bravo.user.model.dto.UserReadDto;
 import com.bravo.user.model.dto.UserSaveDto;
+import com.bravo.user.model.dto.PasswordValidateDto;
 import com.bravo.user.model.filter.UserFilter;
 import com.bravo.user.service.UserService;
 import com.bravo.user.utility.PageUtil;
@@ -63,8 +65,7 @@ public class UserController {
       userValidator.validateName(ValidatorUtil.removeControlCharacters(name));
       final PageRequest pageRequest = PageUtil.createPageRequest(page, size);
       return userService.retrieveByName(name, pageRequest, httpResponse);
-    }
-    else {
+    }  else {
       throw new BadRequestException("'id' or 'name' is required!");
     }
   }
@@ -79,6 +80,19 @@ public class UserController {
   ) {
     final PageRequest pageRequest = PageUtil.createPageRequest(page, size);
     return userService.retrieve(filter, pageRequest, httpResponse);
+  }
+  
+  @PostMapping(value = "/validate")
+  @ResponseBody
+  public PasswordValidateDto validate(
+      final @RequestBody PasswordValidateDto passwordValidateDto,
+      final @RequestParam(required = false) Integer page,
+      final @RequestParam(required = false) Integer size,
+      final HttpServletResponse httpResponse
+  ) {
+  
+    final PageRequest pageRequest = PageUtil.createPageRequest(page, size);
+    return userService.validate(passwordValidateDto, pageRequest, httpResponse);
   }
 
   @PatchMapping(value = "/update/{id}")

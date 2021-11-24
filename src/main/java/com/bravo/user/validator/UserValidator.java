@@ -42,6 +42,9 @@ public class UserValidator extends CrudValidator {
     if(Objects.isNull(instance.getPhoneNumber()) || !instance.getPhoneNumber().matches("[0-9]{10}")){
       errors.reject("'phoneNumber' of format [0-9]{10} is required");
     }
+    if(ValidatorUtil.isEmailInvalid(instance.getEmail())){
+      errors.reject("'email' of format 'name@domain.tld' is required");
+    }
   }
 
   @Override
@@ -55,6 +58,10 @@ public class UserValidator extends CrudValidator {
 
     if(Objects.nonNull(instance.getPhoneNumber()) && !instance.getPhoneNumber().matches("[0-9]{10}")){
       errors.reject("'phoneNumber' of format [0-9]{10} is required");
+    }
+    
+    if(ValidatorUtil.isEmailInvalid(instance.getEmail())){
+      errors.reject("'email' of format 'name@domain.tld' is required");
     }
   }
 }

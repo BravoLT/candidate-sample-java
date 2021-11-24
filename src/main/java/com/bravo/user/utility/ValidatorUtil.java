@@ -46,6 +46,14 @@ public class ValidatorUtil {
     }
     return isValid;
   }
+  
+  public static boolean isEmailValid(final String string){
+    return string != null && string.matches("^([_a-zA-Z0-9-]+(\\.[_a-zA-Z0-9-]+)*@[a-zA-Z0-9-]+(\\.[a-zA-Z0-9-]+)*(\\.[a-zA-Z]{1,6}))?$");
+  }
+  
+  public static boolean isEmailInvalid(final String string){
+    return !isValid(string);
+ }
 
 
   private static boolean isCollectionValid(final Collection<?> collection){
@@ -62,6 +70,8 @@ public class ValidatorUtil {
   private static boolean isStringValid(final String string){
     return string != null && !string.trim().isEmpty();
   }
+  
+
 
   public static String removeControlCharacters(final String string){
     if(string == null){

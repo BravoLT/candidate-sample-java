@@ -33,9 +33,18 @@ public class User {
   @Column(name = "last_name", nullable = false)
   private String lastName;
 
+  @Column(name = "email", nullable = false)
+  private String email;
+  
+  @Column(name = "password", nullable = false)
+  private String password;
+  
+  @Column(name = "role", nullable = true)
+  private String role;
+  
   @Column(name = "phone_number", nullable = false)
   private String phoneNumber;
-
+ 
   @Column(name = "updated", nullable = false)
   private LocalDateTime updated;
 
@@ -63,5 +72,8 @@ public class User {
     this.middleName = user.getMiddleName();
     this.lastName = user.getLastName();
     this.phoneNumber = user.getPhoneNumber();
+    this.email = user.getEmail();
+    this.role = user.getRole();
+    this.password = user.getPassword();
   }
 }
