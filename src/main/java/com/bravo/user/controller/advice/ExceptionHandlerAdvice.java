@@ -1,8 +1,10 @@
 package com.bravo.user.controller.advice;
 
+import com.bravo.user.exception.PaymentNotFoundException;
 import com.bravo.user.model.dto.ErrorDto;
 import java.util.Set;
 import java.util.stream.Collectors;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.validation.BindException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
@@ -11,6 +13,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
 @ControllerAdvice
+@Slf4j
 public class ExceptionHandlerAdvice {
 
   @ExceptionHandler(value = BindException.class)
@@ -31,4 +34,17 @@ public class ExceptionHandlerAdvice {
     response.setStatusCode(400);
     return response;
   }
+
+  @ExceptionHandler(value = PaymentNotFoundException.class)
+  @ResponseBody
+  @ResponseStatus(value = HttpStatus.NOT_FOUND)
+  public ErrorDto handlePaymentNotFoundException(final PaymentNotFoundException exception){
+    log.info("Payments not found, details: {}", exception.getMessage());
+    var errorDto = new ErrorDto();
+    errorDto.setMessage(exception.getMessage());
+    errorDto.setStatusCode(HttpStatus.NOT_FOUND.value());
+
+    return errorDto;
+  }
+
 }

@@ -1,0 +1,23 @@
+[
+  {
+    "id": "45cb8ef20-5e39-472e-a967-06dee934b0f3",
+    "cardNumber": "***********1943",
+    "expiryMonth": 2,
+    "expiryYear": 2021,
+    "updated": "2022-03-17 21:09:29"
+  },
+  {
+    "id": "579872ec-46f8-46b5-b809-d0724d965f0e",
+    "cardNumber": "***********0670",
+    "expiryMonth": 2,
+    "expiryYear": 2021,
+    "updated": "2022-03-17 21:09:29"
+  },
+  {
+    "id": "95a983d0-ba0e-4f30-afb6-667d4724b253",
+    "cardNumber": "***********1133",
+    "expiryMonth": 2,
+    "expiryYear": 2021,
+    "updated": "2022-03-17 21:09:29"
+  }
+]

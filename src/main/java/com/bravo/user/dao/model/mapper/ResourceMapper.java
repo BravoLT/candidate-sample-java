@@ -1,11 +1,9 @@
 package com.bravo.user.dao.model.mapper;
 
 import com.bravo.user.dao.model.Address;
-import com.bravo.user.dao.model.Payment;
 import com.bravo.user.dao.model.Profile;
 import com.bravo.user.dao.model.User;
 import com.bravo.user.model.dto.AddressDto;
-import com.bravo.user.model.dto.PaymentDto;
 import com.bravo.user.model.dto.ProfileDto;
 import com.bravo.user.model.dto.UserReadDto;
 import java.util.Collection;
@@ -38,17 +36,6 @@ public class ResourceMapper {
             address.getZip()
         )
     );
-    return dto;
-  }
-
-  public <T extends Collection<Payment>> List<PaymentDto> convertPayments(final T payments){
-    return payments.stream().map(this::convertPayment).collect(Collectors.toList());
-  }
-
-  public PaymentDto convertPayment(final Payment payment){
-    final String cardNumber = payment.getCardNumber();
-    final PaymentDto dto = mapperFacade.map(payment, PaymentDto.class);
-    dto.setCardNumberLast4(cardNumber.substring(cardNumber.length() - 5));
     return dto;
   }
 

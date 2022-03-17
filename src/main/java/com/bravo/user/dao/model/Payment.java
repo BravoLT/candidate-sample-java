@@ -1,12 +1,12 @@
 package com.bravo.user.dao.model;
 
 import java.time.LocalDateTime;
-import java.util.UUID;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
 import lombok.Data;
+import org.hibernate.annotations.GenericGenerator;
 
 @Entity
 @Data
@@ -15,6 +15,7 @@ public class Payment {
 
   @Id
   @Column(name = "id")
+  @GenericGenerator(name = "uuid", strategy = "uuid4")
   private String id;
 
   @Column(name = "user_id", nullable = false)
@@ -30,11 +31,6 @@ public class Payment {
   private Integer expiryYear;
 
   @Column(name = "updated", nullable = false)
-  private LocalDateTime updated;
+  private LocalDateTime updated = LocalDateTime.now();
 
-  public Payment(){
-    super();
-    this.id = UUID.randomUUID().toString();
-    this.updated = LocalDateTime.now();
-  }
 }
