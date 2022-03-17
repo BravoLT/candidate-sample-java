@@ -1,0 +1,4 @@
+{
+  "message": "Payment not found for user with id testUserId",
+  "statusCode": 404
+}
