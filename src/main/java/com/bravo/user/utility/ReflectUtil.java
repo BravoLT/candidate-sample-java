@@ -35,7 +35,6 @@ public class ReflectUtil {
     }
     //here we will create the new instance of the reflectDTO class that we will return when the method is called
     //Reflection is a fuzzy concept but would love to learn more about it
-    //
     final ReflectClassDto reflection = new ReflectClassDto(instanceClass);
     //for each loop
     for(PropertyDescriptor desc : beanInfo.getPropertyDescriptors()){
@@ -52,7 +51,7 @@ public class ReflectUtil {
     //we return the reflection we created above
     return reflection;
   }
-//
+
   private Object invokeReadMethod(final PropertyDescriptor descriptor, final Object instance){
 
     try {
@@ -64,9 +63,3 @@ public class ReflectUtil {
     }
   }
 }
-
-/*
-
-
-
- */

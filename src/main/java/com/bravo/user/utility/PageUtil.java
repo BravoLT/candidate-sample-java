@@ -15,7 +15,6 @@ public class PageUtil {
   public static PageRequest createPageRequest(final Integer page, final Integer size){
     return createPageRequest(page, size, DEFAULT_SIZE);
   }
-  //
   public static PageRequest createPageRequest(
       final Integer page,
       final Integer size,
