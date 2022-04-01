@@ -10,8 +10,11 @@ import lombok.experimental.UtilityClass;
 @UtilityClass
 public class ValidatorUtil {
 
+  //<T> means type generic, ... means that we might be getting multiple parameters
+  //this method is checking whether passed in value is empty
   public static <T> boolean isEmpty(T value, String... excludeFields){
-
+    //I learned that a reflection class allows us to inspect and modify an object's behavior at runtime
+    //instantiating a variable of the reflection class data transfer object
     final ReflectClassDto reflection = ReflectUtil.describe(value);
     if(reflection == null){
       throw new IllegalStateException(String.format("could not describe class: '%s'", value));
@@ -24,7 +27,7 @@ public class ValidatorUtil {
     }
     return true;
   }
-
+//validation methods
   public static <T> boolean isInvalid(T value){
     return !isValid(value);
   }

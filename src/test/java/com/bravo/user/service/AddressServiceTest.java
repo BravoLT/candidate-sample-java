@@ -28,33 +28,46 @@ import com.bravo.user.model.dto.AddressDto;
 @ExtendWith(SpringExtension.class)
 @SpringBootTest
 class AddressServiceTest {
-
+	//I looked at tests that have already been written to try to get a better understanding
+	//of the different components of this app
+	//autowired ? - allows you to inject the object dependency implicitly
 	@Autowired
 	private AddressService addressService;
-
+	//mock bean? this will replace any existing bean of the same type in the application context
+	//according to what I have read, you can also use a @Qualifier notation and pass in qualifier metadata
+	//mock resource mapper to use in tests
 	@MockBean
 	private ResourceMapper resourceMapper;
 
+	//mock address repo to use in tests
 	@MockBean
 	private AddressRepository addressRepository;
-
+	//empty (?) list of data transfer object - addresses
 	private List<AddressDto> dtoAddresses;
 
 	@BeforeEach
 	public void beforeEach() {
-		final List<Integer> ids = IntStream.range(1, 10).boxed().collect(Collectors.toList());
+		/* wow! this is my first time learning about the Collectors class - pretty cool!
+			-allows us to accumulate/reduce values into a collection
+		IntStream.range()? - sequence of primitive int values that fall between given range, .boxed() - each element boxed to an Integer
 
+		*/
+		final List<Integer> ids = IntStream.range(1, 10).boxed().collect(Collectors.toList());
+		//here we use stream() to save a list of addresses
 		final List<Address> daoAddresses = ids.stream()
 				.map(id -> createAddress(Integer.toString(id))).collect(Collectors.toList());
-
+		//I think what is happening now is the id's are being mapped to the daoAddresses list
+		//when keyword - Mockito class! also new to me - sent down a new rabbit hole
+		//Mockito is a mocking framework for unit tests in Java - allows the creation of test double objects in automated unit tests
+			//"used to mock interfaces so that a dummy functionality can be added to a mock interface that can be used in testing"
 		when(addressRepository.findByUserId(anyString())).thenReturn(daoAddresses);
-
+		//this keyword refers to this specific instance
 		this.dtoAddresses = ids.stream().map(id -> createAddressDto(Integer.toString(id)))
 				.collect(Collectors.toList());
 
 		when(resourceMapper.convertAddresses(daoAddresses)).thenReturn(dtoAddresses);
 	}
-
+//testing that endpoint retrieves correct id value
 	@Test
 	void retrieveByUserId() {
 		final String userId = "123a-456b";
