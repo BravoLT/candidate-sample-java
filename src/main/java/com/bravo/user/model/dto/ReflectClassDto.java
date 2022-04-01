@@ -7,10 +7,10 @@ import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 import lombok.Data;
-
+//Data Transfer Object class for reflect
 @Data
 public class ReflectClassDto {
-
+  //private instance variables can only be accessed by methods within this class
   private final Class<?> type;
   private List<ReflectFieldDto<?>> fields;
 

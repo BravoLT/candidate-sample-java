@@ -15,7 +15,10 @@ import springfox.documentation.swagger2.annotations.EnableSwagger2;
 @Configuration
 @EnableSwagger2
 public class SwaggerConfig {
-
+/*
+Docket class - Docket is a builder which is intended to be the primary interface into the swagger-springmvc framework.
+It provides sensible defaults and convenience methods for configuration.
+ */
   @Bean
   public Docket docket(){
     return new Docket(DocumentationType.SWAGGER_2)

@@ -18,6 +18,14 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.converter.json.Jackson2ObjectMapperBuilder;
 
+/*
+Serializers-Deserializers take a object and convert it to a string of JSON format and vice versa
+
+Never worked with Jackson before but looks like it is a Java library that is used to create serializers/deserializers
+
+*/
+
+//tags the class as a source of bean definitions for the application context in spring
 @Configuration
 public class AppConfig {
 
