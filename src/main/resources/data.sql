@@ -24,6 +24,13 @@ create table payment (
     updated timestamp not null default current_timestamp()
 );
 
+insert into payment(id, user_id, card_number, expiry_month, expiry_year) values
+('4f34e905-72ad-412c-82fe-4974501258d6', '4f34e905-72ad-412c-82fe-4974501258d8', '5400000000000000', 12, 2024),
+('4f34e905-72ad-412c-82fe-4974501258d5', '4f34e905-72ad-412c-82fe-4974501258d8', '5400000000000001', 12, 2025),
+('4f34e905-72ad-412c-82fe-4974501258d4', '4f34e905-72ad-412c-82fe-4974501258d8', '5400000000000002', 10, 2026),
+('4f34e905-72ad-412c-82fe-4974501258d3', '4f34e905-72ad-412c-82fe-4974501258d8', '5400000000000003', 12, 27),
+('4f34e905-72ad-412c-82fe-4974501258d2', '0865dbbc-e4b9-4a22-af03-b4d67f56f07b', '5400000000000004', 12, 2028);
+
 create table profile (
     id varchar(60) primary key,
     user_id varchar(60) not null,

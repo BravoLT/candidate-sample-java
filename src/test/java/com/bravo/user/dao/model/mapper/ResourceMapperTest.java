@@ -1,5 +1,7 @@
 package com.bravo.user.dao.model.mapper;
 
+import com.bravo.user.dao.model.Payment;
+import com.bravo.user.model.dto.PaymentDto;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -47,5 +49,16 @@ class ResourceMapperTest {
 			@ConvertWith(MapperArgConverter.class) Address address,
 			@ConvertWith(MapperArgConverter.class) AddressDto addressDto) {
 		Assertions.assertEquals(addressDto, resourceMapper.convertAddress(address));
+	}
+
+	@ParameterizedTest
+	@CsvFileSource(
+			resources = ("/ResourceMapperTest/convertPaymentTest.csv"),
+			delimiter = '$',
+			lineSeparator = ">")
+	void convertPaymentTest(
+			@ConvertWith(MapperArgConverter.class) Payment payment,
+			@ConvertWith(MapperArgConverter.class) PaymentDto paymentDto) {
+		Assertions.assertEquals(paymentDto, resourceMapper.convertPayment(payment));
 	}
 }

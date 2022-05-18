@@ -1,0 +1,15 @@
+>{
+  "id":"testId",
+  "userId":"testUserId",
+  "cardNumber":"4444444444441234",
+  "expiryMonth":"12",
+  "expiryYear":"99",
+  "updated":"2021-07-12 12:00:00"
+}
+${
+  "id":"testId",
+  "cardNumberLast4":"1234",
+  "expiryMonth":"12",
+  "expiryYear":"99",
+  "updated":"2021-07-12 12:00:00"
+}
