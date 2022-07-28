@@ -8,11 +8,11 @@ import com.bravo.user.model.dto.AddressDto;
 import com.bravo.user.model.dto.PaymentDto;
 import com.bravo.user.model.dto.ProfileDto;
 import com.bravo.user.model.dto.UserReadDto;
+import ma.glasnost.orika.MapperFacade;
+import org.springframework.stereotype.Component;
 import java.util.Collection;
 import java.util.List;
 import java.util.stream.Collectors;
-import ma.glasnost.orika.MapperFacade;
-import org.springframework.stereotype.Component;
 
 @Component
 public class ResourceMapper {
@@ -48,7 +48,7 @@ public class ResourceMapper {
   public PaymentDto convertPayment(final Payment payment){
     final String cardNumber = payment.getCardNumber();
     final PaymentDto dto = mapperFacade.map(payment, PaymentDto.class);
-    dto.setCardNumberLast4(cardNumber.substring(cardNumber.length() - 5));
+    dto.setCardNumberLast4(cardNumber.substring(cardNumber.length() - 4));
     return dto;
   }
 

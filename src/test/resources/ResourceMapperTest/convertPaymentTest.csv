@@ -1,0 +1,31 @@
+>{
+    "id": "3c03b4ee-2d0b-48d9-8b7e-e5f797ea25e6",
+    "userId": "008a4215-0b1d-445e-b655-a964039cbb5a",
+    "cardNumber": "0000000000001234",
+    "expiryMonth": 5,
+    "expiryYear": 2024,
+    "updated": "2022-05-17 14:23:16"
+},
+${
+    "id": "3c03b4ee-2d0b-48d9-8b7e-e5f797ea25e6",
+    "cardNumberLast4": "1234",
+    "expiryMonth": 5,
+    "expiryYear": 2024,
+    "updated": "2022-05-17 14:23:16"
+},
+>
+{
+    "id": "2fd65984-24ca-4c31-9f2e-7decdc64d85b",
+    "userId": "008a4215-0b1d-445e-b655-a964039cbb5a",
+    "cardNumber": "0000000000009999",
+    "expiryMonth": 8,
+    "expiryYear": 2025,
+    "updated": "2022-06-23 09:46:49"
+},
+${
+    "id": "2fd65984-24ca-4c31-9f2e-7decdc64d85b",
+    "cardNumberLast4": "9999",
+    "expiryMonth": 8,
+    "expiryYear": 2025,
+    "updated": "2022-06-23 09:46:49"
+}
