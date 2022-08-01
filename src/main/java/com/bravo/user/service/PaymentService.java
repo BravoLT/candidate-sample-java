@@ -31,7 +31,7 @@ public class PaymentService {
     UserReadDto user = userService.retrieve(id);
 
     List<Payment> payments = paymentRepository.findByUserId(user.getId());
-
+    LOGGER.info("found {} payment(s)", payments.size());
     return resourceMapper.convertPayments(payments);
   }
 
