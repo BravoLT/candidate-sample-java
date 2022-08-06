@@ -1,9 +1,10 @@
 package com.bravo.user.utility;
 
-import java.time.format.DateTimeFormatter;
-import lombok.experimental.UtilityClass;
+import lombok.Data;
 
-@UtilityClass
+import java.time.format.DateTimeFormatter;
+
+@Data
 public class DateUtil {
 
   public static final DateTimeFormatter DATE_FORMAT = DateTimeFormatter.ofPattern("yyyy-MM-dd");
