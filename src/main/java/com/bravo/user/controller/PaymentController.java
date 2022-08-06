@@ -26,7 +26,7 @@ public class PaymentController {
 
   @GetMapping(value = "/retrieve/{userId}")
   @ResponseBody
-  public List<PaymentDto> retrieve(
+  public List<PaymentDto> pagePaymentsByUserId(
           final @PathVariable String userId,
           final @RequestParam Integer page,
           final @RequestParam Integer size,
@@ -36,13 +36,7 @@ public class PaymentController {
       paymentValidator.validateId(userId);
       final PageRequest pageRequest = PageUtil.createPageRequest(page, size);
       return paymentService.retrieveByUserId(userId, pageRequest, httpResponse);
-    }
-//    else if(userId != null){
-//      paymentValidator.validateName(ValidatorUtil.removeControlCharacters(userId));
-//      final PageRequest pageRequest = PageUtil.createPageRequest(page, size);
-//      return paymentService.findPaymentsById(name/*, pageRequest, httpResponse*/);
-//    }
-    else {
+    } else {
       throw new BadRequestException("'userId' is required!");
     }
   }

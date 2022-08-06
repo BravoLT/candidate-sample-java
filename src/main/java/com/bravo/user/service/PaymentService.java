@@ -27,12 +27,6 @@ public class PaymentService {
     this.resourceMapper = resourceMapper;
   }
 
-//  public List<PaymentDto> retrieve(final String id){
-//    List<Payment> list = paymentRepository.findPaymentsByUserId(id);
-//    LOGGER.info("found {} payment(s) for user '{}'", list.size(), id);
-//    return resourceMapper.convertPayments(list);
-//  }
-
   public List <PaymentDto> retrieveByUserId(
           final String userId,
           final PageRequest pageRequest,
@@ -42,7 +36,6 @@ public class PaymentService {
     final Page<Payment> paymentPage = paymentRepository.findPaymentsByUserId(userId, pageRequest);
     final List<PaymentDto> payments = resourceMapper.convertPayments(paymentPage.getContent());
     LOGGER.info("found {} payment(s) for user '{}'", payments.size(), userId);
-
     PageUtil.updatePageHeaders(httpResponse, paymentPage, pageRequest);
     return payments;
   }

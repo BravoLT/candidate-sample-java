@@ -18,7 +18,7 @@ create table address (
 create table payment (
     id varchar(60) primary key,
     user_id varchar(60) not null,
-    card_number varchar(16) not null unique,
+    card_number varchar(16) not null, -- No need to be unique (or you only support payments by russian hackers using different card every time?)
     expiry_month integer not null,
     expiry_year integer not null,
     updated timestamp not null default current_timestamp()
@@ -649,7 +649,10 @@ insert into address (id, user_id, line1, line2, city, state, zip) values
 ('579872ec-46f8-46b5-b809-d0724d965f0e', '00963d9b-f884-485e-9455-fcf30c6ac379', '237 Mountain Ter', 'Apt 10', 'Odenville', 'Alabama', '35120'),
 ('95a983d0-ba0e-4f30-afb6-667d4724b253', '00963d9b-f884-485e-9455-fcf30c6ac379', '107 Annettes Ct', null, 'Aydlett', 'North Carolina', '27916');
 
-insert into payment (id, user_id, card_number, expiry_month, expiry_year) values
-('008a4215-0b1d-445e-b655-a964039cbb5a', '008a4215-0b1d-445e-b655-a964039cbb5a', '1234567890123456', 1, 2023),
-('118a4215-0b1d-445e-b655-a964039cbb5b', '008a4215-0b1d-445e-b655-a964039cbb5a', '2234567890123456', 3, 2024),
-('228a4215-0b1d-445e-b655-a964039cbb5c', '008a4215-0b1d-445e-b655-a964039cbb5a', '3234567890123456', 1, 2023);
+insert into payment (id, user_id, card_number, expiry_month, expiry_year, updated) values
+('008a4215-0b1d-445e-b655-a964039cbb5a', '008a4215-0b1d-445e-b655-a964039cbb5a', '5234567890122112', 1, 2023, '2022-07-07 11:32:47'),
+('118a4215-0b1d-445e-b655-a964039cbb5b', '008a4215-0b1d-445e-b655-a964039cbb5a', '5234567890122112', 1, 2023, '2022-07-15 08:12:47'),
+('228a4215-0b1d-445e-b655-a964039cbb5c', '008a4215-0b1d-445e-b655-a964039cbb5a', '5234567890122112', 1, 2023, '2022-08-01 10:22:47'),
+('338a4215-0b1d-445e-b655-a964039cbb5d', 'fd9e22ef-20f1-4e1b-9f9e-3139fd13fa85', '4234567890121984', 11, 2023, '2022-06-03 11:32:47'),
+('448a4215-0b1d-445e-b655-a964039cbb5e', 'fd9e22ef-20f1-4e1b-9f9e-3139fd13fa85', '4234567890121984', 11, 2023, '2022-05-11 08:12:47'),
+('558a4215-0b1d-445e-b655-a964039cbb5f', 'fd9e22ef-20f1-4e1b-9f9e-3139fd13fa85', '4234567890121984', 11, 2023, '2022-07-01 10:22:47');
