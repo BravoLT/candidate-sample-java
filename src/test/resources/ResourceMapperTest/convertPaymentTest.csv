@@ -1,0 +1,15 @@
+>{
+  "id":"0acbe59f-b68c-422d-a925-35a5cd770e60",
+  "userId":"0938d977-62c0-4e1d-90fb-45cadbc24b1f",
+  "cardNumber":"543200011112222",
+  "expiryMonth":"06",
+  "expiryYear":"2023",
+  "updated":"2022-05-11 08:12:47"
+}
+${
+  "id":"0acbe59f-b68c-422d-a925-35a5cd770e60",
+  "cardNumberLast4":"2222",
+  "expiryMonth":"06",
+  "expiryYear":"2023",
+  "updated":"2022-05-11 08:12:47"
+}
