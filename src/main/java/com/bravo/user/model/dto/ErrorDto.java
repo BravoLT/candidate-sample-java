@@ -1,11 +1,12 @@
 package com.bravo.user.model.dto;
 
-import java.util.Set;
 import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.RequiredArgsConstructor;
+
+import java.util.Set;
 
 @Data
-@NoArgsConstructor
+@RequiredArgsConstructor
 public class ErrorDto {
 
   private Set<String> errors;

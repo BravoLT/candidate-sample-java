@@ -4,6 +4,7 @@ import com.bravo.user.model.dto.ReflectClassDto;
 import com.bravo.user.model.dto.ReflectFieldDto;
 import com.bravo.user.model.filter.DateFilter;
 import java.util.Collection;
+import java.util.UUID;
 import java.util.stream.Collectors;
 import lombok.experimental.UtilityClass;
 
@@ -61,6 +62,16 @@ public class ValidatorUtil {
 
   private static boolean isStringValid(final String string){
     return string != null && !string.trim().isEmpty();
+  }
+
+  public static boolean isUUIDValid(final String string) {
+    boolean result = isStringValid(string);
+    try {
+      UUID test = UUID.fromString(string);
+    } catch(IllegalArgumentException e) {
+      result = false;
+    }
+    return result;
   }
 
   public static String removeControlCharacters(final String string){
