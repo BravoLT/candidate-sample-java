@@ -17,7 +17,7 @@ import java.util.List;
 @Service
 public class PaymentService {
 
-  private static final Logger LOGGER = LoggerFactory.getLogger(UserService.class);
+  private static final Logger LOGGER = LoggerFactory.getLogger(PaymentService.class);
 
   private final PaymentRepository paymentRepository;
   private final ResourceMapper resourceMapper;
@@ -32,10 +32,10 @@ public class PaymentService {
           final PageRequest pageRequest,
           final HttpServletResponse httpResponse
   ){
-
     final Page<Payment> paymentPage = paymentRepository.findPaymentsByUserId(userId, pageRequest);
     final List<PaymentDto> payments = resourceMapper.convertPayments(paymentPage.getContent());
-    LOGGER.info("found {} payment(s) for user '{}'", payments.size(), userId);
+    LOGGER.info("Returning {} payment(s) for user '{}'", payments.size(), userId);
+    LOGGER.trace("#### {} -- {}", pageRequest, payments);
     PageUtil.updatePageHeaders(httpResponse, paymentPage, pageRequest);
     return payments;
   }

@@ -6,7 +6,6 @@ import com.bravo.user.model.dto.PaymentDto;
 import com.bravo.user.service.PaymentService;
 import com.bravo.user.utility.PageUtil;
 import com.bravo.user.validator.PaymentValidator;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletResponse;
@@ -27,15 +26,18 @@ public class PaymentController {
   @GetMapping(value = "/retrieve/{userId}")
   @ResponseBody
   public List<PaymentDto> getPaymentsForUserId(
-          final @PathVariable String userId,
+          final @PathVariable @RequestPart String userId,
           final @RequestParam(required = false) Integer page,
           final @RequestParam(required = false) Integer size,
-      final HttpServletResponse httpResponse
+          final HttpServletResponse httpResponse
   ) {
-    if(userId != null){
+    if(userId != null) {
+      //TODO: figure out validateRetrieve need for @RequestBody or @RequestPart arguments
       paymentValidator.validateId(userId);
-      final PageRequest pageRequest = PageUtil.createPageRequest(page, size);
-      return paymentService.retrieveByUserId(userId, pageRequest, httpResponse);
+      return paymentService.retrieveByUserId(
+              userId
+              , PageUtil.createPageRequest(page, size)
+              , httpResponse);
     } else {
       throw new BadRequestException("'userId' is required!");
     }
