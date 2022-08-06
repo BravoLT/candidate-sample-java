@@ -26,10 +26,10 @@ public class PaymentController {
 
   @GetMapping(value = "/retrieve/{userId}")
   @ResponseBody
-  public List<PaymentDto> pagePaymentsByUserId(
+  public List<PaymentDto> getPaymentsForUserId(
           final @PathVariable String userId,
-          final @RequestParam Integer page,
-          final @RequestParam Integer size,
+          final @RequestParam(required = false) Integer page,
+          final @RequestParam(required = false) Integer size,
       final HttpServletResponse httpResponse
   ) {
     if(userId != null){

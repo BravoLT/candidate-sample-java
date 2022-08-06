@@ -8,8 +8,8 @@ import org.springframework.stereotype.Component;
 public class PaymentValidator extends CrudValidator {
 
   public void validateId(String id){
-    if(ValidatorUtil.isInvalid(id)){
-      throw new BadRequestException("'User Id' is required");
+    if(!ValidatorUtil.isUUIDValid(id)){
+      throw new BadRequestException("'User Id' in UUID format is required");
     }
   }
 }

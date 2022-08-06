@@ -18,7 +18,7 @@ create table address (
 create table payment (
     id varchar(60) primary key,
     user_id varchar(60) not null,
-    card_number varchar(16) not null, -- No need to be unique (or you only support payments by russian hackers using different card every time?)
+    card_number varchar(16) not null, -- No need to be unique (or only support payments by russian hackers using different card every time?)
     expiry_month integer not null,
     expiry_year integer not null,
     updated timestamp not null default current_timestamp()
