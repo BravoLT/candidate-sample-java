@@ -1,7 +1,6 @@
 package com.bravo.user.controller;
 
 import com.bravo.user.annotation.SwaggerController;
-import com.bravo.user.exception.BadRequestException;
 import com.bravo.user.model.dto.PaymentDto;
 import com.bravo.user.service.PaymentService;
 import com.bravo.user.utility.PageUtil;
@@ -31,15 +30,10 @@ public class PaymentController {
           final @RequestParam(required = false) Integer size,
           final HttpServletResponse httpResponse
   ) {
-    if(userId != null) {
-      //TODO: figure out validateRetrieve need for @RequestBody or @RequestPart arguments
-      paymentValidator.validateId(userId);
-      return paymentService.retrieveByUserId(
-              userId
-              , PageUtil.createPageRequest(page, size)
-              , httpResponse);
-    } else {
-      throw new BadRequestException("'userId' is required!");
-    }
+    paymentValidator.validateId(userId);
+    return paymentService.retrieveByUserId(
+            userId
+            , PageUtil.createPageRequest(page, size)
+            , httpResponse);
   }
 }

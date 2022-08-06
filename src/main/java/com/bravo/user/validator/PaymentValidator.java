@@ -7,7 +7,7 @@ import org.springframework.validation.Errors;
 
 @Component
 public class PaymentValidator extends CrudValidator {
-  private static final String USER_ID_MISSING_ERROR = "'User Id' in UUID format is required";
+  public static final String USER_ID_MISSING_ERROR = "'User Id' in UUID format is required";
 
   public void validateId(String id){
     if(!ValidatorUtil.isUUIDValid(id)){
@@ -15,6 +15,7 @@ public class PaymentValidator extends CrudValidator {
     }
   }
 
+  //TODO: figure out validateRetrieve need for @RequestBody or @RequestPart arguments
   @Override
   protected void validateRetrieve(Object o, Errors errors) {
     String userId = (String)o;
