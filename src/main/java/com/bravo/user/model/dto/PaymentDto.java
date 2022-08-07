@@ -7,6 +7,8 @@ import lombok.Data;
 public class PaymentDto {
 
   private String id;
+  /*added this to make sure the payload is returning the correct user*/
+  private String userId;
   private String cardNumberLast4;
   private Integer expiryMonth;
   private Integer expiryYear;

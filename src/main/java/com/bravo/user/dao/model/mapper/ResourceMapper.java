@@ -45,10 +45,11 @@ public class ResourceMapper {
     return payments.stream().map(this::convertPayment).collect(Collectors.toList());
   }
 
+  /*Changed this because it was giving the last 5 numbers, not the last 4*/
   public PaymentDto convertPayment(final Payment payment){
     final String cardNumber = payment.getCardNumber();
     final PaymentDto dto = mapperFacade.map(payment, PaymentDto.class);
-    dto.setCardNumberLast4(cardNumber.substring(cardNumber.length() - 5));
+    dto.setCardNumberLast4(cardNumber.substring(cardNumber.length() - 4));
     return dto;
   }
 
