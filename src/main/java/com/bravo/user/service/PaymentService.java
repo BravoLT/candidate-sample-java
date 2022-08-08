@@ -20,7 +20,6 @@ import java.util.List;
 public class PaymentService {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(PaymentService.class);
-
     private final PaymentRepository paymentRepository;
     private final ResourceMapper resourceMapper;
 
@@ -37,34 +36,21 @@ public class PaymentService {
             final PageRequest pageRequest,
             final HttpServletResponse httpResponse
     ){
-        LOGGER.info("Finding Payments for user...");
-        final PaymentSpecification paymentSpecification = new PaymentSpecification(PaymentFilter.builder()
-                .userId(userId)
-                .build());
-
-        final Page<Payment> paymentPage = paymentRepository.findAll(paymentSpecification, pageRequest);
-        final List<PaymentDto> payments = resourceMapper.convertPayments(paymentPage.getContent());
-        LOGGER.info("Found {} payment(s)", payments.size());
-
-        PageUtil.updatePageHeaders(httpResponse, paymentPage, pageRequest);
-        return payments;
+        return retrieve(new PaymentFilter(userId), pageRequest, httpResponse);
     }
 
     public List<PaymentDto> retrieve(
-            final PaymentFilter paymentFilter,
+            final PaymentFilter filter,
             final PageRequest pageRequest,
             final HttpServletResponse httpResponse
     ){
-        LOGGER.info("Attempting to find User Payment Information...");
-        final PaymentSpecification paymentSpecification =
-                new PaymentSpecification(paymentFilter);
-        final Page<Payment> paymentPage = paymentRepository.findAll(paymentSpecification,pageRequest);
+        LOGGER.info("Request to retrieve payment information being conducted... paymentFilter: {}", filter);
+        final PaymentSpecification specification = new PaymentSpecification(filter);
+        final Page<Payment> paymentPage = paymentRepository.findAll(specification,pageRequest);
         final List<PaymentDto> payments = resourceMapper.convertPayments(paymentPage.getContent());
         LOGGER.info("Found {} payment(s)", payments.size());
 
         PageUtil.updatePageHeaders(httpResponse, paymentPage, pageRequest);
         return payments;
     }
-
-
 }

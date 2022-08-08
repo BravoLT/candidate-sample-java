@@ -40,36 +40,28 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @AutoConfigureMockMvc
 public class PaymentControllerTest {
 
+    private static final ObjectMapper MAPPER = new ObjectMapper();
+
     @Autowired
     private MockMvc mockMvc;
-
     @MockBean
     private PaymentService paymentService;
 
     private List<PaymentDto> payments;
     private PaymentFilter paymentFilter;
-    private static final ObjectMapper mapper = new ObjectMapper();
 
     @BeforeEach
     public void beforeEach(){
-        final List<Integer> ids = IntStream
+        this.payments = IntStream
                 .range(1,6)
-                .boxed()
+                .mapToObj(id -> new PaymentDto(Integer.toString(id)))
                 .collect(Collectors.toList());
 
-        this.payments = ids.stream()
-                .map(id -> createPaymentDto(Integer.toString(id)))
-                .collect(Collectors.toList());
-
-        String paymentId = "1";
-        this.paymentFilter = createPaymentFilter(paymentId);
+        this.paymentFilter = new PaymentFilter("1");
     }
 
-
-
     @Test
-    void getRetrieveWithUserId() throws Exception
-    {
+    public void getRetrieveWithUserId() throws Exception {
         when(paymentService
                 .retrievePaymentByUserId(anyString(), any(PageRequest.class), any(HttpServletResponse.class)))
                 .thenReturn(payments);
@@ -82,20 +74,18 @@ public class PaymentControllerTest {
             result.andExpect((jsonPath(String.format("$[%d].id", i)).value(payments.get(i).getId())));
         }
 
-        final PageRequest pageRequest = PageUtil.createPageRequest(null, null);
+        final PageRequest pageRequest = PageUtil.createPageRequest();
         verify(paymentService).retrievePaymentByUserId(
                 eq("1"), eq(pageRequest), any(HttpServletResponse.class)
         );
-
     }
 
     @Test
-    void postRetrieveWithFilter() throws Exception
-    {
+    public void postRetrieveWithFilter() throws Exception {
         when(paymentService.retrieve(any(PaymentFilter.class), any(PageRequest.class), any(HttpServletResponse.class)))
                 .thenReturn(payments);
 
-        String jsonResult = mapper.writeValueAsString(paymentFilter);
+        final String jsonResult = MAPPER.writeValueAsString(paymentFilter);
 
         final ResultActions result = this.mockMvc
                 .perform(post("/payment/retrieve")
@@ -108,31 +98,17 @@ public class PaymentControllerTest {
             result.andExpect((jsonPath(String.format("$[%d].id", i)).value(payments.get(i).getId())));
         }
 
-        final PageRequest pageRequest = PageUtil.createPageRequest(null, null);
+        final PageRequest pageRequest = PageUtil.createPageRequest();
         verify(paymentService).retrieve(eq(paymentFilter), eq(pageRequest), any(HttpServletResponse.class));
     }
 
     @Test
-    public void retrieveWithUserIdMissing() throws Exception
-    {
+    public void retrieveWithUserIdMissing() throws Exception {
         this.mockMvc.perform(get("/payment/retrieve")).andExpect(status().isBadRequest());
     }
 
     @Test
-    public void retrieveWithEmptyUserId() throws Exception{
+    public void retrieveWithEmptyUserId() throws Exception {
         this.mockMvc.perform(get("/payment/retrieve?userId=")).andExpect(status().isBadRequest());
-    }
-
-    private PaymentDto createPaymentDto(String paymentId)
-    {
-        final PaymentDto payment = new PaymentDto();
-        payment.setId(paymentId);
-        return payment;
-    }
-
-    private PaymentFilter createPaymentFilter(String paymentId) {
-        final PaymentFilter paymentFilter = new PaymentFilter();
-        paymentFilter.setUserId(paymentId);
-        return paymentFilter;
     }
 }

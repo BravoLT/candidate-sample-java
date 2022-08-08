@@ -33,6 +33,9 @@ import static org.mockito.Mockito.*;
 @SpringBootTest
 public class PaymentServiceTest {
 
+    private static final String PAGE_COUNT = "page-count";
+    private static final String PAGE_NUMBER = "page-number";
+    private static final String PAGE_SIZE = "page-size";
     @Autowired
     private HttpServletResponse httpResponse;
     @Autowired
@@ -41,9 +44,9 @@ public class PaymentServiceTest {
     private ResourceMapper resourceMapper;
     @MockBean
     private PaymentRepository paymentRepository;
+
     private List<PaymentDto> paymentDtos;
     private PaymentFilter paymentFilter;
-
 
     @BeforeEach
     public void beforeEach() {
@@ -52,38 +55,34 @@ public class PaymentServiceTest {
                 .boxed()
                 .collect(Collectors.toList());
 
-        this.paymentFilter = createPaymentFilter("1");
+        this.paymentFilter = new PaymentFilter("1");
+
+        this.paymentDtos = ids.stream()
+                .map(id -> new PaymentDto(Integer.toString(id)))
+                .collect(Collectors.toList());
+        when(resourceMapper.convertPayments(anyList())).thenReturn(paymentDtos);
 
         final List<Payment> payments = ids.stream()
                 .map(id -> createPayment(id.toString()))
                 .collect(Collectors.toList());
-        this.paymentDtos = ids.stream()
-                .map(id -> createPaymentDto(id.toString()))
-                .collect(Collectors.toList());
-        when(resourceMapper.convertPayments(payments)).thenReturn(paymentDtos);
 
         final Page<Payment> mockPage = mock(Page.class);
-        when(paymentRepository.findAll(any(PaymentSpecification.class), any(PageRequest.class)))
-                .thenReturn(mockPage);
-
         when(mockPage.getContent()).thenReturn(payments);
         when(mockPage.getTotalPages()).thenReturn(6);
 
-
+        when(paymentRepository.findAll(any(PaymentSpecification.class), any(PageRequest.class)))
+                .thenReturn(mockPage);
     }
 
-
-
     @Test
-    public void testRetrievePaymentByUserId()
-    {
+    public void retrievePaymentByUserId() {
         final String userId = "1";
-        final PageRequest pageRequest = PageUtil.createPageRequest(null, null);
+        final PageRequest pageRequest = PageUtil.createPageRequest();
         final List<PaymentDto> results = paymentService.retrievePaymentByUserId(userId, pageRequest, httpResponse);
         assertEquals(paymentDtos, results);
-        assertEquals("6", httpResponse.getHeader("page-count"));
-        assertEquals("1", httpResponse.getHeader("page-number"));
-        assertEquals("20", httpResponse.getHeader("page-size"));
+        assertEquals("6", httpResponse.getHeader(PAGE_COUNT));
+        assertEquals("1", httpResponse.getHeader(PAGE_NUMBER));
+        assertEquals("20", httpResponse.getHeader(PAGE_SIZE));
 
         final PaymentFilter filter = new PaymentFilter(userId);
         final PaymentSpecification specification = new PaymentSpecification(filter);
@@ -91,15 +90,14 @@ public class PaymentServiceTest {
     }
 
     @Test
-    public void testRetrievePaymentByUserIdWithPagination()
-    {
+    public void retrievePaymentByUserIdWithPagination() {
         final String userId = "1";
         final PageRequest pageRequest = PageUtil.createPageRequest(1, 6);
         final List<PaymentDto> results = paymentService.retrievePaymentByUserId(userId, pageRequest, httpResponse);
         assertEquals(paymentDtos, results);
-        assertEquals("6", httpResponse.getHeader("page-count"));
-        assertEquals("1", httpResponse.getHeader("page-number"));
-        assertEquals("6", httpResponse.getHeader("page-size"));
+        assertEquals("6", httpResponse.getHeader(PAGE_COUNT));
+        assertEquals("1", httpResponse.getHeader(PAGE_NUMBER));
+        assertEquals("6", httpResponse.getHeader(PAGE_SIZE));
 
         final PaymentFilter filter = new PaymentFilter(userId);
         final PaymentSpecification specification = new PaymentSpecification(filter);
@@ -107,14 +105,13 @@ public class PaymentServiceTest {
     }
 
     @Test
-    public void testRetrieveWithFilter()
-    {
-        final PageRequest pageRequest = PageUtil.createPageRequest(null, null);
+    public void retrieveWithFilter() {
+        final PageRequest pageRequest = PageUtil.createPageRequest();
         final List<PaymentDto> results = paymentService.retrieve(paymentFilter, pageRequest, httpResponse);
         assertEquals(paymentDtos, results);
-        assertEquals("6", httpResponse.getHeader("page-count"));
-        assertEquals("1", httpResponse.getHeader("page-number"));
-        assertEquals("20", httpResponse.getHeader("page-size"));
+        assertEquals("6", httpResponse.getHeader(PAGE_COUNT));
+        assertEquals("1", httpResponse.getHeader(PAGE_NUMBER));
+        assertEquals("20", httpResponse.getHeader(PAGE_SIZE));
 
         final PaymentSpecification specification = new PaymentSpecification(paymentFilter);
         verify(paymentRepository).findAll(specification, pageRequest);
@@ -122,25 +119,17 @@ public class PaymentServiceTest {
     }
 
     @Test
-    public void testRetrieveWithFilterWithPagination()
-    {
+    public void retrieveWithFilterWithPagination() {
         final PageRequest pageRequest = PageUtil.createPageRequest(1, 6);
         final List<PaymentDto> results = paymentService.retrieve(paymentFilter, pageRequest, httpResponse);
         assertEquals(paymentDtos, results);
-        assertEquals("6", httpResponse.getHeader("page-count"));
-        assertEquals("1", httpResponse.getHeader("page-number"));
-        assertEquals("6", httpResponse.getHeader("page-size"));
+        assertEquals("6", httpResponse.getHeader(PAGE_COUNT));
+        assertEquals("1", httpResponse.getHeader(PAGE_NUMBER));
+        assertEquals("6", httpResponse.getHeader(PAGE_SIZE));
 
         final PaymentSpecification specification = new PaymentSpecification(paymentFilter);
         verify(paymentRepository).findAll(specification, pageRequest);
 
-    }
-
-    private PaymentFilter createPaymentFilter(String userId) {
-
-        final PaymentFilter paymentFilter = new PaymentFilter();
-        paymentFilter.setUserId(userId);
-        return paymentFilter;
     }
 
     private Payment createPayment(String paymentId)
@@ -148,12 +137,5 @@ public class PaymentServiceTest {
         final Payment payment = new Payment();
         payment.setId(paymentId);
         return payment;
-    }
-
-    private PaymentDto createPaymentDto(String paymentDtoId)
-    {
-        final PaymentDto paymentDto = new PaymentDto();
-        paymentDto.setId(paymentDtoId);
-        return paymentDto;
     }
 }

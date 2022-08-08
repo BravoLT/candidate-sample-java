@@ -21,8 +21,6 @@ public class PaymentController {
 
     private final UserValidator userValidator;
     private final PaymentService paymentService;
-    private static final Logger LOGGER =
-            LoggerFactory.getLogger(PaymentController.class);
 
     public PaymentController(
             UserValidator userValidator,
@@ -32,28 +30,19 @@ public class PaymentController {
         this.paymentService = paymentService;
     }
 
-    /*
-        Included a Get for direct retrieve by UserId, and
-        a Post with a filter for possible future expansion
-        of the code, making it more robust and easy to
-        add to the code down the line. E. Erwin
-     */
     @GetMapping(value = "/retrieve")
     @ResponseBody
     public List<PaymentDto> retrieve(
-            final @RequestParam(required = false) String userId,
+            final @RequestParam String userId,
             final @RequestParam(required = false) Integer page,
             final @RequestParam(required = false) Integer size,
             final HttpServletResponse httpResponse
     ){
-        if(userId != null) {
-            userValidator.validateId(userId);
-            final PageRequest pageRequest = PageUtil.createPageRequest(page, size);
-            return paymentService.retrievePaymentByUserId(userId, pageRequest, httpResponse);
-        } else {
-            throw new BadRequestException("'userId' is required!");
-        }
+        userValidator.validateId(userId);
+        final PageRequest pageRequest = PageUtil.createPageRequest(page, size);
+        return paymentService.retrievePaymentByUserId(userId, pageRequest, httpResponse);
     }
+
     @PostMapping(value = "/retrieve")
     @ResponseBody
     public List<PaymentDto> retrieve(
@@ -62,9 +51,7 @@ public class PaymentController {
             final @RequestParam(required = false) Integer size,
             final HttpServletResponse httpResponse
     ){
-        LOGGER.info("Request to retrieve payment information being conducted...");
         final PageRequest pageRequest = PageUtil.createPageRequest(page, size);
         return paymentService.retrieve(filter, pageRequest, httpResponse);
     }
-
 }
