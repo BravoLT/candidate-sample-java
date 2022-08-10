@@ -2,12 +2,15 @@ package com.bravo.user.model.dto;
 
 import java.time.LocalDateTime;
 
-import com.bravo.user.dao.model.Payment;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Data
+@Builder
 @NoArgsConstructor
+@AllArgsConstructor
 public class PaymentDto {
 
   private String id;
@@ -16,10 +19,4 @@ public class PaymentDto {
   private Integer expiryMonth;
   private Integer expiryYear;
   private LocalDateTime updated;
-
-  public PaymentDto(final String id) {
-    this();
-    this.id = id;
-  }
-
 }

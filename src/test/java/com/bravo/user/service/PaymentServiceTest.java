@@ -22,7 +22,6 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 import javax.servlet.http.HttpServletResponse;
 import java.util.List;
 import java.util.stream.Collectors;
-import java.util.stream.IntStream;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
@@ -50,20 +49,17 @@ public class PaymentServiceTest {
 
     @BeforeEach
     public void beforeEach() {
-        final List<Integer> ids = IntStream
-                .range(1,6)
-                .boxed()
-                .collect(Collectors.toList());
+        final List<Integer> ids = List.of(1, 2, 3, 4, 5, 6);
 
         this.paymentFilter = new PaymentFilter("1");
 
         this.paymentDtos = ids.stream()
-                .map(id -> new PaymentDto(Integer.toString(id)))
+                .map(id -> PaymentDto.builder().id(Integer.toString(id)).build())
                 .collect(Collectors.toList());
         when(resourceMapper.convertPayments(anyList())).thenReturn(paymentDtos);
 
         final List<Payment> payments = ids.stream()
-                .map(id -> createPayment(id.toString()))
+                .map(id -> new Payment(id.toString()))
                 .collect(Collectors.toList());
 
         final Page<Payment> mockPage = mock(Page.class);
@@ -115,7 +111,6 @@ public class PaymentServiceTest {
 
         final PaymentSpecification specification = new PaymentSpecification(paymentFilter);
         verify(paymentRepository).findAll(specification, pageRequest);
-
     }
 
     @Test
@@ -129,13 +124,5 @@ public class PaymentServiceTest {
 
         final PaymentSpecification specification = new PaymentSpecification(paymentFilter);
         verify(paymentRepository).findAll(specification, pageRequest);
-
-    }
-
-    private Payment createPayment(String paymentId)
-    {
-        final Payment payment = new Payment();
-        payment.setId(paymentId);
-        return payment;
     }
 }

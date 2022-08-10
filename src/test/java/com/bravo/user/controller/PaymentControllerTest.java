@@ -54,7 +54,7 @@ public class PaymentControllerTest {
     public void beforeEach(){
         this.payments = IntStream
                 .range(1,6)
-                .mapToObj(id -> new PaymentDto(Integer.toString(id)))
+                .mapToObj(id -> PaymentDto.builder().id(Integer.toString(id)).build())
                 .collect(Collectors.toList());
 
         this.paymentFilter = new PaymentFilter("1");

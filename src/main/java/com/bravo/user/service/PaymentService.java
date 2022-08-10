@@ -44,7 +44,7 @@ public class PaymentService {
             final PageRequest pageRequest,
             final HttpServletResponse httpResponse
     ){
-        LOGGER.info("Request to retrieve payment information being conducted... paymentFilter: {}", filter);
+        LOGGER.trace("Request to retrieve payment information being conducted... paymentFilter: {}", filter);
         final PaymentSpecification specification = new PaymentSpecification(filter);
         final Page<Payment> paymentPage = paymentRepository.findAll(specification,pageRequest);
         final List<PaymentDto> payments = resourceMapper.convertPayments(paymentPage.getContent());

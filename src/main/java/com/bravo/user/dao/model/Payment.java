@@ -6,6 +6,8 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
+
+import lombok.Builder;
 import lombok.Data;
 
 @Entity
@@ -36,5 +38,10 @@ public class Payment {
     super();
     this.id = UUID.randomUUID().toString();
     this.updated = LocalDateTime.now();
+  }
+
+  public Payment(final String id) {
+    super();
+    this.id = id;
   }
 }
