@@ -44,11 +44,11 @@ public class PaymentService {
             final PageRequest pageRequest,
             final HttpServletResponse httpResponse
     ){
-        LOGGER.trace("Request to retrieve payment information being conducted... paymentFilter: {}", filter);
+        LOGGER.debug("Request to retrieve payment information being conducted... paymentFilter: {}", filter);
         final PaymentSpecification specification = new PaymentSpecification(filter);
         final Page<Payment> paymentPage = paymentRepository.findAll(specification,pageRequest);
         final List<PaymentDto> payments = resourceMapper.convertPayments(paymentPage.getContent());
-        LOGGER.info("Found {} payment(s)", payments.size());
+        LOGGER.debug("Found {} payment(s)", payments.size());
 
         PageUtil.updatePageHeaders(httpResponse, paymentPage, pageRequest);
         return payments;
