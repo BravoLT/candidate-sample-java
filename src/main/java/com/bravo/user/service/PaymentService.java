@@ -36,7 +36,7 @@ public class PaymentService {
             final PageRequest pageRequest,
             final HttpServletResponse httpResponse
     ){
-        return retrieve(new PaymentFilter(userId), pageRequest, httpResponse);
+        return retrieve(PaymentFilter.builder().userId(userId).build(), pageRequest, httpResponse);
     }
 
     public List<PaymentDto> retrieve(

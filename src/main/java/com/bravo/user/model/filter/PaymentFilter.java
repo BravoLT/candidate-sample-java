@@ -1,14 +1,13 @@
 package com.bravo.user.model.filter;
 
-import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.Value;
+import lombok.extern.jackson.Jacksonized;
 
-@Data
+@Value
 @Builder
-@AllArgsConstructor
-@NoArgsConstructor
+@Jacksonized
 public class PaymentFilter {
 
     private String userId;

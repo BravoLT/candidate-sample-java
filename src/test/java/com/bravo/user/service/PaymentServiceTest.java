@@ -51,7 +51,7 @@ public class PaymentServiceTest {
     public void beforeEach() {
         final List<Integer> ids = List.of(1, 2, 3, 4, 5, 6);
 
-        this.paymentFilter = new PaymentFilter("1");
+        this.paymentFilter =  PaymentFilter.builder().userId("1").build();
 
         this.paymentDtos = ids.stream()
                 .map(id -> PaymentDto.builder().id(Integer.toString(id)).build())
@@ -80,7 +80,7 @@ public class PaymentServiceTest {
         assertEquals("1", httpResponse.getHeader(PAGE_NUMBER));
         assertEquals("20", httpResponse.getHeader(PAGE_SIZE));
 
-        final PaymentFilter filter = new PaymentFilter(userId);
+        final PaymentFilter filter = PaymentFilter.builder().userId("1").build();
         final PaymentSpecification specification = new PaymentSpecification(filter);
         verify(paymentRepository).findAll(specification, pageRequest);
     }
@@ -95,7 +95,7 @@ public class PaymentServiceTest {
         assertEquals("1", httpResponse.getHeader(PAGE_NUMBER));
         assertEquals("6", httpResponse.getHeader(PAGE_SIZE));
 
-        final PaymentFilter filter = new PaymentFilter(userId);
+        final PaymentFilter filter = PaymentFilter.builder().userId(userId).build();
         final PaymentSpecification specification = new PaymentSpecification(filter);
         verify(paymentRepository).findAll(specification, pageRequest);
     }

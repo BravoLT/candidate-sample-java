@@ -57,7 +57,7 @@ public class PaymentControllerTest {
                 .mapToObj(id -> PaymentDto.builder().id(Integer.toString(id)).build())
                 .collect(Collectors.toList());
 
-        this.paymentFilter = new PaymentFilter("1");
+        this.paymentFilter = PaymentFilter.builder().userId("1").build();
     }
 
     @Test
