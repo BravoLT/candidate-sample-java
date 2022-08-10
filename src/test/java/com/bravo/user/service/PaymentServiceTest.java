@@ -59,7 +59,7 @@ public class PaymentServiceTest {
         when(resourceMapper.convertPayments(anyList())).thenReturn(paymentDtos);
 
         final List<Payment> payments = ids.stream()
-                .map(id -> new Payment(id.toString()))
+                .map(id -> Payment.builder().id(Integer.toString(id)).build())
                 .collect(Collectors.toList());
 
         final Page<Payment> mockPage = mock(Page.class);

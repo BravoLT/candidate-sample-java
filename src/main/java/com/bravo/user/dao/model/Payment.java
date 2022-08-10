@@ -7,10 +7,14 @@ import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 
 @Entity
 @Data
+@Builder
+@AllArgsConstructor
 @Table(name = "payment")
 public class Payment {
 
@@ -37,10 +41,5 @@ public class Payment {
     super();
     this.id = UUID.randomUUID().toString();
     this.updated = LocalDateTime.now();
-  }
-
-  public Payment(final String id) {
-    super();
-    this.id = id;
   }
 }
