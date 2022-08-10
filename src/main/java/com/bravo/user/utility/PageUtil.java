@@ -10,6 +10,9 @@ public class PageUtil {
 
   private static final int DEFAULT_SIZE = 20;
 
+  public static PageRequest createPageRequest() {
+    return createPageRequest(null, null);
+  }
   public static PageRequest createPageRequest(final Integer page, final Integer size){
     return createPageRequest(page, size, DEFAULT_SIZE);
   }

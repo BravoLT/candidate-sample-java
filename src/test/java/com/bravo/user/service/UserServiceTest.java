@@ -77,7 +77,7 @@ public class UserServiceTest {
   @Test
   public void retrieveByName() {
     final String input = "input";
-    final PageRequest pageRequest = PageUtil.createPageRequest(null, null);
+    final PageRequest pageRequest = PageUtil.createPageRequest();
     final List<UserReadDto> results = userService.retrieveByName(input, pageRequest, httpResponse);
     assertEquals(dtoUsers, results);
 	assertEquals("9", httpResponse.getHeader("page-count"));

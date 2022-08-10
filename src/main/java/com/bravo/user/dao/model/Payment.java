@@ -6,10 +6,15 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
+
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 
 @Entity
 @Data
+@Builder
+@AllArgsConstructor
 @Table(name = "payment")
 public class Payment {
 

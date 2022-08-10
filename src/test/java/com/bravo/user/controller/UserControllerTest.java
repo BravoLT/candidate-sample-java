@@ -41,7 +41,6 @@ class UserControllerTest {
 
   @Autowired
   private MockMvc mockMvc;
-
   @MockBean
   private UserService userService;
 
@@ -73,7 +72,7 @@ class UserControllerTest {
       result.andExpect(jsonPath(String.format("$[%d].id", i)).value(users.get(i).getId()));
     }
 
-    final PageRequest pageRequest = PageUtil.createPageRequest(null, null);
+    final PageRequest pageRequest = PageUtil.createPageRequest();
     verify(userService).retrieveByName(
         eq("lucy"), eq(pageRequest), any(HttpServletResponse.class)
     );
