@@ -43,7 +43,7 @@ class PaymentControllerTest {
   @BeforeEach
   public void beforeEach() {
     this.payments = IntStream.range(1, 10)
-        .mapToObj(id -> createPaymentDto(Integer.toString(id)))
+        .mapToObj(this::createPaymentDto)
         .collect(Collectors.toList());
   }
 
@@ -76,9 +76,9 @@ class PaymentControllerTest {
     this.mockMvc.perform(get("/payment/retrieve")).andExpect(status().isNotFound());
   }
 
-  private PaymentDto createPaymentDto(final String id) {
+  private PaymentDto createPaymentDto(final int id) {
     final PaymentDto payment = new PaymentDto();
-    payment.setId(id);
+    payment.setId(Integer.toString(id));
     return payment;
   }
 

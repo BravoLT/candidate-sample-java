@@ -42,13 +42,13 @@ class PaymentServiceTest {
   @BeforeEach
   public void beforeEach() {
     final List<Payment> daoPayments = IntStream.range(1, 10)
-        .mapToObj(id -> createPayment(Integer.toString(id)))
+        .mapToObj(this::createPayment)
         .collect(Collectors.toList());
 
     when(paymentRepository.findByUserId(anyString())).thenReturn(daoPayments);
 
     this.dtoPayments = daoPayments.stream()
-        .map(payment -> createPaymentDto(payment.getId()))
+        .map(this::createPaymentDto)
         .collect(Collectors.toList());
 
     when(resourceMapper.convertPayments(daoPayments)).thenReturn(dtoPayments);
@@ -63,16 +63,16 @@ class PaymentServiceTest {
     verify(paymentRepository).findByUserId(userId);
   }
 
-  private Payment createPayment(final String id) {
+  private Payment createPayment(final int id) {
     final Payment payment = new Payment();
-    payment.setId(id);
+    payment.setId(Integer.toString(id));
     return payment;
   }
 
-  private PaymentDto createPaymentDto(final String id) {
-    final PaymentDto payment = new PaymentDto();
-    payment.setId(id);
-    return payment;
+  private PaymentDto createPaymentDto(final Payment payment) {
+    final PaymentDto paymentDta = new PaymentDto();
+    paymentDta.setId(payment.getId());
+    return paymentDta;
   }
 
 }
