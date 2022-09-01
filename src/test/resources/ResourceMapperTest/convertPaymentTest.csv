@@ -1,0 +1,30 @@
+>{
+  "id":"testId",
+  "userId":"testUserId",
+  "cardNumber":"3570643196366822",
+  "expiryMonth":"02",
+  "expiryYear":"2024",
+  "updated":"2022-04-13 12:00:00"
+}
+${
+  "id":"testId",
+  "cardNumberLast4":"6822",
+  "expiryMonth":"02",
+  "expiryYear":"2024",
+  "updated":"2022-04-13 12:00:00"
+}
+>{
+  "id":"testId",
+  "userId":"testUserId",
+  "cardNumber":"30353997949251",
+  "expiryMonth":"09",
+  "expiryYear":"2023",
+  "updated":"2022-08-17 12:00:00"
+}
+${
+  "id":"testId",
+  "cardNumberLast4":"9251",
+  "expiryMonth":"09",
+  "expiryYear":"2023",
+  "updated":"2022-08-17 12:00:00"
+}
