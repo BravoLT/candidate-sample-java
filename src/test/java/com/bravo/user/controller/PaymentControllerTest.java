@@ -32,29 +32,24 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @AutoConfigureMockMvc
 class PaymentControllerTest {
 
-	@Autowired
-	private MockMvc mockMvc;
+  @Autowired
+  private MockMvc mockMvc;
 
-	@MockBean
-	private PaymentService paymentService;
+  @MockBean
+  private PaymentService paymentService;
 
-	private List<PaymentDto> payments;
+  private List<PaymentDto> payments;
 
-	@BeforeEach
-	public void beforeEach() {
-    final List<Integer> ids = IntStream
-        .range(1, 10)
-        .boxed()
-        .collect(Collectors.toList());
-
-    this.payments = ids.stream()
-        .map(id -> createPaymentDto(Integer.toString(id)))
+  @BeforeEach
+  public void beforeEach() {
+    this.payments = IntStream.range(1, 10)
+        .mapToObj(id -> createPaymentDto(Integer.toString(id)))
         .collect(Collectors.toList());
   }
 
-	@Test
-	void getRetrieveByUserId() throws Exception {
-		final String userId = "123a-456b";
+  @Test
+  void getRetrieveByUserId() throws Exception {
+    final String userId = "123a-456b";
 
     when(paymentService
         .retrieveByUserId(anyString()))
@@ -64,27 +59,27 @@ class PaymentControllerTest {
         .perform(get("/payment/retrieve/".concat(userId)))
         .andExpect(status().isOk());
 
-    for(int i = 0; i < payments.size(); i++) {
-			result.andExpect(jsonPath(String.format("$[%d].id", i)).value(payments.get(i).getId()));
-		}
+    for(int i = 0; i < payments.size(); i++){
+      result.andExpect(jsonPath(String.format("$[%d].id", i)).value(payments.get(i).getId()));
+    }
 
-		verify(paymentService).retrieveByUserId(userId);
-	}
+    verify(paymentService).retrieveByUserId(userId);
+  }
 
-	@Test
-	void getRetrieveByUserId_Space() throws Exception {
-		this.mockMvc.perform(get("/payment/retrieve/ /")).andExpect(status().isBadRequest());
-	}
+  @Test
+  void getRetrieveByUserId_Space() throws Exception {
+    this.mockMvc.perform(get("/payment/retrieve/ /")).andExpect(status().isBadRequest());
+  }
 
-	@Test
-	void getRetrieveByUserId_Missing() throws Exception {
-		this.mockMvc.perform(get("/payment/retrieve")).andExpect(status().isNotFound());
-	}
+  @Test
+  void getRetrieveByUserId_Missing() throws Exception {
+    this.mockMvc.perform(get("/payment/retrieve")).andExpect(status().isNotFound());
+  }
 
-	private PaymentDto createPaymentDto(final String id) {
-		final PaymentDto payment = new PaymentDto();
-		payment.setId(id);
-		return payment;
-	}
+  private PaymentDto createPaymentDto(final String id) {
+    final PaymentDto payment = new PaymentDto();
+    payment.setId(id);
+    return payment;
+  }
 
 }

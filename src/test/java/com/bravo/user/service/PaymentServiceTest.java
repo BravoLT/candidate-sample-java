@@ -28,56 +28,51 @@ import static org.mockito.Mockito.when;
 @SpringBootTest
 class PaymentServiceTest {
 
-	@Autowired
-	private PaymentService paymentService;
+  @Autowired
+  private PaymentService paymentService;
 
-	@MockBean
-	private ResourceMapper resourceMapper;
+  @MockBean
+  private ResourceMapper resourceMapper;
 
-	@MockBean
-	private PaymentRepository paymentRepository;
+  @MockBean
+  private PaymentRepository paymentRepository;
 
-	private List<PaymentDto> dtoPayments;
+  private List<PaymentDto> dtoPayments;
 
-	@BeforeEach
-	public void beforeEach() {
-		final List<Integer> ids = IntStream
-        .range(1, 10)
-        .boxed()
+  @BeforeEach
+  public void beforeEach() {
+    final List<Payment> daoPayments = IntStream.range(1, 10)
+        .mapToObj(id -> createPayment(Integer.toString(id)))
         .collect(Collectors.toList());
 
-		final List<Payment> daoPayments = ids.stream()
-				.map(id -> createPayment(Integer.toString(id)))
+    when(paymentRepository.findByUserId(anyString())).thenReturn(daoPayments);
+
+    this.dtoPayments = daoPayments.stream()
+        .map(payment -> createPaymentDto(payment.getId()))
         .collect(Collectors.toList());
 
-		when(paymentRepository.findByUserId(anyString())).thenReturn(daoPayments);
+    when(resourceMapper.convertPayments(daoPayments)).thenReturn(dtoPayments);
+  }
 
-		this.dtoPayments = ids.stream()
-        .map(id -> createPaymentDto(Integer.toString(id)))
-				.collect(Collectors.toList());
+  @Test
+  void retrieveByUserId() {
+    final String userId = "123a-456b";
+    final List<PaymentDto> results = paymentService.retrieveByUserId(userId);
+    assertEquals(dtoPayments, results);
 
-		when(resourceMapper.convertPayments(daoPayments)).thenReturn(dtoPayments);
-	}
+    verify(paymentRepository).findByUserId(userId);
+  }
 
-	@Test
-	void retrieveByUserId() {
-		final String userId = "123a-456b";
-		final List<PaymentDto> results = paymentService.retrieveByUserId(userId);
-		assertEquals(dtoPayments, results);
+  private Payment createPayment(final String id) {
+    final Payment payment = new Payment();
+    payment.setId(id);
+    return payment;
+  }
 
-		verify(paymentRepository).findByUserId(userId);
-	}
-
-	private Payment createPayment(final String id) {
-		final Payment payment = new Payment();
-		payment.setId(id);
-		return payment;
-	}
-
-	private PaymentDto createPaymentDto(final String id) {
-		final PaymentDto payment = new PaymentDto();
-		payment.setId(id);
-		return payment;
-	}
+  private PaymentDto createPaymentDto(final String id) {
+    final PaymentDto payment = new PaymentDto();
+    payment.setId(id);
+    return payment;
+  }
 
 }
