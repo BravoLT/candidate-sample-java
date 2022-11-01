@@ -8,7 +8,6 @@
 }
 ${
     "id":"testId",
-    "userId":"testId1",
     "cardNumberLast4":"3456",
     "expiryMonth":"12",
     "expiryYear":"25",
