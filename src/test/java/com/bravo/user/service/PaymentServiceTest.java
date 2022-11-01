@@ -72,7 +72,4 @@ public class PaymentServiceTest {
         payment.setId(id);
         return payment;
     }
-
-
-
 }
