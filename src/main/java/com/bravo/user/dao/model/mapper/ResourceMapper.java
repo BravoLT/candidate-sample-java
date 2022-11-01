@@ -48,7 +48,7 @@ public class ResourceMapper {
   public PaymentDto convertPayment(final Payment payment){
     final String cardNumber = payment.getCardNumber();
     final PaymentDto dto = mapperFacade.map(payment, PaymentDto.class);
-    dto.setCardNumberLast4(cardNumber.substring(cardNumber.length() - 5));
+    dto.setCardNumberLast4(cardNumber.substring(cardNumber.length() - 4));
     return dto;
   }
 
