@@ -16,6 +16,8 @@ import com.bravo.user.dao.model.Address;
 import com.bravo.user.dao.model.User;
 import com.bravo.user.model.dto.AddressDto;
 import com.bravo.user.model.dto.UserReadDto;
+import com.bravo.user.dao.model.Payment;
+import com.bravo.user.model.dto.PaymentDto;
 
 @ContextConfiguration(classes = {App.class})
 @ExtendWith(SpringExtension.class)
@@ -47,5 +49,16 @@ class ResourceMapperTest {
 			@ConvertWith(MapperArgConverter.class) Address address,
 			@ConvertWith(MapperArgConverter.class) AddressDto addressDto) {
 		Assertions.assertEquals(addressDto, resourceMapper.convertAddress(address));
+	}
+
+	@ParameterizedTest
+	@CsvFileSource(
+			resources = ("/ResourceMapperTest/convertPaymentTest.csv"),
+			delimiter = '$',
+			lineSeparator = ">")
+	void convertPaymentTest(
+			@ConvertWith(MapperArgConverter.class) Payment payment,
+			@ConvertWith(MapperArgConverter.class) PaymentDto paymentDto) {
+	  Assertions.assertEquals(paymentDto, resourceMapper.convertPayment(payment));
 	}
 }
