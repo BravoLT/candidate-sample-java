@@ -3,6 +3,14 @@ drop table if exists payment cascade;
 drop table if exists profile cascade;
 drop table if exists user cascade;
 
+create table user (
+    id varchar(60) primary key,
+    first_name varchar(100) not null,
+    middle_name varchar(100) null,
+    last_name varchar(100) not null,
+    phone_number varchar(10) not null,
+    updated timestamp not null default current_timestamp()
+);
 
 create table address (
     id varchar(60) primary key,
@@ -33,14 +41,7 @@ create table profile (
     updated timestamp not null default current_timestamp()
 );
 
-create table user (
-    id varchar(60) primary key,
-    first_name varchar(100) not null,
-    middle_name varchar(100) null,
-    last_name varchar(100) not null,
-    phone_number varchar(10) not null,
-    updated timestamp not null default current_timestamp()
-);
+
 
 insert into user (id, first_name, middle_name, last_name, phone_number) values
 ('008a4215-0b1d-445e-b655-a964039cbb5a', 'Joyce', 'Lucas', 'Roberts', '6422107303'),
@@ -648,3 +649,9 @@ insert into address (id, user_id, line1, line2, city, state, zip) values
 ('42f33d30-f3f8-4743-a94e-4db11fdb747d', '008a4215-0b1d-445e-b655-a964039cbb5a', '412 Maple St', null, 'Dowagiac', 'Michigan', '49047'),
 ('579872ec-46f8-46b5-b809-d0724d965f0e', '00963d9b-f884-485e-9455-fcf30c6ac379', '237 Mountain Ter', 'Apt 10', 'Odenville', 'Alabama', '35120'),
 ('95a983d0-ba0e-4f30-afb6-667d4724b253', '00963d9b-f884-485e-9455-fcf30c6ac379', '107 Annettes Ct', null, 'Aydlett', 'North Carolina', '27916');
+
+--insert into payment (id, user_id, card_number, expiry_month, expiry_year) values
+--('4a922ec4-78ab-44de-af8e-a5d72ae6863d', '008a4215-0b1d-445e-b655-a964039cbb5a', '1111', 10, 2023),
+--('88d50b52-c622-4a65-8bde-ad6b36b89b6e', '008a4215-0b1d-445e-b655-a964039cbb5a', '1111', 10, 2023);
+
+
