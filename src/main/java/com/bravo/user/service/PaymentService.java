@@ -5,7 +5,7 @@ import com.bravo.user.dao.repository.PaymentRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
+import java.util.List;
 
 @Service
 public class PaymentService {
@@ -17,7 +17,7 @@ public class PaymentService {
     private UserService userService;
 
 
-    public ArrayList<Payment> getUserPayments(String userId) {
+    public List<Payment> getUserPayments(String userId) {
         return paymentRepository.findAllByUserId(userId);
     }
 }

@@ -9,13 +9,11 @@ import javax.persistence.*;
 import lombok.Data;
 
 @Entity
-@Data
 @Table(name = "user")
 public class User {
 
   @Id
   @Column(name = "id")
-  @GeneratedValue(strategy = GenerationType.IDENTITY)
   private String id;
 
   @Column(name = "first_name", nullable = false)
@@ -34,11 +32,11 @@ public class User {
   private LocalDateTime updated;
 
   @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-  @JoinColumn(name = "id")
+  @JoinColumn(name = "address_id")
   private List<Address> addresses;
 
   @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-  @JoinColumn(name = "id")
+  @JoinColumn(name ="payment_id")
   private List<Payment> payments;
 
   @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY, optional = false)

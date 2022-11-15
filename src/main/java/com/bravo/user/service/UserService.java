@@ -43,10 +43,11 @@ public class UserService {
   }
 
   public UserReadDto retrieve(final String id){
-    Optional<User> optional = userRepository.findById(id);
-    User user = getUser(id, optional);
+    User user = userRepository.findById(id).get();
+
 
     LOGGER.info("found user '{}'", id);
+    System.out.println(user.toString());
     return resourceMapper.convertUser(user);
   }
 

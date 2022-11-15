@@ -2,10 +2,8 @@ package com.bravo.user.dao.model;
 
 import java.time.LocalDateTime;
 import java.util.UUID;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
+
 import lombok.Data;
 
 @Entity
@@ -15,6 +13,7 @@ public class Payment {
 
   @Id
   @Column(name = "id")
+  @GeneratedValue(strategy = GenerationType.IDENTITY) // Auto increments ID upon creation
   private String id;
 
   @Column(name = "user_id", nullable = false)
