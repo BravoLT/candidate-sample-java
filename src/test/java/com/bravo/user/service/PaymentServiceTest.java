@@ -3,6 +3,7 @@ package com.bravo.user.service;
 import com.bravo.user.dao.model.Payment;
 import com.bravo.user.dao.model.User;
 import com.bravo.user.dao.model.mapper.ResourceMapper;
+import com.bravo.user.dao.repository.UserRepository;
 import com.bravo.user.model.dto.UserSaveDto;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,11 +19,10 @@ class PaymentServiceTest {
     private PaymentService paymentService;
 
     @Autowired
-    private UserService userService;
+    private UserRepository userRepository;
     @Autowired
     private ResourceMapper resourceMapper;
-    @Autowired
-    private UserSaveDto userSaveDto;
+
 
     @Test
    void getUserPayments() {
@@ -31,9 +31,11 @@ class PaymentServiceTest {
         testPayments.add(new Payment());
         testPayments.add(new Payment());
         //Set up a New User
-        User user = new User();
-        user.setPayments(testPayments);  // Set payments into User's Payment List
-        System.out.println(paymentService.getUserPayments(user.getId()));
+        User user = userRepository.save(new User(new UserSaveDto()));
+        user.setPayments(testPayments);
+
+        assertEquals(2, paymentService.getUserPayments(user.getId()).size());
+
 
     }
 }
