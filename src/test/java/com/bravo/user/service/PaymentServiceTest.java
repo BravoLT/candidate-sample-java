@@ -31,11 +31,17 @@ class PaymentServiceTest {
         testPayments.add(new Payment());
         testPayments.add(new Payment());
         //Set up a New User
-        User user = userRepository.save(new User(new UserSaveDto()));
+        User user = createUser("abcdefg12345");
         user.setPayments(testPayments);
-
+        userRepository.save(user);
         assertEquals(2, paymentService.getUserPayments(user.getId()).size());
 
 
+    }
+
+    private User createUser(final String id){
+        final User user = new User();
+        user.setId(id);
+        return user;
     }
 }

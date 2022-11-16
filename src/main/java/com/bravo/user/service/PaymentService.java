@@ -20,4 +20,8 @@ public class PaymentService {
     public List<Payment> getUserPayments(String userId) {
         return paymentRepository.findAllByUserId(userId);
     }
+
+    public Payment savePayment(Payment payment) {
+        return paymentRepository.save(payment);
+    }
 }
