@@ -18,9 +18,9 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
-import com.bravo.user.App;
+import com.bravo.App;
 import com.bravo.user.dao.model.Address;
-import com.bravo.user.dao.model.mapper.ResourceMapper;
+import com.bravo.common.dao.model.mapper.ResourceMapper;
 import com.bravo.user.dao.repository.AddressRepository;
 import com.bravo.user.model.dto.AddressDto;
 

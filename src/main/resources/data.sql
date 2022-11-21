@@ -24,6 +24,7 @@ create table payment (
     updated timestamp not null default current_timestamp()
 );
 
+-- TODO: REQUIREMENTS/bug - why is card_number unique? (most people would use the same card for multiple payments)
 create table profile (
     id varchar(60) primary key,
     user_id varchar(60) not null,
@@ -648,3 +649,17 @@ insert into address (id, user_id, line1, line2, city, state, zip) values
 ('42f33d30-f3f8-4743-a94e-4db11fdb747d', '008a4215-0b1d-445e-b655-a964039cbb5a', '412 Maple St', null, 'Dowagiac', 'Michigan', '49047'),
 ('579872ec-46f8-46b5-b809-d0724d965f0e', '00963d9b-f884-485e-9455-fcf30c6ac379', '237 Mountain Ter', 'Apt 10', 'Odenville', 'Alabama', '35120'),
 ('95a983d0-ba0e-4f30-afb6-667d4724b253', '00963d9b-f884-485e-9455-fcf30c6ac379', '107 Annettes Ct', null, 'Aydlett', 'North Carolina', '27916');
+
+insert into payment (id, user_id, card_number, expiry_month, expiry_year) values
+-- Elian Gibson
+('877ca9e9-d28b-4889-a086-7167785395fe', 'fd6d21f6-f1c2-473d-8ed7-f3f9c7550cc9', '1111222233334444', 1, 2025),
+('6d8bb16f-28b1-469b-8013-2f5a01e4b8da', 'fd6d21f6-f1c2-473d-8ed7-f3f9c7550cc9', '1111222233334445', 2, 2025),
+('65826d22-44e9-459c-80da-103a1f576500', 'fd6d21f6-f1c2-473d-8ed7-f3f9c7550cc9', '1111222233334446', 3, 2025),
+-- Carina Foster
+('321a076b-6338-4990-a665-ca5e724008da', 'fd9e22ef-20f1-4e1b-9f9e-3139fd13fa85', '2222333344445555', 1, 1000),
+('5c7648dc-7772-464c-a230-207187540a17', 'fd9e22ef-20f1-4e1b-9f9e-3139fd13fa85', '2222333344445556', 12, 2025),
+('3caa8fc4-f149-48fb-9e3c-53d8d05cd4d7', 'fd9e22ef-20f1-4e1b-9f9e-3139fd13fa85', '2222333344445557', 1, 3000),
+('d0c5763f-f04f-49b5-99b3-6d15c16c2b49', 'fd9e22ef-20f1-4e1b-9f9e-3139fd13fa85', '2222333344445558', 9, 2025),
+('0221dbb9-18a9-4283-9f0d-abeeeea511df', 'fd9e22ef-20f1-4e1b-9f9e-3139fd13fa85', '2222333344445559', 1, 2025),
+('85b8f646-ba75-462d-b915-ef06249d4ca1', 'fd9e22ef-20f1-4e1b-9f9e-3139fd13fa85', '9999000011112222', 5, 2025),
+('d754dd7a-bcdd-47ad-a262-ce7f2cca4c2b', 'fd9e22ef-20f1-4e1b-9f9e-3139fd13fa85', '9999000011112223', 13, 2025);

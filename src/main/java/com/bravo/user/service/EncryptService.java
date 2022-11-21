@@ -1,6 +1,5 @@
 package com.bravo.user.service;
 
-import com.bravo.user.utility.ValidatorUtil;
 import java.nio.charset.StandardCharsets;
 import java.security.InvalidKeyException;
 import java.security.MessageDigest;
@@ -29,6 +28,8 @@ public class EncryptService {
     configureKey();
   }
 
+  // TODO: Vulnerability - passwords, card numbers, and other short/predictable strings should be salted before storing
+  //       to DB... if used for such inputs, add it, or use an appropriate lib?
   public String encrypt(final String value){
     if(value == null){
       throw new IllegalArgumentException("'value' is invalid");

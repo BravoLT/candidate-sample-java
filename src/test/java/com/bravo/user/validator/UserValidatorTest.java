@@ -1,6 +1,6 @@
 package com.bravo.user.validator;
 
-import com.bravo.user.App;
+import com.bravo.App;
 import com.bravo.user.MapperArgConverter;
 import com.bravo.user.enumerator.Crud;
 import com.bravo.user.model.dto.UserSaveDto;

@@ -3,6 +3,7 @@ package com.bravo.user.model.filter;
 import java.time.LocalDateTime;
 import java.util.Set;
 
+import com.bravo.common.model.filter.DateFilter;
 import lombok.Builder;
 import lombok.Data;
 

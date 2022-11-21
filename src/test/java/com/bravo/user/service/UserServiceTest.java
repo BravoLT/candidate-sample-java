@@ -23,14 +23,14 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
-import com.bravo.user.App;
+import com.bravo.App;
 import com.bravo.user.dao.model.User;
-import com.bravo.user.dao.model.mapper.ResourceMapper;
+import com.bravo.common.dao.model.mapper.ResourceMapper;
 import com.bravo.user.dao.repository.UserRepository;
 import com.bravo.user.dao.specification.UserNameFuzzySpecification;
 import com.bravo.user.model.dto.UserReadDto;
 import com.bravo.user.model.filter.UserNameFuzzyFilter;
-import com.bravo.user.utility.PageUtil;
+import com.bravo.common.utility.PageUtil;
 
 @ContextConfiguration(classes = {App.class})
 @ExtendWith(SpringExtension.class)

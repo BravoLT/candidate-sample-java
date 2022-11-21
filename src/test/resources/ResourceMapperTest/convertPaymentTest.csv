@@ -1,0 +1,48 @@
+>{
+  "id":"testId",
+  "userId":"testUserId",
+  "cardNumber":"12345678",
+  "expiryMonth":"12",
+  "expiryYear":"2022",
+  "updated":"2021-07-12 12:00:00"
+}
+${
+  "id":"testId",
+  "userId":"testUserId",
+  "cardNumberLast4":"5678",
+  "expiryMonth":"12",
+  "expiryYear":"2022",
+  "updated":"2021-07-12 12:00:00"
+}
+>{
+  "id":"testId",
+  "userId":"testUserId",
+  "cardNumber":"1234567890123456",
+  "expiryMonth":"1",
+  "expiryYear":"2023",
+  "updated":"2021-07-12 12:00:00"
+}
+${
+  "id":"testId",
+  "userId":"testUserId",
+  "cardNumberLast4":"3456",
+  "expiryMonth":"1",
+  "expiryYear":"2023",
+  "updated":"2021-07-12 12:00:00"
+}
+>{
+  "id":"testId1",
+  "userId":"testUserId2",
+  "cardNumber":"12345678901234560099",
+  "expiryMonth":"4",
+  "expiryYear":"3000",
+  "updated":"2021-07-12 12:00:00"
+}
+${
+  "id":"testId1",
+  "userId":"testUserId2",
+  "cardNumberLast4":"0099",
+  "expiryMonth":"4",
+  "expiryYear":"3000",
+  "updated":"2021-07-12 12:00:00"
+}

@@ -1,5 +1,6 @@
 package com.bravo.user.dao.model;
 
+import com.bravo.payment.dao.model.Payment;
 import com.bravo.user.model.dto.UserSaveDto;
 import java.time.LocalDateTime;
 import java.util.List;

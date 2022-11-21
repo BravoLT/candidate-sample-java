@@ -7,7 +7,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import com.bravo.user.dao.model.Address;
-import com.bravo.user.dao.model.mapper.ResourceMapper;
+import com.bravo.common.dao.model.mapper.ResourceMapper;
 import com.bravo.user.dao.repository.AddressRepository;
 import com.bravo.user.model.dto.AddressDto;
 
