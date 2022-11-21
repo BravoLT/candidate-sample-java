@@ -1,5 +1,6 @@
 package com.bravo.user.dao.specification;
 
+import com.bravo.common.dao.specification.AbstractSpecification;
 import com.bravo.user.dao.model.User;
 import com.bravo.user.model.filter.UserFilter;
 import org.springframework.util.StringUtils;

@@ -1,7 +1,9 @@
 package com.bravo.user.service;
 
+import com.bravo.common.dao.model.mapper.ResourceMapper;
+import com.bravo.common.utility.PageUtil;
+import com.bravo.common.utility.ValidatorUtil;
 import com.bravo.user.dao.model.User;
-import com.bravo.user.dao.model.mapper.ResourceMapper;
 import com.bravo.user.dao.repository.UserRepository;
 import com.bravo.user.dao.specification.UserNameFuzzySpecification;
 import com.bravo.user.dao.specification.UserSpecification;
@@ -10,17 +12,16 @@ import com.bravo.user.model.dto.UserReadDto;
 import com.bravo.user.model.dto.UserSaveDto;
 import com.bravo.user.model.filter.UserFilter;
 import com.bravo.user.model.filter.UserNameFuzzyFilter;
-import com.bravo.user.utility.PageUtil;
-import com.bravo.user.utility.ValidatorUtil;
-import java.time.LocalDateTime;
-import java.util.List;
-import java.util.Optional;
-import javax.servlet.http.HttpServletResponse;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
+
+import javax.servlet.http.HttpServletResponse;
+import java.time.LocalDateTime;
+import java.util.List;
+import java.util.Optional;
 
 @Service
 public class UserService {

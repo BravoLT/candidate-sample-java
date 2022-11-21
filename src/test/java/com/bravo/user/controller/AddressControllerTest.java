@@ -23,7 +23,7 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
 
-import com.bravo.user.App;
+import com.bravo.App;
 import com.bravo.user.model.dto.AddressDto;
 import com.bravo.user.service.AddressService;
 

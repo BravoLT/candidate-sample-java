@@ -1,6 +1,7 @@
 package com.bravo.user.config;
 
-import com.bravo.user.App;
+import com.bravo.App;
+import com.bravo.config.AppConfig;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import ma.glasnost.orika.MapperFacade;
 import org.junit.jupiter.api.Assertions;

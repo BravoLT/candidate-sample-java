@@ -1,5 +1,6 @@
 package com.bravo.user.controller;
 
+import com.bravo.common.utility.ValidatorUtil;
 import com.bravo.user.annotation.SwaggerController;
 import com.bravo.user.enumerator.Crud;
 import com.bravo.user.exception.BadRequestException;
@@ -7,8 +8,7 @@ import com.bravo.user.model.dto.UserReadDto;
 import com.bravo.user.model.dto.UserSaveDto;
 import com.bravo.user.model.filter.UserFilter;
 import com.bravo.user.service.UserService;
-import com.bravo.user.utility.PageUtil;
-import com.bravo.user.utility.ValidatorUtil;
+import com.bravo.common.utility.PageUtil;
 import com.bravo.user.validator.UserValidator;
 import java.util.Collections;
 import java.util.List;

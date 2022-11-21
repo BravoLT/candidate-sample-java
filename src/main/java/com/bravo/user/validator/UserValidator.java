@@ -1,8 +1,9 @@
 package com.bravo.user.validator;
 
+import com.bravo.common.validator.CrudValidator;
 import com.bravo.user.exception.BadRequestException;
 import com.bravo.user.model.dto.UserSaveDto;
-import com.bravo.user.utility.ValidatorUtil;
+import com.bravo.common.utility.ValidatorUtil;
 import java.util.Objects;
 import org.springframework.stereotype.Component;
 import org.springframework.validation.Errors;
