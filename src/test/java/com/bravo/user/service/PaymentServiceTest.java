@@ -1,12 +1,9 @@
 package com.bravo.user.service;
 
 import com.bravo.user.App;
-import com.bravo.user.dao.model.Address;
 import com.bravo.user.dao.model.Payment;
 import com.bravo.user.dao.model.mapper.ResourceMapper;
-import com.bravo.user.dao.repository.AddressRepository;
 import com.bravo.user.dao.repository.PaymentRepository;
-import com.bravo.user.model.dto.AddressDto;
 import com.bravo.user.model.dto.PaymentDto;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
