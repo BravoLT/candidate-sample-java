@@ -42,9 +42,8 @@ class PaymentControllerTest {
 
 	@BeforeEach
 	public void beforeEach() {
-		final List<Integer> ids = IntStream.range(1, 10).boxed().collect(Collectors.toList());
-
-		this.payments = ids.stream().map(id -> createPaymentDto(Integer.toString(id)))
+		this.payments = IntStream.range(1, 10).boxed()
+				.map(id -> createPaymentDto(Integer.toString(id)))
 				.collect(Collectors.toList());
 	}
 
