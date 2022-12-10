@@ -68,6 +68,7 @@ public class PaymentServiceTest {
         when(userRepository.findById(anyString())).thenReturn(user);
 
         assertEquals(dtoPayments, results);
+        verify(userRepository).findById(userId);
         verify(paymentRepository).findByUserId(userId);
     }
 
@@ -78,6 +79,7 @@ public class PaymentServiceTest {
         when(userRepository.findById(anyString())).thenReturn(Optional.empty());
 
         assertThrows(DataNotFoundException.class, () -> paymentService.retrieveByUserId(userId));
+        verify(userRepository).findById(userId);
     }
 
     private PaymentDto createPaymentDto(final String id) {
