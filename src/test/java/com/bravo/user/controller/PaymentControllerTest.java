@@ -7,6 +7,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
@@ -24,6 +25,7 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
 
 import com.bravo.user.App;
+import com.bravo.user.exception.DataNotFoundException;
 import com.bravo.user.model.dto.PaymentDto;
 import com.bravo.user.service.PaymentService;
 
@@ -43,7 +45,10 @@ public class PaymentControllerTest {
 
     @BeforeEach
     public void beforeEach() {
-        final List<Integer> ids = IntStream.range(1, 10).boxed().collect(Collectors.toList());
+        final List<Integer> ids = new ArrayList<Integer>();
+
+        for (int i = 0; i < 10; i++) ids.add(i);
+
         this.dtoPayments = ids.stream().map(id -> createPaymentDto(Integer.toString(id))).collect(Collectors.toList());
     }
 

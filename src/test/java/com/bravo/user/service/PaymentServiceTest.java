@@ -6,6 +6,7 @@ import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
@@ -50,7 +51,10 @@ public class PaymentServiceTest {
 
     @BeforeEach
     public void beforeEach() {
-        final List<Integer> ids = IntStream.range(1, 10).boxed().collect(Collectors.toList());
+        final List<Integer> ids = new ArrayList<Integer>();
+
+        for (int i = 0; i < 10; i++) ids.add(i);
+
         final List<Payment> daoPayments = ids.stream().map(id -> createPaymentDao(Integer.toString(id))).collect(Collectors.toList()); 
 
         this.dtoPayments = ids.stream().map(id -> createPaymentDto(Integer.toString(id))).collect(Collectors.toList());
