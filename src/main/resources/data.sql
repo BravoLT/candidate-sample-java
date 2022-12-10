@@ -648,3 +648,10 @@ insert into address (id, user_id, line1, line2, city, state, zip) values
 ('42f33d30-f3f8-4743-a94e-4db11fdb747d', '008a4215-0b1d-445e-b655-a964039cbb5a', '412 Maple St', null, 'Dowagiac', 'Michigan', '49047'),
 ('579872ec-46f8-46b5-b809-d0724d965f0e', '00963d9b-f884-485e-9455-fcf30c6ac379', '237 Mountain Ter', 'Apt 10', 'Odenville', 'Alabama', '35120'),
 ('95a983d0-ba0e-4f30-afb6-667d4724b253', '00963d9b-f884-485e-9455-fcf30c6ac379', '107 Annettes Ct', null, 'Aydlett', 'North Carolina', '27916');
+
+insert into payment (id, user_id, card_number, expiry_month, expiry_year) values
+('96bc3112-7753-11ed-a1eb-0242ac120002', '008a4215-0b1d-445e-b655-a964039cbb5a', '1234567890123456', '01', '2023'),
+('9d0b2230-7753-11ed-a1eb-0242ac120002', '00963d9b-f884-485e-9455-fcf30c6ac379', '0987654321098765', '07', '2025'),
+('a1c8c7fa-7753-11ed-a1eb-0242ac120002', 'fd6d21f6-f1c2-473d-8ed7-f3f9c7550cc9', '1234246835790987', '08', '2024'),
+('39d95670-7756-11ed-a1eb-0242ac120002', 'fd6d21f6-f1c2-473d-8ed7-f3f9c7550cc9', '3691232465796801', '08', '2024'),
+('410e0df0-7756-11ed-a1eb-0242ac120002', 'fd6d21f6-f1c2-473d-8ed7-f3f9c7550cc9', '1234509876123450', '08', '2024');
