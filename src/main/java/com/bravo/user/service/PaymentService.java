@@ -3,11 +3,19 @@ package com.bravo.user.service;
 import com.bravo.user.dao.model.Payment;
 import com.bravo.user.dao.model.mapper.ResourceMapper;
 import com.bravo.user.dao.repository.PaymentRepository;
+import com.bravo.user.dao.specification.PaymentSpecification;
 import com.bravo.user.model.dto.PaymentDto;
+import com.bravo.user.utility.PageUtil;
+
 import java.util.List;
+
+import javax.servlet.http.HttpServletResponse;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
+import org.springframework.data.domain.Page;
 
 @Service
 public class PaymentService {
@@ -22,10 +30,13 @@ public class PaymentService {
     this.resourceMapper = resourceMapper;
   }
 
-  public List<PaymentDto> retrieveByUserId(final String userId) {
-		final List<Payment> paymentList = paymentRepository.findByUserId(userId);
-		LOGGER.info("found {} payment(s)", paymentList.size());
+  public List<PaymentDto> retrieveByUserId(final String userId, final PageRequest pageRequest, HttpServletResponse httpResponse) {
+    final PaymentSpecification specification = new PaymentSpecification(userId);
+    final Page<Payment> paymentPage = paymentRepository.findAll(specification, pageRequest);
+    final List<PaymentDto> payments = resourceMapper.convertPayments(paymentPage.getContent());
 
-		return resourceMapper.convertPayments(paymentList);
+    LOGGER.info("found {} payment(s)", payments.size());
+    PageUtil.updatePageHeaders(httpResponse, paymentPage, pageRequest);
+    return payments;
 	}
 }

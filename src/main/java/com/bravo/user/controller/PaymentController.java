@@ -3,11 +3,13 @@ package com.bravo.user.controller;
 import com.bravo.user.annotation.SwaggerController;
 import com.bravo.user.model.dto.PaymentDto;
 import com.bravo.user.service.PaymentService;
+import com.bravo.user.utility.PageUtil;
 import com.bravo.user.validator.UserValidator;
 
 import java.util.List;
 import javax.servlet.http.HttpServletResponse;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -34,6 +36,7 @@ public class PaymentController {
       final HttpServletResponse httpResponse
   ) {
     userValidator.validateId(userId);
-    return paymentService.retrieveByUserId(userId);
+    final PageRequest pageRequest = PageUtil.createPageRequest(page, size);
+    return paymentService.retrieveByUserId(userId, pageRequest, httpResponse);
   }
 }
