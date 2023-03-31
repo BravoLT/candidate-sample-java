@@ -1,17 +1,6 @@
 package com.bravo.user.controller;
 
-import static org.mockito.ArgumentMatchers.anyString;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
-
-import java.util.List;
-import java.util.stream.Collectors;
-import java.util.stream.IntStream;
-
-import com.bravo.user.dao.model.Payment;
+import com.bravo.user.App;
 import com.bravo.user.model.dto.PaymentDto;
 import com.bravo.user.service.PaymentService;
 import org.junit.jupiter.api.BeforeEach;
@@ -26,9 +15,18 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
 
-import com.bravo.user.App;
+import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 
-@ContextConfiguration(classes = { App.class })
+import static org.mockito.ArgumentMatchers.anyString;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+
+@ContextConfiguration(classes = {App.class})
 @ExtendWith(SpringExtension.class)
 @SpringBootTest()
 @AutoConfigureMockMvc
