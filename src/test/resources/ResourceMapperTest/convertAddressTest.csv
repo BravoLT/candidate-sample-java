@@ -1,5 +1,5 @@
 >{
-  "id":"testId1",
+  "id":"testId",
   "user_id":"testUserId1",
   "line1":"123 Main Rd",
   "line2":"Apt 3",
@@ -9,7 +9,7 @@
   "updated":"2021-07-12 12:00:00"
 }
 ${
-  "id":"testId1",
+  "id":"testId",
   "address":"123 Main Rd Apt 3 Cityville, Alabama, 54321",
   "line1":"123 Main Rd",
   "line2":"Apt 3",
@@ -19,7 +19,7 @@ ${
   "updated":"2021-07-12 12:00:00"
 }
 >{
-  "id":"testId2",
+  "id":"testId",
   "user_id":"testUserId2",
   "line1":"123 Main Rd",
   "line2":null,
@@ -29,7 +29,7 @@ ${
   "updated":"2021-07-12 12:00:00"
 }
 ${
-  "id":"testId2",
+  "id":"testId",
   "address":"123 Main Rd Cityville, Alabama, 54321",
   "line1":"123 Main Rd",
   "line2":null,
