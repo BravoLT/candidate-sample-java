@@ -36,6 +36,10 @@ create table  if not exists users (
     updated timestamp not null default current_timestamp()
 );
 
+TRUNCATE TABLE users RESTART IDENTITY;
+
+TRUNCATE TABLE address RESTART IDENTITY;
+
 insert into users (id, first_name, middle_name, last_name, phone_number) values
 ('008a4215-0b1d-445e-b655-a964039cbb5a', 'Joyce', 'Lucas', 'Roberts', '6422107303'),
 ('00963d9b-f884-485e-9455-fcf30c6ac379', 'Cadie', 'Albert', 'Hall', '2072310564'),
