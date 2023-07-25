@@ -4,15 +4,16 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 
-import java.time.LocalDateTime;
-import java.util.Set;
+import java.io.Serial;
+import java.io.Serializable;
 import lombok.NoArgsConstructor;
 
 @Data
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class UserNameFuzzyFilter {
-
+public class UserNameFuzzyFilter implements Serializable {
+  @Serial
+  private static final long serialVersionUID = 2405172041950251807L;
   private String name;
 }

@@ -9,9 +9,17 @@ spring:
     password: ${DB_PASSWORD:password}
     username: ${DB_USERNAME:sa}
     url: ${DB_URL:jdbc:h2:mem:testdb}
-  h2.console.enabled: false
+  h2.console.enabled: true
   jpa:
+    hibernate:
+      ddl-auto: none
     database-platform: ${DB_DIALECT:org.hibernate.dialect.H2Dialect}
     properties.hibernate:
       format_sql: true
       show_sql: ${SHOW_SQL:true}
+springdoc:
+  api-docs:
+    path: /api-docs
+  swagger-ui:
+    path: /swagger-ui.html
+    enabled: true

@@ -18,6 +18,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.servlet.MockMvc;
@@ -30,6 +31,7 @@ import com.bravo.user.service.AddressService;
 @ContextConfiguration(classes = { App.class })
 @ExtendWith(SpringExtension.class)
 @SpringBootTest()
+@DirtiesContext
 @AutoConfigureMockMvc
 class AddressControllerTest {
 
@@ -43,7 +45,7 @@ class AddressControllerTest {
 
 	@BeforeEach
 	public void beforeEach() {
-		final List<Integer> ids = IntStream.range(1, 10).boxed().collect(Collectors.toList());
+		final List<Integer> ids = IntStream.range(1, 10).boxed().toList();
 
 		this.addresses = ids.stream().map(id -> createAddressDto(Integer.toString(id)))
 				.collect(Collectors.toList());
@@ -67,7 +69,7 @@ class AddressControllerTest {
 
 	@Test
 	void getRetrieveByUserId_Space() throws Exception {
-		this.mockMvc.perform(get("/address/retrieve/ /")).andExpect(status().isBadRequest());
+		this.mockMvc.perform(get("/address/retrieve/ /")).andExpect(status().isNotFound());
 	}
 
 	@Test

@@ -11,6 +11,7 @@ import org.junit.jupiter.params.converter.ConvertWith;
 import org.junit.jupiter.params.provider.CsvFileSource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.validation.BeanPropertyBindingResult;
@@ -20,8 +21,9 @@ import static org.junit.jupiter.api.Assertions.*;
 
 @ContextConfiguration(classes = {App.class})
 @ExtendWith(SpringExtension.class)
-@SpringBootTest
-public class UserValidatorTest {
+@DirtiesContext
+@SpringBootTest()
+class UserValidatorTest {
 
   @Autowired
   private UserValidator userValidator;
@@ -32,7 +34,7 @@ public class UserValidatorTest {
       delimiter = '$',
       lineSeparator = ">"
   )
-  public void validateCreate(
+  void validateCreate(
       @ConvertWith(MapperArgConverter.class) UserSaveDto userSaveDto,
       boolean isValid
   ) {
@@ -52,7 +54,7 @@ public class UserValidatorTest {
       delimiter = '$',
       lineSeparator = ">"
   )
-  public void validateUpdate(
+  void validateUpdate(
       @ConvertWith(MapperArgConverter.class) UserSaveDto userSaveDto,
       boolean isValid
   ) {

@@ -2,12 +2,8 @@ package com.bravo.user.dao.specification;
 
 import com.bravo.user.dao.model.User;
 import com.bravo.user.model.filter.UserFilter;
-import org.springframework.util.StringUtils;
 
-import javax.persistence.criteria.*;
-import java.util.Set;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
+import jakarta.persistence.criteria.*;
 
 public class UserSpecification extends AbstractSpecification<User> {
 
