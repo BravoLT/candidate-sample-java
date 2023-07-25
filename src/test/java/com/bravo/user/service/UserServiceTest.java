@@ -19,7 +19,6 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
-import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
@@ -34,7 +33,6 @@ import com.bravo.user.utility.PageUtil;
 
 @ContextConfiguration(classes = {App.class})
 @ExtendWith(SpringExtension.class)
-@DirtiesContext
 @SpringBootTest()
 class UserServiceTest {
 
