@@ -9,8 +9,8 @@ import org.springframework.context.annotation.Configuration;
 public class OpenApiConfig {
     @Bean
     public OpenAPI microserviceOpenAPI() {
-        return new OpenAPI().info(new Info().title("Your API Title")
-                .description("Your API Description")
+        return new OpenAPI().info(new Info().title("Candidate Java Sample")
+                .description("Candidate Java API")
                 .version("1.0"));
 
     }
