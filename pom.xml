@@ -11,7 +11,7 @@
     <groupId>org.springframework.boot</groupId>
     <artifactId>spring-boot-starter-parent</artifactId>
     <version>3.1.1</version>
-    <relativePath/> <!-- lookup parent from repository -->
+    <relativePath/>
   </parent>
 
   <properties>
@@ -77,21 +77,7 @@
       <version>8.0.24</version>
     </dependency>
 
-    <!-- orika -->
-    <dependency>
-      <groupId>ma.glasnost.orika</groupId>
-      <artifactId>orika-core</artifactId>
-      <version>1.5.4</version>
-    </dependency>
-
-    <dependency>
-      <groupId>fr.xebia.extras</groupId>
-      <artifactId>selma-processor</artifactId>
-      <version>1.0</version>
-      <scope>provided</scope>
-    </dependency>
-
-    <!-- https://mvnrepository.com/artifact/org.modelmapper/modelmapper -->
+    <!-- Model Mapping -->
     <dependency>
       <groupId>org.modelmapper</groupId>
       <artifactId>modelmapper</artifactId>
