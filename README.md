@@ -5,7 +5,7 @@ sample application to be used for candidate screening for validating java skills
 
 ## prerequisites
 
-* java 11
+* java 17
 * maven
 
 ## maven commands
