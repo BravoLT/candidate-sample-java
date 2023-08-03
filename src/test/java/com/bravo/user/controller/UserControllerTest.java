@@ -1,19 +1,17 @@
 package com.bravo.user.controller;
 
 import com.bravo.user.App;
-import com.bravo.user.dao.model.User;
 import com.bravo.user.model.dto.UserReadDto;
-import com.bravo.user.model.filter.UserFilter;
 import com.bravo.user.service.UserService;
 import com.bravo.user.utility.PageUtil;
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
-import javax.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpServletResponse;
+
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.Mock;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -48,11 +46,11 @@ class UserControllerTest {
   private List<UserReadDto> users;
 
   @BeforeEach
-  public void beforeEach(){
+  void beforeEach(){
     final List<Integer> ids = IntStream
         .range(1, 10)
         .boxed()
-        .collect(Collectors.toList());
+        .toList();
 
     this.users = ids.stream()
         .map(id -> createUserReadDto(Integer.toString(id)))

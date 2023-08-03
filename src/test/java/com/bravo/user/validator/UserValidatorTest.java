@@ -20,8 +20,8 @@ import static org.junit.jupiter.api.Assertions.*;
 
 @ContextConfiguration(classes = {App.class})
 @ExtendWith(SpringExtension.class)
-@SpringBootTest
-public class UserValidatorTest {
+@SpringBootTest()
+class UserValidatorTest {
 
   @Autowired
   private UserValidator userValidator;
@@ -32,7 +32,7 @@ public class UserValidatorTest {
       delimiter = '$',
       lineSeparator = ">"
   )
-  public void validateCreate(
+  void validateCreate(
       @ConvertWith(MapperArgConverter.class) UserSaveDto userSaveDto,
       boolean isValid
   ) {
@@ -52,7 +52,7 @@ public class UserValidatorTest {
       delimiter = '$',
       lineSeparator = ">"
   )
-  public void validateUpdate(
+  void validateUpdate(
       @ConvertWith(MapperArgConverter.class) UserSaveDto userSaveDto,
       boolean isValid
   ) {

@@ -1,10 +1,4 @@
-drop table if exists address cascade;
-drop table if exists payment cascade;
-drop table if exists profile cascade;
-drop table if exists user cascade;
-
-
-create table address (
+create table if not exists address (
     id varchar(60) primary key,
     user_id varchar(60) not null,
     line1 varchar(100) not null,
@@ -15,7 +9,7 @@ create table address (
     updated timestamp not null default current_timestamp()
 );
 
-create table payment (
+create table  if not exists payment (
     id varchar(60) primary key,
     user_id varchar(60) not null,
     card_number varchar(16) not null unique,
@@ -24,7 +18,7 @@ create table payment (
     updated timestamp not null default current_timestamp()
 );
 
-create table profile (
+create table  if not exists profile (
     id varchar(60) primary key,
     user_id varchar(60) not null,
     username varchar(60) not null unique,
@@ -33,7 +27,7 @@ create table profile (
     updated timestamp not null default current_timestamp()
 );
 
-create table user (
+create table  if not exists users (
     id varchar(60) primary key,
     first_name varchar(100) not null,
     middle_name varchar(100) null,
@@ -42,7 +36,11 @@ create table user (
     updated timestamp not null default current_timestamp()
 );
 
-insert into user (id, first_name, middle_name, last_name, phone_number) values
+TRUNCATE TABLE users RESTART IDENTITY;
+
+TRUNCATE TABLE address RESTART IDENTITY;
+
+insert into users (id, first_name, middle_name, last_name, phone_number) values
 ('008a4215-0b1d-445e-b655-a964039cbb5a', 'Joyce', 'Lucas', 'Roberts', '6422107303'),
 ('00963d9b-f884-485e-9455-fcf30c6ac379', 'Cadie', 'Albert', 'Hall', '2072310564'),
 ('00bed3ac-5f3c-4a2d-a67b-80376ea9f941', 'Cadie', null, 'Foster', '2501424635'),

@@ -4,38 +4,38 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-public class EncryptServiceTest {
+class EncryptServiceTest {
 
   private EncryptService encryptService;
 
   @BeforeEach
-  public void beforeEach(){
+  void beforeEach(){
     this.encryptService = null;
   }
 
   @Test
-  public void encrypt(){
+  void encrypt(){
     setEncryptService();
     final String encrypted = this.encryptService.encrypt("password");
     Assertions.assertEquals("doSiQvzG31cjkMBu+QcN1w==", encrypted);
   }
 
   @Test
-  public void encryptWithDifferentSecret(){
+  void encryptWithDifferentSecret(){
     setEncryptService("$DifferentSecret9");
     final String encrypted = this.encryptService.encrypt("password");
     Assertions.assertEquals("gGuJA4Ihv0g7tP1Ej9gjJQ==", encrypted);
   }
 
   @Test
-  public void encryptWithDifferentValue(){
+  void encryptWithDifferentValue(){
     setEncryptService();
     final String encrypted = this.encryptService.encrypt("DifferentValue");
     Assertions.assertEquals("UtX2kBisxCzKXItumXzABQ==", encrypted);
   }
 
   @Test
-  public void encryptInvalidInput(){
+  void encryptInvalidInput(){
     setEncryptService();
     Assertions.assertThrows(
         IllegalArgumentException.class,

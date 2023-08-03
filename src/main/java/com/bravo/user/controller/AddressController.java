@@ -2,18 +2,20 @@ package com.bravo.user.controller;
 
 import java.util.List;
 
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.tags.Tag;
+import org.springframework.web.bind.annotation.*;
 
-import com.bravo.user.annotation.SwaggerController;
 import com.bravo.user.model.dto.AddressDto;
 import com.bravo.user.service.AddressService;
 import com.bravo.user.validator.UserValidator;
 
+@RestController
+@Tag(name = "Addresses", description = "Addresses of Users")
 @RequestMapping(value = "/address")
-@SwaggerController
 public class AddressController {
 
 	private final AddressService addressService;
@@ -24,6 +26,11 @@ public class AddressController {
 		this.userValidator = userValidator;
 	}
 
+	@Operation(summary = "Retrieve Address by User id")
+	@ApiResponse(responseCode = "200", content = {
+					@Content(schema= @Schema(implementation = List.class), mediaType = "application/json")
+	})
+	@ApiResponse(responseCode = "400", content = {@Content(schema = @Schema())})
 	@GetMapping(value = "/retrieve/{userId}")
 	@ResponseBody
 	public List<AddressDto> retrieve(final @PathVariable String userId) {

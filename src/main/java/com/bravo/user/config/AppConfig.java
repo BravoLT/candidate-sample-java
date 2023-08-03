@@ -11,8 +11,6 @@ import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateSerializer;
 import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateTimeSerializer;
 import com.fasterxml.jackson.datatype.jsr310.ser.LocalTimeSerializer;
 import com.fasterxml.jackson.module.paramnames.ParameterNamesModule;
-import ma.glasnost.orika.MapperFacade;
-import ma.glasnost.orika.impl.DefaultMapperFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -55,10 +53,5 @@ public class AppConfig {
             new JavaTimeModule(),
             new ParameterNamesModule(),
             new Jdk8Module());
-  }
-
-  @Bean
-  public MapperFacade mapperFacade(){
-    return new DefaultMapperFactory.Builder().build().getMapperFacade();
   }
 }

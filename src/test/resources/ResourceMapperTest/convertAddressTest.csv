@@ -1,6 +1,6 @@
 >{
   "id":"testId",
-  "user_id":"testUserId",
+  "user_id":"testUserId1",
   "line1":"123 Main Rd",
   "line2":"Apt 3",
   "city":"Cityville",
@@ -20,7 +20,7 @@ ${
 }
 >{
   "id":"testId",
-  "user_id":"testUserId",
+  "user_id":"testUserId2",
   "line1":"123 Main Rd",
   "line2":null,
   "city":"Cityville",

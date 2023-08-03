@@ -7,10 +7,9 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 import java.util.List;
-import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
-import javax.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpServletResponse;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -34,8 +33,8 @@ import com.bravo.user.utility.PageUtil;
 
 @ContextConfiguration(classes = {App.class})
 @ExtendWith(SpringExtension.class)
-@SpringBootTest
-public class UserServiceTest {
+@SpringBootTest()
+class UserServiceTest {
 
   @Autowired
   private HttpServletResponse httpResponse;
@@ -44,38 +43,38 @@ public class UserServiceTest {
   private UserService userService;
 
   @MockBean
-  private ResourceMapper resourceMapper;
+  private ResourceMapper mockResourceMapper;
 
   @MockBean
-  private UserRepository userRepository;
+  private UserRepository mockUserRepository;
 
   private List<UserReadDto> dtoUsers;
 
   @BeforeEach
-  public void beforeEach(){
+  void beforeEach(){
     final List<Integer> ids = IntStream
         .range(1, 10)
         .boxed()
-        .collect(Collectors.toList());
+        .toList();
 
     final Page<User> mockPage = mock(Page.class);
-    when(userRepository.findAll(any(UserNameFuzzySpecification.class), any(PageRequest.class)))
+    when(mockUserRepository.findAll(any(UserNameFuzzySpecification.class), any(PageRequest.class)))
         .thenReturn(mockPage);
 
     final List<User> daoUsers = ids.stream()
         .map(id -> createUser(Integer.toString(id)))
-        .collect(Collectors.toList());
+        .toList();
     when(mockPage.getContent()).thenReturn(daoUsers);
     when(mockPage.getTotalPages()).thenReturn(9);
 
     this.dtoUsers = ids.stream()
         .map(id -> createUserReadDto(Integer.toString(id)))
-        .collect(Collectors.toList());
-    when(resourceMapper.convertUsers(daoUsers)).thenReturn(dtoUsers);
+        .toList();
+    when(mockResourceMapper.convertUsers(daoUsers)).thenReturn(dtoUsers);
   }
 
   @Test
-  public void retrieveByName() {
+  void retrieveByName() {
     final String input = "input";
     final PageRequest pageRequest = PageUtil.createPageRequest(null, null);
     final List<UserReadDto> results = userService.retrieveByName(input, pageRequest, httpResponse);
@@ -86,11 +85,11 @@ public class UserServiceTest {
 
     final UserNameFuzzyFilter filter = new UserNameFuzzyFilter(input);
     final UserNameFuzzySpecification specification = new UserNameFuzzySpecification(filter);
-    verify(userRepository).findAll(specification, pageRequest);
+    verify(mockUserRepository).findAll(specification, pageRequest);
   }
 
   @Test
-  public void retrieveByNamePaged() {
+  void retrieveByNamePaged() {
     final String input = "input2";
     final PageRequest pageRequest = PageUtil.createPageRequest(2, 5);
     final List<UserReadDto> results = userService.retrieveByName(input, pageRequest, httpResponse);
@@ -101,7 +100,7 @@ public class UserServiceTest {
 
     final UserNameFuzzyFilter filter = new UserNameFuzzyFilter(input);
     final UserNameFuzzySpecification specification = new UserNameFuzzySpecification(filter);
-    verify(userRepository).findAll(specification, pageRequest);
+    verify(mockUserRepository).findAll(specification, pageRequest);
   }
 
   private User createUser(final String id){

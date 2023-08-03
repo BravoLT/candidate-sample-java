@@ -10,25 +10,26 @@ import com.bravo.user.model.dto.ProfileDto;
 import com.bravo.user.model.dto.UserReadDto;
 import java.util.Collection;
 import java.util.List;
-import java.util.stream.Collectors;
-import ma.glasnost.orika.MapperFacade;
+
+import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Component;
 
 @Component
 public class ResourceMapper {
 
-  private final MapperFacade mapperFacade;
+  private final ModelMapper modelMapper;
 
-  public ResourceMapper(MapperFacade mapperFacade) {
-    this.mapperFacade = mapperFacade;
+  public ResourceMapper() {
+    this.modelMapper = new ModelMapper();
+    modelMapper.getConfiguration().setAmbiguityIgnored(true);
   }
 
   public <T extends Collection<Address>> List<AddressDto> convertAddresses(final T addresses){
-    return addresses.stream().map(this::convertAddress).collect(Collectors.toList());
+    return addresses.stream().map(this::convertAddress).toList();
   }
 
   public AddressDto convertAddress(final Address address){
-    final AddressDto dto = mapperFacade.map(address, AddressDto.class);
+    final AddressDto dto = modelMapper.map(address, AddressDto.class);
     dto.setAddress(
         String.format("%s%s %s, %s, %s",
             address.getLine1(),
@@ -42,26 +43,26 @@ public class ResourceMapper {
   }
 
   public <T extends Collection<Payment>> List<PaymentDto> convertPayments(final T payments){
-    return payments.stream().map(this::convertPayment).collect(Collectors.toList());
+    return payments.stream().map(this::convertPayment).toList();
   }
 
   public PaymentDto convertPayment(final Payment payment){
     final String cardNumber = payment.getCardNumber();
-    final PaymentDto dto = mapperFacade.map(payment, PaymentDto.class);
+    final PaymentDto dto = modelMapper.map(payment, PaymentDto.class);
     dto.setCardNumberLast4(cardNumber.substring(cardNumber.length() - 5));
     return dto;
   }
 
   public ProfileDto convertProfile(final Profile profile){
-    return mapperFacade.map(profile, ProfileDto.class);
+    return modelMapper.map(profile, ProfileDto.class);
   }
 
   public <T extends Collection<User>> List<UserReadDto> convertUsers(final T users){
-    return users.stream().map(this::convertUser).collect(Collectors.toList());
+    return users.stream().map(this::convertUser).toList();
   }
 
   public UserReadDto convertUser(final User user){
-    final UserReadDto dto = mapperFacade.map(user, UserReadDto.class);
+    final UserReadDto dto = modelMapper.map(user, UserReadDto.class);
     dto.setName(
         String.format("%s%s %s",
             user.getFirstName(),

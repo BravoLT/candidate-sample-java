@@ -3,13 +3,14 @@ package com.bravo.user.dao.specification;
 import com.bravo.user.dao.model.User;
 import com.bravo.user.model.filter.UserNameFuzzyFilter;
 
-import javax.persistence.criteria.CriteriaBuilder;
-import javax.persistence.criteria.CriteriaQuery;
-import javax.persistence.criteria.Root;
+
 import java.util.Set;
+
+
+import jakarta.persistence.criteria.*;
 import lombok.EqualsAndHashCode;
 
-@EqualsAndHashCode
+@EqualsAndHashCode(callSuper = false)
 public class UserNameFuzzySpecification extends AbstractSpecification<User> {
 
   private final UserNameFuzzyFilter filter;

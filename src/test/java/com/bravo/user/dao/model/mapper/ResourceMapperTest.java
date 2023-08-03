@@ -19,7 +19,7 @@ import com.bravo.user.model.dto.UserReadDto;
 
 @ContextConfiguration(classes = {App.class})
 @ExtendWith(SpringExtension.class)
-@SpringBootTest
+@SpringBootTest()
 class ResourceMapperTest {
 
   @Autowired

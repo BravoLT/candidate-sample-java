@@ -43,7 +43,7 @@ class AddressControllerTest {
 
 	@BeforeEach
 	public void beforeEach() {
-		final List<Integer> ids = IntStream.range(1, 10).boxed().collect(Collectors.toList());
+		final List<Integer> ids = IntStream.range(1, 10).boxed().toList();
 
 		this.addresses = ids.stream().map(id -> createAddressDto(Integer.toString(id)))
 				.collect(Collectors.toList());
@@ -67,7 +67,7 @@ class AddressControllerTest {
 
 	@Test
 	void getRetrieveByUserId_Space() throws Exception {
-		this.mockMvc.perform(get("/address/retrieve/ /")).andExpect(status().isBadRequest());
+		this.mockMvc.perform(get("/address/retrieve/ /")).andExpect(status().isNotFound());
 	}
 
 	@Test

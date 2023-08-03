@@ -1,6 +1,5 @@
 package com.bravo.user.controller;
 
-import com.bravo.user.annotation.SwaggerController;
 import com.bravo.user.enumerator.Crud;
 import com.bravo.user.exception.BadRequestException;
 import com.bravo.user.model.dto.UserReadDto;
@@ -12,22 +11,21 @@ import com.bravo.user.utility.ValidatorUtil;
 import com.bravo.user.validator.UserValidator;
 import java.util.Collections;
 import java.util.List;
-import javax.servlet.http.HttpServletResponse;
+
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.validation.BindException;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PatchMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 
+@RestController
+@Tag(name="User", description="User Actions")
 @RequestMapping(value = "/user")
-@SwaggerController
 public class UserController {
 
   private final UserService userService;
@@ -38,6 +36,11 @@ public class UserController {
     this.userValidator = userValidator;
   }
 
+  @Operation(summary = "Create a User")
+  @ApiResponse(responseCode = "200", content = {
+          @Content(schema = @Schema(implementation = UserReadDto.class), mediaType = "application/json")
+  })
+  @ApiResponse(responseCode = "400", content = {@Content(schema = @Schema())})
   @PostMapping(value = "/create")
   @ResponseBody
   public UserReadDto create(final @RequestBody UserSaveDto request, final BindingResult errors)
@@ -46,6 +49,11 @@ public class UserController {
     return userService.create(request);
   }
 
+  @Operation(summary = "Retrieve User Information")
+  @ApiResponse(responseCode = "200", content = {
+          @Content(schema = @Schema(implementation = List.class), mediaType = "application/json")
+  })
+  @ApiResponse(responseCode = "400", content = {@Content(schema = @Schema())})
   @GetMapping(value = "/retrieve")
   @ResponseBody
   public List<UserReadDto> retrieve(
@@ -69,6 +77,11 @@ public class UserController {
     }
   }
 
+  @Operation(summary = "Retrieve User Information")
+  @ApiResponse(responseCode = "200", content = {
+          @Content(schema = @Schema(implementation = List.class), mediaType = "application/json")
+  })
+  @ApiResponse(responseCode = "400", content = {@Content(schema = @Schema())})
   @PostMapping(value = "/retrieve")
   @ResponseBody
   public List<UserReadDto> retrieve(
@@ -81,6 +94,11 @@ public class UserController {
     return userService.retrieve(filter, pageRequest, httpResponse);
   }
 
+  @Operation(summary = "Update User Information")
+  @ApiResponse(responseCode = "200", content = {
+          @Content(schema = @Schema(implementation = UserReadDto.class), mediaType = "application/json")
+  })
+  @ApiResponse(responseCode = "400", content = {@Content(schema = @Schema())})
   @PatchMapping(value = "/update/{id}")
   @ResponseBody
   public UserReadDto update(
@@ -93,6 +111,11 @@ public class UserController {
     return userService.update(id, request);
   }
 
+  @Operation(summary = "Delete a user")
+  @ApiResponse(responseCode = "200", content = {
+          @Content(schema = @Schema(implementation = boolean.class), mediaType = "application/json")
+  })
+  @ApiResponse(responseCode = "400", content = {@Content(schema = @Schema())})
   @DeleteMapping(value = "/delete/{id}")
   @ResponseBody
   public boolean delete(final @PathVariable String id) {
