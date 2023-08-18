@@ -8,11 +8,12 @@ import com.bravo.user.model.dto.AddressDto;
 import com.bravo.user.model.dto.PaymentDto;
 import com.bravo.user.model.dto.ProfileDto;
 import com.bravo.user.model.dto.UserReadDto;
-import java.util.Collection;
-import java.util.List;
-
+import org.apache.commons.lang3.StringUtils;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Component;
+
+import java.util.Collection;
+import java.util.List;
 
 @Component
 public class ResourceMapper {
@@ -27,6 +28,7 @@ public class ResourceMapper {
   public <T extends Collection<Address>> List<AddressDto> convertAddresses(final T addresses){
     return addresses.stream().map(this::convertAddress).toList();
   }
+
 
   public AddressDto convertAddress(final Address address){
     final AddressDto dto = modelMapper.map(address, AddressDto.class);
@@ -49,7 +51,9 @@ public class ResourceMapper {
   public PaymentDto convertPayment(final Payment payment){
     final String cardNumber = payment.getCardNumber();
     final PaymentDto dto = modelMapper.map(payment, PaymentDto.class);
-    dto.setCardNumberLast4(cardNumber.substring(cardNumber.length() - 5));
+    if (!StringUtils.isAllBlank(cardNumber) && cardNumber.length() >5) {
+      dto.setCardNumberLast4(cardNumber.substring(cardNumber.length() - 5));
+    }
     return dto;
   }
 
